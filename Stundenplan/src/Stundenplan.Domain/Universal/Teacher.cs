@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Stundenplan.Domain
 {
-    public class Class1
+    public class Teacher
     {
+        public Sex Sex { get; private set; }
+
+        public String Name { get; private set; }
     }
 }

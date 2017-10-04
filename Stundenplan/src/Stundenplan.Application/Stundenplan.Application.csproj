@@ -93,5 +93,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stundenplan.Database\Stundenplan.Database.csproj">
+      <Project>{ee9c5b25-de51-4993-8ec6-4f32d4ff6430}</Project>
+      <Name>Stundenplan.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stundenplan.Domain\Stundenplan.Domain.csproj">
+      <Project>{5e2cc659-fd92-423d-b4a1-f360d36581be}</Project>
+      <Name>Stundenplan.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
