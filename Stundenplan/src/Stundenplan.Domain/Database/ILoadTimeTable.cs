@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stundenplan.Database
+namespace Stundenplan.Domain.Database
 {
-    public class Class1
+    public interface ILoadTimeTable
     {
+        IEnumerable<TimeTable> GetTimeTables();
     }
 }

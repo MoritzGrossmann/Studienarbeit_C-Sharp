@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Database.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=D:\Moritz\Projekt\Databases\Stundenplan.db;version=3" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="studenplan_stunden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fach" Type="integer" Nullable="false" />
+          <Property Name="Stundenplan" Type="integer" Nullable="false" />
+          <Property Name="Begin" Type="datetime" Nullable="false" />
+          <Property Name="Ende" Type="datetime" Nullable="false" />
+          <Property Name="Raum" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stundenplan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="2147483647" />
+        </EntityType>
+        <EntityType Name="stundenplan_fach">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="Kuerzel" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="Farbe" Type="integer" />
+        </EntityType>
+        <Association Name="FK_studenplan_stunden_0_0">
+          <End Role="stundenplan" Type="Self.stundenplan" Multiplicity="1" />
+          <End Role="studenplan_stunden" Type="Self.studenplan_stunden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stundenplan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="studenplan_stunden">
+              <PropertyRef Name="Stundenplan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_studenplan_stunden_1_0">
+          <End Role="stundenplan_fach" Type="Self.stundenplan_fach" Multiplicity="1" />
+          <End Role="studenplan_stunden" Type="Self.studenplan_stunden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stundenplan_fach">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="studenplan_stunden">
+              <PropertyRef Name="Fach" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseStoreContainer">
+          <EntitySet Name="studenplan_stunden" EntityType="Self.studenplan_stunden" Table="studenplan.stunden" store:Type="Tables" />
+          <EntitySet Name="stundenplan" EntityType="Self.stundenplan" store:Type="Tables" />
+          <EntitySet Name="stundenplan_fach" EntityType="Self.stundenplan_fach" Table="stundenplan.fach" store:Type="Tables" />
+          <AssociationSet Name="FK_studenplan_stunden_0_0" Association="Self.FK_studenplan_stunden_0_0">
+            <End Role="stundenplan" EntitySet="stundenplan" />
+            <End Role="studenplan_stunden" EntitySet="studenplan_stunden" />
+          </AssociationSet>
+          <AssociationSet Name="FK_studenplan_stunden_1_0" Association="Self.FK_studenplan_stunden_1_0">
+            <End Role="stundenplan_fach" EntitySet="stundenplan_fach" />
+            <End Role="studenplan_stunden" EntitySet="studenplan_stunden" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Database" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="studenplan_stunden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fach" Type="Int64" Nullable="false" />
+          <Property Name="Stundenplan" Type="Int64" Nullable="false" />
+          <Property Name="Begin" Type="DateTime" Nullable="false" />
+          <Property Name="Ende" Type="DateTime" Nullable="false" />
+          <Property Name="Raum" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="stundenplan" Relationship="Self.FK_studenplan_stunden_0_0" FromRole="studenplan_stunden" ToRole="stundenplan" />
+          <NavigationProperty Name="fach" Relationship="Self.FK_studenplan_stunden_1_0" FromRole="studenplan_stunden" ToRole="stundenplan_fach" />
+        </EntityType>
+        <EntityType Name="stundenplan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="stunden" Relationship="Self.FK_studenplan_stunden_0_0" FromRole="stundenplan" ToRole="studenplan_stunden" />
+        </EntityType>
+        <EntityType Name="stundenplan_fach">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="Kuerzel" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="Farbe" Type="Int64" />
+          <NavigationProperty Name="stunden" Relationship="Self.FK_studenplan_stunden_1_0" FromRole="stundenplan_fach" ToRole="studenplan_stunden" />
+        </EntityType>
+        <Association Name="FK_studenplan_stunden_0_0">
+          <End Role="stundenplan" Type="Self.stundenplan" Multiplicity="1" />
+          <End Role="studenplan_stunden" Type="Self.studenplan_stunden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stundenplan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="studenplan_stunden">
+              <PropertyRef Name="Stundenplan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_studenplan_stunden_1_0">
+          <End Role="stundenplan_fach" Type="Self.stundenplan_fach" Multiplicity="1" />
+          <End Role="studenplan_stunden" Type="Self.studenplan_stunden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stundenplan_fach">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="studenplan_stunden">
+              <PropertyRef Name="Fach" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StundenplanEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="studenplan_stunden" EntityType="Self.studenplan_stunden" />
+          <EntitySet Name="stundenplans" EntityType="Self.stundenplan" />
+          <EntitySet Name="stundenplan_fach" EntityType="Self.stundenplan_fach" />
+          <AssociationSet Name="FK_studenplan_stunden_0_0" Association="Self.FK_studenplan_stunden_0_0">
+            <End Role="stundenplan" EntitySet="stundenplans" />
+            <End Role="studenplan_stunden" EntitySet="studenplan_stunden" />
+          </AssociationSet>
+          <AssociationSet Name="FK_studenplan_stunden_1_0" Association="Self.FK_studenplan_stunden_1_0">
+            <End Role="stundenplan_fach" EntitySet="stundenplan_fach" />
+            <End Role="studenplan_stunden" EntitySet="studenplan_stunden" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseStoreContainer" CdmEntityContainer="StundenplanEntities">
+          <EntitySetMapping Name="studenplan_stunden">
+            <EntityTypeMapping TypeName="Database.studenplan_stunden">
+              <MappingFragment StoreEntitySet="studenplan_stunden">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Fach" ColumnName="Fach" />
+                <ScalarProperty Name="Stundenplan" ColumnName="Stundenplan" />
+                <ScalarProperty Name="Begin" ColumnName="Begin" />
+                <ScalarProperty Name="Ende" ColumnName="Ende" />
+                <ScalarProperty Name="Raum" ColumnName="Raum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stundenplans">
+            <EntityTypeMapping TypeName="Database.stundenplan">
+              <MappingFragment StoreEntitySet="stundenplan">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stundenplan_fach">
+            <EntityTypeMapping TypeName="Database.stundenplan_fach">
+              <MappingFragment StoreEntitySet="stundenplan_fach">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Kuerzel" ColumnName="Kuerzel" />
+                <ScalarProperty Name="Farbe" ColumnName="Farbe" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

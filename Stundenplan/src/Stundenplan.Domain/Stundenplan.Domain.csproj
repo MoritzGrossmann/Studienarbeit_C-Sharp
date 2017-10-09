@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\ILoadTimeTable.cs" />
+    <Compile Include="Database\ISaveTimeTable.cs" />
     <Compile Include="Notebook\Exam.cs" />
     <Compile Include="Notebook\Homework.cs" />
     <Compile Include="TimeTable\Break.cs" />
@@ -50,7 +52,7 @@
     <Compile Include="Universal\SchoolDay.cs" />
     <Compile Include="Universal\Sex.cs" />
     <Compile Include="Universal\Teacher.cs" />
-    <Compile Include="TimeTable\Timetable.cs" />
+    <Compile Include="TimeTable.cs" />
     <Compile Include="TimeTable\TimeUnit.cs" />
   </ItemGroup>
   <ItemGroup />

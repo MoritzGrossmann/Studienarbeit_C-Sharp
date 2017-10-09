@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stundenplan.Application", "src\Stundenplan.Application\Stundenplan.Application.csproj", "{90DA2F50-2BE7-42E3-8ABB-C564B8C8895B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stundenplan.App", "src\Stundenplan.Application\Stundenplan.App.csproj", "{90DA2F50-2BE7-42E3-8ABB-C564B8C8895B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stundenplan.Domain", "src\Stundenplan.Domain\Stundenplan.Domain.csproj", "{5E2CC659-FD92-423D-B4A1-F360D36581BE}"
 EndProject

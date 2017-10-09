@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Stundenplan.Application"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+    <Grid Margin="0,0,-83,-87">
+        <ListBox HorizontalAlignment="Left" Height="100" Margin="10,209,0,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
