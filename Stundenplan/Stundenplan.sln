@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stundenplan.Domain", "src\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stundenplan.Database", "src\Stundenplan.Database\Stundenplan.Database.csproj", "{EE9C5B25-DE51-4993-8EC6-4F32D4FF6430}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stundenplan.Tests", "src\Stundenplan.Tests\Stundenplan.Tests.csproj", "{B1CEE42A-D456-4BE8-B4AF-849E1EB9AF9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EE9C5B25-DE51-4993-8EC6-4F32D4FF6430}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE9C5B25-DE51-4993-8EC6-4F32D4FF6430}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE9C5B25-DE51-4993-8EC6-4F32D4FF6430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1CEE42A-D456-4BE8-B4AF-849E1EB9AF9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CEE42A-D456-4BE8-B4AF-849E1EB9AF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CEE42A-D456-4BE8-B4AF-849E1EB9AF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CEE42A-D456-4BE8-B4AF-849E1EB9AF9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

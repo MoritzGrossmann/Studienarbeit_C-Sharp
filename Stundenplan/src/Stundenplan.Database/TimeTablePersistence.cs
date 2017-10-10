@@ -5,23 +5,36 @@ using System.Text;
 using System.Threading.Tasks;
 using Stundenplan.Domain;
 using Stundenplan.Domain.Database;
+using Stundenplan.Domain.Universal;
 
 namespace Stundenplan.Database
 {
     public class TimeTablePersistence : ISaveTimeTable, ILoadTimeTable
     {
-        public void CreateTimetable(string name)
+        public long CreateTimetable(string name)
         {
             using (var context = new StundenplanEntities())
             {
-                context.stundenplans.Add(new stundenplan()
-                {
-                    Name = name
-                });
+                stundenplan sp = new stundenplan() {Name = name};
+                context.stundenplans.Add(sp);
 
                 context.SaveChanges();
+                return sp.Id;
             }
         }
+
+        public long CreateDescipline(string name, string kuerzel, Farbe farbe)
+        {
+            using (var context = new StundenplanEntities())
+            {
+                stundenplan_fach dis = new stundenplan_fach(){Farbe = (long) farbe, Name = name, Kuerzel = kuerzel};
+                context.stundenplan_fach.Add(dis);
+
+                context.SaveChanges();
+                return dis.Id;
+            }
+        }
+
 
         public IEnumerable<TimeTable> GetTimeTables()
         {
