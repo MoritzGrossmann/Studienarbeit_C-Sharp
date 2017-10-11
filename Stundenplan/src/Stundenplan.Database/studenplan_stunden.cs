@@ -12,16 +12,16 @@ namespace Stundenplan.Database
     using System;
     using System.Collections.Generic;
     
-    public partial class studenplan_stunden
+    public partial class Studenplan_Stunden
     {
         public long id { get; set; }
-        public long Fach { get; set; }
-        public long Stundenplan { get; set; }
+        public long FachId { get; set; }
+        public long StundenplanId { get; set; }
         public System.DateTime Begin { get; set; }
         public System.DateTime Ende { get; set; }
         public string Raum { get; set; }
     
-        public virtual stundenplan stundenplan { get; set; }
-        public virtual stundenplan_fach fach { get; set; }
+        public virtual Stundenplan Stundenplan { get; set; }
+        public virtual Stundenplan_Fach Fach { get; set; }
     }
 }

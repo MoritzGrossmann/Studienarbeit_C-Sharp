@@ -5,11 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="95c13bd11af446ceb044043d52170b86" Name="Diagram1">
-        <EntityTypeShape EntityType="Database.studenplan_stunden" Width="2.75" PointX="3.5" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database.stundenplan" Width="1.875" PointX="0.5" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Database.stundenplan_fach" Width="2.125" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <AssociationConnector Association="Database.FK_studenplan_stunden_0_0" ManuallyRouted="false" />
-        <AssociationConnector Association="Database.FK_studenplan_stunden_1_0" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Database.Studenplan_Stunden" Width="3" PointX="4.5" PointY="0.875" />
+        <EntityTypeShape EntityType="Database.Stundenplan" Width="3" PointX="0.5" PointY="1.625" />
+        <EntityTypeShape EntityType="Database.Stundenplan_Fach" Width="3" PointX="1.875" PointY="3.625" />
+        <AssociationConnector Association="Database.FK_Studenplan_Stunden_0_0" />
+        <AssociationConnector Association="Database.FK_Studenplan_Stunden_1_0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

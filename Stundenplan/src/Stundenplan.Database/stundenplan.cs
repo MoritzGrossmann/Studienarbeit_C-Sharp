@@ -12,18 +12,18 @@ namespace Stundenplan.Database
     using System;
     using System.Collections.Generic;
     
-    public partial class stundenplan
+    public partial class Stundenplan
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public stundenplan()
+        public Stundenplan()
         {
-            this.stunden = new HashSet<studenplan_stunden>();
+            this.Stunden = new HashSet<Studenplan_Stunden>();
         }
     
         public long Id { get; set; }
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<studenplan_stunden> stunden { get; set; }
+        public virtual ICollection<Studenplan_Stunden> Stunden { get; set; }
     }
 }

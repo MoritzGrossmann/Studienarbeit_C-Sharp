@@ -12,12 +12,12 @@ namespace Stundenplan.Database
     using System;
     using System.Collections.Generic;
     
-    public partial class stundenplan_fach
+    public partial class Stundenplan_Fach
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public stundenplan_fach()
+        public Stundenplan_Fach()
         {
-            this.stunden = new HashSet<studenplan_stunden>();
+            this.Stunden = new HashSet<Studenplan_Stunden>();
         }
     
         public long Id { get; set; }
@@ -26,6 +26,6 @@ namespace Stundenplan.Database
         public Nullable<long> Farbe { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<studenplan_stunden> stunden { get; set; }
+        public virtual ICollection<Studenplan_Stunden> Stunden { get; set; }
     }
 }

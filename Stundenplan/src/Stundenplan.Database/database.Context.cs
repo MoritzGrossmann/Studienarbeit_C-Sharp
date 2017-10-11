@@ -25,8 +25,8 @@ namespace Stundenplan.Database
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<studenplan_stunden> studenplan_stunden { get; set; }
-        public virtual DbSet<stundenplan> stundenplans { get; set; }
-        public virtual DbSet<stundenplan_fach> stundenplan_fach { get; set; }
+        public virtual DbSet<Studenplan_Stunden> Studenplan_Stunden { get; set; }
+        public virtual DbSet<Stundenplan> Stundenplans { get; set; }
+        public virtual DbSet<Stundenplan_Fach> Stundenplan_Fach { get; set; }
     }
 }

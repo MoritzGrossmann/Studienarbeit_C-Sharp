@@ -15,8 +15,8 @@ namespace Stundenplan.Database
         {
             using (var context = new StundenplanEntities())
             {
-                stundenplan sp = new stundenplan() {Name = name};
-                context.stundenplans.Add(sp);
+                Stundenplan sp = new Stundenplan() {Name = name};
+                context.Stundenplans.Add(sp);
 
                 context.SaveChanges();
                 return sp.Id;
@@ -27,8 +27,8 @@ namespace Stundenplan.Database
         {
             using (var context = new StundenplanEntities())
             {
-                stundenplan_fach dis = new stundenplan_fach(){Farbe = (long) farbe, Name = name, Kuerzel = kuerzel};
-                context.stundenplan_fach.Add(dis);
+                Stundenplan_Fach dis = new Stundenplan_Fach(){Farbe = (long) farbe, Name = name, Kuerzel = kuerzel};
+                context.Stundenplan_Fach.Add(dis);
 
                 context.SaveChanges();
                 return dis.Id;
@@ -40,25 +40,25 @@ namespace Stundenplan.Database
         {
             using (var context = new StundenplanEntities())
             {
-                return context.stundenplans.Select(FromDb);
+                return context.Stundenplans.Select(FromDb);
             }
         }
 
-        private TimeTable FromDb(stundenplan timeTable)
+        private TimeTable FromDb(Stundenplan timeTable)
         {
             return new TimeTable()
             {
                 Name = timeTable.Name,
-                Disciplines = timeTable.stunden.Select(FromDb)
+                Disciplines = timeTable.Stunden.Select(FromDb)
             };
         }
 
-        private Discipline FromDb(studenplan_stunden discipline)
+        private Discipline FromDb(Studenplan_Stunden discipline)
         {
             return new Discipline()
             {
-                Name = discipline.fach.Name,
-                ShortCut = discipline.fach.Kuerzel
+                Name = discipline.Fach.Name,
+                ShortCut = discipline.Fach.Kuerzel
             };
         }
     }
