@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Buchungssystem.Domain
 {
     public class Ware
     {
+        [Key]
         public int WarenId { get; set; }
 
         public string Name { get; set; }

@@ -60,6 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuchungPersistenz.cs" />
+    <Compile Include="BuchungsStatus.cs" />
     <Compile Include="StammdatenPersistenz.cs" />
     <Compile Include="BuchungssystemEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

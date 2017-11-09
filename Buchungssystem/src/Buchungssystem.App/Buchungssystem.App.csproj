@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\RaumViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,6 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Buchungssystem.Database\Buchungssystem.Database.csproj">
+      <Project>{c8c47885-f703-4bad-aadf-be4d49819176}</Project>
+      <Name>Buchungssystem.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Buchungssystem.Domain\Buchungssystem.Domain.csproj">
+      <Project>{af354090-fc57-42b4-8ee1-130d32687b67}</Project>
+      <Name>Buchungssystem.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
