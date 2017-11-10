@@ -4,19 +4,18 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Buchungssystem.Domain;
-using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.Database
 {
-    public class BuchungPersistenz : IchSpeichereBuchungsdaten, IchLadeBuchungsdaten
+    public class BuchungPersistenz
     {
-        public void Buche(Buchung buchung)
+        public Buchung Buche(Buchung buchung)
         {
             using (var context = new BuchungssystemEntities())
             {
-                context.Buchungen.Add(buchung);
+                context.Buchung.Add(buchung);
                 context.SaveChanges();
+                return buchung;
             }
         }
 
@@ -24,16 +23,9 @@ namespace Buchungssystem.Database
         {
             using (var context = new BuchungssystemEntities())
             {
-                try
-                {
-                    context.Buchungen.FirstOrDefault(b => b.BuchungsId == buchung.BuchungsId).BuchungsStatus =
-                        (int) BuchungsStatus.Storiert;
-                    context.SaveChanges();
-                }
-                catch (NullReferenceException)
-                {
-                    
-                }
+                context.Buchung.FirstOrDefault(b => b.Id == buchung.Id).Status =
+                    (int) BuchungsStatus.Storiert;
+                context.SaveChanges();
             }
         }
 
@@ -41,24 +33,33 @@ namespace Buchungssystem.Database
         {
             using (var context = new BuchungssystemEntities())
             {
-                try
-                {
-                    context.Buchungen.FirstOrDefault(b => b.BuchungsId == buchung.BuchungsId).BuchungsStatus =
-                        (int)BuchungsStatus.Bezahlt;
-                    context.SaveChanges();
-                }
-                catch (NullReferenceException)
-                {
-
-                }
+                context.Buchung.FirstOrDefault(b => b.Id == buchung.Id).Status =
+                    (int)BuchungsStatus.Bezahlt;
+                context.SaveChanges();
             }
         }
 
-        public List<Buchung> LadeBuchungenVonTisch(Tisch tisch)
+        public List<Buchung> Buchungen(Tisch tisch)
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Buchungen.Where(b => b.Tisch == tisch).ToList();
+                return context.Buchung.Where(b => b.TischId == tisch.Id).ToList();
+            }
+        }
+
+        public List<Buchung> Buchungen(DateTime dateTime)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Buchung.Where(b => b.Zeitpunkt.Date == dateTime.Date).ToList();
+            }
+        }
+
+        public List<Buchung> Buchungen(Tisch tisch, BuchungsStatus status)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Buchung.Where(b => b.TischId == tisch.Id && b.Status == (int) status).ToList();
             }
         }
     }

@@ -100,10 +100,6 @@
       <Project>{c8c47885-f703-4bad-aadf-be4d49819176}</Project>
       <Name>Buchungssystem.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Buchungssystem.Domain\Buchungssystem.Domain.csproj">
-      <Project>{af354090-fc57-42b4-8ee1-130d32687b67}</Project>
-      <Name>Buchungssystem.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

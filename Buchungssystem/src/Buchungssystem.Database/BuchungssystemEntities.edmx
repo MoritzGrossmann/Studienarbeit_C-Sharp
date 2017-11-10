@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="buchungssystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Buchung">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TischId" Type="int" Nullable="false" />
+          <Property Name="WarenId" Type="int" Nullable="false" />
+          <Property Name="Zeitpunkt" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Raum">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservierung">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Uhrzeit" Type="datetime" Nullable="false" />
+          <Property Name="TischId" Type="int" />
+        </EntityType>
+        <EntityType Name="Tisch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bezeichnung" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Platze" Type="int" />
+          <Property Name="RaumId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ware">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Preis" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="WarengruppenId" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Warengruppe">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Buchung_Tisch">
+          <End Role="Tisch" Type="Self.Tisch" Multiplicity="1" />
+          <End Role="Buchung" Type="Self.Buchung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tisch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buchung">
+              <PropertyRef Name="TischId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buchung_Ware">
+          <End Role="Ware" Type="Self.Ware" Multiplicity="1" />
+          <End Role="Buchung" Type="Self.Buchung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ware">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buchung">
+              <PropertyRef Name="WarenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservierung_Tisch">
+          <End Role="Tisch" Type="Self.Tisch" Multiplicity="0..1" />
+          <End Role="Reservierung" Type="Self.Reservierung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tisch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reservierung">
+              <PropertyRef Name="TischId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tisch_Raum">
+          <End Role="Raum" Type="Self.Raum" Multiplicity="1" />
+          <End Role="Tisch" Type="Self.Tisch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Raum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tisch">
+              <PropertyRef Name="RaumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ware_Warengruppe">
+          <End Role="Warengruppe" Type="Self.Warengruppe" Multiplicity="1" />
+          <End Role="Ware" Type="Self.Ware" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warengruppe">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ware">
+              <PropertyRef Name="WarengruppenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="buchungssystemModelStoreContainer">
+          <EntitySet Name="Buchung" EntityType="Self.Buchung" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Raum" EntityType="Self.Raum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservierung" EntityType="Self.Reservierung" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tisch" EntityType="Self.Tisch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ware" EntityType="Self.Ware" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Warengruppe" EntityType="Self.Warengruppe" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Buchung_Tisch" Association="Self.FK_Buchung_Tisch">
+            <End Role="Tisch" EntitySet="Tisch" />
+            <End Role="Buchung" EntitySet="Buchung" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buchung_Ware" Association="Self.FK_Buchung_Ware">
+            <End Role="Ware" EntitySet="Ware" />
+            <End Role="Buchung" EntitySet="Buchung" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservierung_Tisch" Association="Self.FK_Reservierung_Tisch">
+            <End Role="Tisch" EntitySet="Tisch" />
+            <End Role="Reservierung" EntitySet="Reservierung" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tisch_Raum" Association="Self.FK_Tisch_Raum">
+            <End Role="Raum" EntitySet="Raum" />
+            <End Role="Tisch" EntitySet="Tisch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ware_Warengruppe" Association="Self.FK_Ware_Warengruppe">
+            <End Role="Warengruppe" EntitySet="Warengruppe" />
+            <End Role="Ware" EntitySet="Ware" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="buchungssystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Buchung">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TischId" Type="Int32" Nullable="false" />
+          <Property Name="WarenId" Type="Int32" Nullable="false" />
+          <Property Name="Zeitpunkt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tisch" Relationship="Self.FK_Buchung_Tisch" FromRole="Buchung" ToRole="Tisch" />
+          <NavigationProperty Name="Ware" Relationship="Self.FK_Buchung_Ware" FromRole="Buchung" ToRole="Ware" />
+        </EntityType>
+        <EntityType Name="Raum">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tisch" Relationship="Self.FK_Tisch_Raum" FromRole="Raum" ToRole="Tisch" />
+        </EntityType>
+        <EntityType Name="Reservierung">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Uhrzeit" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TischId" Type="Int32" />
+          <NavigationProperty Name="Tisch" Relationship="Self.FK_Reservierung_Tisch" FromRole="Reservierung" ToRole="Tisch" />
+        </EntityType>
+        <EntityType Name="Tisch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bezeichnung" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Platze" Type="Int32" />
+          <Property Name="RaumId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Buchung" Relationship="Self.FK_Buchung_Tisch" FromRole="Tisch" ToRole="Buchung" />
+          <NavigationProperty Name="Raum" Relationship="Self.FK_Tisch_Raum" FromRole="Tisch" ToRole="Raum" />
+          <NavigationProperty Name="Reservierung" Relationship="Self.FK_Reservierung_Tisch" FromRole="Tisch" ToRole="Reservierung" />
+        </EntityType>
+        <EntityType Name="Ware">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Preis" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="WarengruppenId" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Buchung" Relationship="Self.FK_Buchung_Ware" FromRole="Ware" ToRole="Buchung" />
+          <NavigationProperty Name="Warengruppe" Relationship="Self.FK_Ware_Warengruppe" FromRole="Ware" ToRole="Warengruppe" />
+        </EntityType>
+        <EntityType Name="Warengruppe">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Ware" Relationship="Self.FK_Ware_Warengruppe" FromRole="Warengruppe" ToRole="Ware" />
+        </EntityType>
+        <Association Name="FK_Buchung_Tisch">
+          <End Role="Tisch" Type="Self.Tisch" Multiplicity="1" />
+          <End Role="Buchung" Type="Self.Buchung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tisch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buchung">
+              <PropertyRef Name="TischId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Buchung_Ware">
+          <End Role="Ware" Type="Self.Ware" Multiplicity="1" />
+          <End Role="Buchung" Type="Self.Buchung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ware">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buchung">
+              <PropertyRef Name="WarenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tisch_Raum">
+          <End Role="Raum" Type="Self.Raum" Multiplicity="1" />
+          <End Role="Tisch" Type="Self.Tisch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Raum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tisch">
+              <PropertyRef Name="RaumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservierung_Tisch">
+          <End Role="Tisch" Type="Self.Tisch" Multiplicity="0..1" />
+          <End Role="Reservierung" Type="Self.Reservierung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tisch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reservierung">
+              <PropertyRef Name="TischId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ware_Warengruppe">
+          <End Role="Warengruppe" Type="Self.Warengruppe" Multiplicity="1" />
+          <End Role="Ware" Type="Self.Ware" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warengruppe">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ware">
+              <PropertyRef Name="WarengruppenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BuchungssystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Buchung" EntityType="Self.Buchung" />
+          <EntitySet Name="Raum" EntityType="Self.Raum" />
+          <EntitySet Name="Reservierung" EntityType="Self.Reservierung" />
+          <EntitySet Name="Tisch" EntityType="Self.Tisch" />
+          <EntitySet Name="Ware" EntityType="Self.Ware" />
+          <EntitySet Name="Warengruppe" EntityType="Self.Warengruppe" />
+          <AssociationSet Name="FK_Buchung_Tisch" Association="Self.FK_Buchung_Tisch">
+            <End Role="Tisch" EntitySet="Tisch" />
+            <End Role="Buchung" EntitySet="Buchung" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Buchung_Ware" Association="Self.FK_Buchung_Ware">
+            <End Role="Ware" EntitySet="Ware" />
+            <End Role="Buchung" EntitySet="Buchung" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tisch_Raum" Association="Self.FK_Tisch_Raum">
+            <End Role="Raum" EntitySet="Raum" />
+            <End Role="Tisch" EntitySet="Tisch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservierung_Tisch" Association="Self.FK_Reservierung_Tisch">
+            <End Role="Tisch" EntitySet="Tisch" />
+            <End Role="Reservierung" EntitySet="Reservierung" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ware_Warengruppe" Association="Self.FK_Ware_Warengruppe">
+            <End Role="Warengruppe" EntitySet="Warengruppe" />
+            <End Role="Ware" EntitySet="Ware" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="buchungssystemModelStoreContainer" CdmEntityContainer="BuchungssystemEntities">
+          <EntitySetMapping Name="Buchung">
+            <EntityTypeMapping TypeName="buchungssystemModel.Buchung">
+              <MappingFragment StoreEntitySet="Buchung">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TischId" ColumnName="TischId" />
+                <ScalarProperty Name="WarenId" ColumnName="WarenId" />
+                <ScalarProperty Name="Zeitpunkt" ColumnName="Zeitpunkt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Raum">
+            <EntityTypeMapping TypeName="buchungssystemModel.Raum">
+              <MappingFragment StoreEntitySet="Raum">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservierung">
+            <EntityTypeMapping TypeName="buchungssystemModel.Reservierung">
+              <MappingFragment StoreEntitySet="Reservierung">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Uhrzeit" ColumnName="Uhrzeit" />
+                <ScalarProperty Name="TischId" ColumnName="TischId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tisch">
+            <EntityTypeMapping TypeName="buchungssystemModel.Tisch">
+              <MappingFragment StoreEntitySet="Tisch">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Bezeichnung" ColumnName="Bezeichnung" />
+                <ScalarProperty Name="Platze" ColumnName="Platze" />
+                <ScalarProperty Name="RaumId" ColumnName="RaumId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ware">
+            <EntityTypeMapping TypeName="buchungssystemModel.Ware">
+              <MappingFragment StoreEntitySet="Ware">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Preis" ColumnName="Preis" />
+                <ScalarProperty Name="WarengruppenId" ColumnName="WarengruppenId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Warengruppe">
+            <EntityTypeMapping TypeName="buchungssystemModel.Warengruppe">
+              <MappingFragment StoreEntitySet="Warengruppe">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

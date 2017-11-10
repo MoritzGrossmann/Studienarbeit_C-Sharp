@@ -2,68 +2,152 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using Buchungssystem.Domain;
-using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.Database
 {
-    public class StammdatenPersistenz : IchSpeichereStammdaten
+    public class StammdatenPersistenz
     {
+        #region Warengruppe
+
+        public Warengruppe SpeichereWarengruppe(Warengruppe warengruppe)
+        { 
+            using (var context = new BuchungssystemEntities())
+            {
+                context.Warengruppe.Add(warengruppe);
+                context.SaveChanges();
+                return warengruppe;
+            }
+        }
+
+        public List<Warengruppe> WarenGruppen()
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Warengruppe.ToList();
+            }
+        }
+
+        #endregion
+
+        #region Ware
+
+        public Ware SpeichereWare(Ware ware)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                context.Ware.Add(ware);
+                context.SaveChanges();
+                return ware;
+            }
+        }
+
+        public List<Ware> Waren()
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Ware.ToList();
+            }
+        }
+
+        public List<Ware> Waren(Warengruppe warengruppe)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Ware.Where(w => w.Warengruppe == warengruppe).ToList();
+            }
+        }
+
         public void AenderePreis(Ware ware, decimal neuerPreis)
         {
             using (var context = new BuchungssystemEntities())
             {
-                ware.Preis = neuerPreis;
+                context.Ware.FirstOrDefault(w => w.Id == ware.Id).Preis = neuerPreis;
                 context.SaveChanges();
             }
         }
 
-        public void SpeichereWarengruppe(Warengruppe warengruppe)
-        { 
-            using (var context = new BuchungssystemEntities())
-            {
-                if (context.Warengruppen.Count(w => w.WarengruppenId == warengruppe.WarengruppenId) > 0)
-                {
-                    var entity =
-                        context.Warengruppen.FirstOrDefault(w => w.WarengruppenId == warengruppe.WarengruppenId);
-                    if (entity != null) entity.Name = warengruppe.Name;
-                }
-                else
-                {
-                    context.Warengruppen.Add(warengruppe);
-                }
-                context.SaveChanges();
-            }
-        }
-
-        public void SpeichereWare(Ware ware)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SpeichereRaum(Raum raum)
+        public void LoescheWare(Ware ware)
         {
             using (var context = new BuchungssystemEntities())
             {
-                if (context.Raeume.Count(r => r.RaumId == raum.RaumId) > 0)
-                {
-                    var entity =
-                        context.Raeume.FirstOrDefault(r => r.RaumId == raum.RaumId);
-                    if (entity != null) entity.Name = raum.Name;
-                }
-                else
-                {
-                    context.Raeume.Add(raum);
-                }
+                context.Ware.FirstOrDefault(w => w.Id == ware.Id).Deleted = true;
                 context.SaveChanges();
             }
         }
 
-        public void SpeichereTisch(Tisch tisch)
+        #endregion
+
+        #region Raum
+
+        public List<Raum> Raeume()
         {
-            throw new NotImplementedException();
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Raum.ToList();
+            }
         }
+
+        public Raum SpeichereRaum(Raum raum)
+        {
+            using (var context = new BuchungssystemEntities())
+            { 
+                context.Raum.Add(raum);
+                context.SaveChanges();
+                return raum;
+            }
+        }
+
+        public void LoescheRaum(Raum raum)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                context.Raum.Remove(raum);
+                context.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region Tisch
+
+        public Tisch SpeichereTisch(Tisch tisch)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                context.Tisch.Add(tisch);
+                context.SaveChanges();
+                return tisch;
+            }
+        }
+
+        public void LoescheTisch(Tisch tisch)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                context.Tisch.Remove(tisch);
+                context.SaveChanges();
+            }
+        }
+
+        public List<Tisch> Tische()
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Tisch.ToList();
+            }
+        }
+
+        public List<Tisch> Tische(Raum raum)
+        {
+            using (var context = new BuchungssystemEntities())
+            {
+                return context.Tisch.Where(t => t.Raum == raum).ToList();
+            }
+        }
+
+        #endregion
     }
 }

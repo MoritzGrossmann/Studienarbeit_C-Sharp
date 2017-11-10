@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Buchungssystem.Database
 {
-    internal enum BuchungsStatus
+    public enum BuchungsStatus
     {
         Offen = 1,
         Bezahlt = 2,

@@ -1,4 +1,4 @@
-﻿using Buchungssystem.Domain;
+﻿using Buchungssystem.Database;
 
 namespace Buchungssystem.App.ViewModel
 {

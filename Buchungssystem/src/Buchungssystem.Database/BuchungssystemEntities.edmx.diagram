@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="798bf1a09f0542459ff97a867bd3fec1" Name="Diagram1">
+        <EntityTypeShape EntityType="buchungssystemModel.Buchung" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="buchungssystemModel.Raum" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="buchungssystemModel.Reservierung" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="buchungssystemModel.Tisch" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="buchungssystemModel.Ware" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="buchungssystemModel.Warengruppe" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <AssociationConnector Association="buchungssystemModel.FK_Buchung_Tisch" ManuallyRouted="false" />
+        <AssociationConnector Association="buchungssystemModel.FK_Buchung_Ware" ManuallyRouted="false" />
+        <AssociationConnector Association="buchungssystemModel.FK_Tisch_Raum" ManuallyRouted="false" />
+        <AssociationConnector Association="buchungssystemModel.FK_Reservierung_Tisch" ManuallyRouted="false" />
+        <AssociationConnector Association="buchungssystemModel.FK_Ware_Warengruppe" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
