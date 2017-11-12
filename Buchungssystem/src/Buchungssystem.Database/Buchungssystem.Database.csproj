@@ -99,7 +99,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="BuchungssystemEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>BuchungssystemEntities.Designer.cs</LastGenOutput>

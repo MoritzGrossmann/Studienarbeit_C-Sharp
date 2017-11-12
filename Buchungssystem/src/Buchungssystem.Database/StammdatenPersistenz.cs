@@ -48,7 +48,7 @@ namespace Buchungssystem.Database
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Ware.ToList();
+                return context.Ware.Where(w => !w.Deleted).ToList();
             }
         }
 
@@ -56,7 +56,7 @@ namespace Buchungssystem.Database
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Ware.Where(w => w.Warengruppe == warengruppe).ToList();
+                return context.Ware.Where(w => w.Warengruppe == warengruppe && !w.Deleted).ToList();
             }
         }
 

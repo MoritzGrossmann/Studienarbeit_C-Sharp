@@ -18,7 +18,6 @@ namespace Buchungssystem.Database
         public BuchungssystemEntities()
             : base("name=BuchungssystemEntities")
         {
-
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

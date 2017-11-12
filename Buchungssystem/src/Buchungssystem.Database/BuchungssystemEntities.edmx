@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="buchungssystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="BuchungssystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Buchung">
           <Key>
             <PropertyRef Name="Id" />
@@ -117,7 +117,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="buchungssystemModelStoreContainer">
+        <EntityContainer Name="BuchungssystemModelStoreContainer">
           <EntitySet Name="Buchung" EntityType="Self.Buchung" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Raum" EntityType="Self.Raum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reservierung" EntityType="Self.Reservierung" Schema="dbo" store:Type="Tables" />
@@ -149,7 +149,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="buchungssystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="BuchungssystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Buchung">
           <Key>
             <PropertyRef Name="Id" />
@@ -305,9 +305,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="buchungssystemModelStoreContainer" CdmEntityContainer="BuchungssystemEntities">
+        <EntityContainerMapping StorageEntityContainer="BuchungssystemModelStoreContainer" CdmEntityContainer="BuchungssystemEntities">
           <EntitySetMapping Name="Buchung">
-            <EntityTypeMapping TypeName="buchungssystemModel.Buchung">
+            <EntityTypeMapping TypeName="BuchungssystemModel.Buchung">
               <MappingFragment StoreEntitySet="Buchung">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TischId" ColumnName="TischId" />
@@ -318,7 +318,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Raum">
-            <EntityTypeMapping TypeName="buchungssystemModel.Raum">
+            <EntityTypeMapping TypeName="BuchungssystemModel.Raum">
               <MappingFragment StoreEntitySet="Raum">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -326,7 +326,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Reservierung">
-            <EntityTypeMapping TypeName="buchungssystemModel.Reservierung">
+            <EntityTypeMapping TypeName="BuchungssystemModel.Reservierung">
               <MappingFragment StoreEntitySet="Reservierung">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -336,7 +336,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tisch">
-            <EntityTypeMapping TypeName="buchungssystemModel.Tisch">
+            <EntityTypeMapping TypeName="BuchungssystemModel.Tisch">
               <MappingFragment StoreEntitySet="Tisch">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Bezeichnung" ColumnName="Bezeichnung" />
@@ -346,7 +346,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Ware">
-            <EntityTypeMapping TypeName="buchungssystemModel.Ware">
+            <EntityTypeMapping TypeName="BuchungssystemModel.Ware">
               <MappingFragment StoreEntitySet="Ware">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -357,7 +357,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Warengruppe">
-            <EntityTypeMapping TypeName="buchungssystemModel.Warengruppe">
+            <EntityTypeMapping TypeName="BuchungssystemModel.Warengruppe">
               <MappingFragment StoreEntitySet="Warengruppe">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
