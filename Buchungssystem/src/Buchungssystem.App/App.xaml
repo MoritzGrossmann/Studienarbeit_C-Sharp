@@ -1,9 +1,14 @@
-﻿<Application x:Class="Buchungssystem.App.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Buchungssystem.App"
-             StartupUri="MainWindow.xaml">
+﻿<Application
+    x:Class="Buchungssystem.App.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Buchungssystem.App"
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <DataTemplate x:Key="Vm:ViewModel.TischViewModel">
+            <StackPanel>
+                <Label Content="{Binding Path=Tisch.Name, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
     </Application.Resources>
 </Application>

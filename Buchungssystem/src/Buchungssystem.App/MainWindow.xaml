@@ -8,26 +8,33 @@
     Title="MainWindow"
     Width="525"
     Height="350"
+    WindowState="Maximized"
     mc:Ignorable="d">
-    <Grid>
-        <TabControl
-            Width="199"
-            Height="144"
-            Margin="10,10,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top">
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5" />
-            </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="36*" />
-                        <ColumnDefinition Width="157*" />
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </TabItem>
-        </TabControl>
 
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:TischViewModel}">
+            <ListBox ItemsSource="{Binding Source={ StaticResource }}" />
+        </DataTemplate>
+    </Window.Resources>
+    <Grid HorizontalAlignment="Stretch">
+        <DockPanel>
+            <Menu Height="20px" DockPanel.Dock="Top">
+                <MenuItem Header="_Datei">
+                    <MenuItem Header="_Neu">
+                        <MenuItem Header="_Raum" />
+                        <MenuItem Header="_Warengruppe" />
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <DockPanel DockPanel.Dock="Top">
+                <StackPanel DockPanel.Dock="Left">
+                    <Label Content="Räume" />
+                </StackPanel>
+
+
+            </DockPanel>
+
+        </DockPanel>
     </Grid>
 </Window>
+

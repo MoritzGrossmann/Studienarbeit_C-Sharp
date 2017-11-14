@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Buchungssystem.App.ViewModel
+namespace Buchungssystem.App
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {

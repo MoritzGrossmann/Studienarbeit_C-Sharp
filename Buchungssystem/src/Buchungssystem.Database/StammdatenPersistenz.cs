@@ -12,7 +12,12 @@ namespace Buchungssystem.Database
     {
         #region Warengruppe
 
-        public Warengruppe SpeichereWarengruppe(Warengruppe warengruppe)
+        public Task<Warengruppe> SpeichereWarengruppe(Warengruppe warengruppe)
+        {
+            return Task.Run(() => SpeichereWarengruppeInDatenbank(warengruppe));
+        }
+
+        private Warengruppe SpeichereWarengruppeInDatenbank(Warengruppe warengruppe)
         { 
             using (var context = new BuchungssystemEntities())
             {
@@ -22,11 +27,11 @@ namespace Buchungssystem.Database
             }
         }
 
-        public List<Warengruppe> WarenGruppen()
+        public Task<List<Warengruppe>> WarenGruppen()
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Warengruppe.ToList();
+                return Task.Run(() => context.Warengruppe.ToList());
             }
         }
 
@@ -44,19 +49,19 @@ namespace Buchungssystem.Database
             }
         }
 
-        public List<Ware> Waren()
+        public Task<List<Ware>> Waren()
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Ware.Where(w => !w.Deleted).ToList();
+                return Task.Run(() => context.Ware.Where(w => !w.Deleted).ToList());
             }
         }
 
-        public List<Ware> Waren(Warengruppe warengruppe)
+        public Task<List<Ware>> Waren(Warengruppe warengruppe)
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Ware.Where(w => w.Warengruppe == warengruppe && !w.Deleted).ToList();
+                return Task.Run(() => context.Ware.Where(w => w.Warengruppe == warengruppe && !w.Deleted).ToList());
             }
         }
 
@@ -132,19 +137,19 @@ namespace Buchungssystem.Database
             }
         }
 
-        public List<Tisch> Tische()
+        public Task<List<Tisch>> Tische()
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Tisch.ToList();
+                return Task.Run(() => context.Tisch.ToList());
             }
         }
 
-        public List<Tisch> Tische(Raum raum)
+        public Task<List<Tisch>> Tische(Raum raum)
         {
             using (var context = new BuchungssystemEntities())
             {
-                return context.Tisch.Where(t => t.Raum == raum).ToList();
+                return Task.Run(() => context.Tisch.Where(t => t.Raum == raum).ToList());
             }
         }
 
