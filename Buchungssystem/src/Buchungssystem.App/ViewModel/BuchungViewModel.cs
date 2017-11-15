@@ -1,9 +1,11 @@
-﻿namespace Buchungssystem.App
+﻿using Buchungssystem.Domain.Model;
+
+namespace Buchungssystem.App.ViewModel
 {
     internal class BuchungViewModel : BaseViewModel
     {
         public TischViewModel TischViewModel { get; set; }
-        public Database.Buchung Buchung { get; }
+        public Buchung Buchung { get; }
 
         public void WaehleBuchung()
         {
@@ -29,7 +31,7 @@
             get { return Buchung.Ware.Preis; }
         }
 
-        public BuchungViewModel(Database.Buchung buchung, TischViewModel tischViewModel)
+        public BuchungViewModel(Buchung buchung, TischViewModel tischViewModel)
         {
             this.Buchung = buchung;
             this.TischViewModel = tischViewModel;

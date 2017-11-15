@@ -54,18 +54,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BuchungTemplate.xaml.cs">
-      <DependentUpon>BuchungTemplate.xaml</DependentUpon>
+    <Compile Include="ViewModel\BuchungViewModel.cs" />
+    <Compile Include="Seiten\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BuchungViewModel.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="TischTemplate.xaml.cs">
-      <DependentUpon>TischTemplate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BaseViewModel.cs" />
-    <Compile Include="RaumViewModel.cs" />
-    <Compile Include="TischViewModel.cs" />
-    <Page Include="BuchungTemplate.xaml">
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\RaumViewModel.cs" />
+    <Compile Include="ViewModel\TischViewModel.cs" />
+    <Page Include="Seiten\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,10 +78,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="TischTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -113,13 +106,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Buchungssystem.Database\Buchungssystem.Database.csproj">
-      <Project>{c8c47885-f703-4bad-aadf-be4d49819176}</Project>
-      <Name>Buchungssystem.Database</Name>
+    <ProjectReference Include="..\Buchungssystem.Domain\Buchungssystem.Domain.csproj">
+      <Project>{546cf593-c4e7-4f7e-8cae-c94d0864e1ae}</Project>
+      <Name>Buchungssystem.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
+    <ProjectReference Include="..\Buchungssystem.Repository\Buchungssystem.Repository.csproj">
+      <Project>{fc6a2ef4-fec2-4f24-88f2-97675be3988f}</Project>
+      <Name>Buchungssystem.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AF354090-FC57-42B4-8EE1-130D32687B67}</ProjectGuid>
+    <ProjectGuid>{546CF593-C4E7-4F7E-8CAE-C94D0864E1AE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Buchungssystem.Domain</RootNamespace>
@@ -41,10 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IchLadeBuchungsdaten.cs" />
-    <Compile Include="Interfaces\IchLadeStammdaten.cs" />
-    <Compile Include="Interfaces\IchSpeichereBuchungsdaten.cs" />
-    <Compile Include="Interfaces\IchSpeichereStammdaten.cs" />
+    <Compile Include="Model\Buchung.cs" />
+    <Compile Include="Model\BuchungsStatus.cs" />
+    <Compile Include="Model\Raum.cs" />
+    <Compile Include="Model\Tisch.cs" />
+    <Compile Include="Model\Ware.cs" />
+    <Compile Include="Model\Warengruppe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

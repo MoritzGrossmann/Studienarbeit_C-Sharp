@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Buchungssystem.Domain.Model;
 
-namespace Buchungssystem.Database
+namespace Buchungssystem.Repository
 {
     public class BuchungssystemEntities : DbContext
     {
@@ -18,6 +13,9 @@ namespace Buchungssystem.Database
             System.Data.Entity.Database.SetInitializer<BuchungssystemEntities>(new DbInitializer());
             using (BuchungssystemEntities db = new BuchungssystemEntities())
                 db.Database.Initialize(false);
+
+            //var context = new BuchungssystemEntities();
+            //context.Database.Create();
         }
 
         public DbSet<Raum> Raeume { get; set; }
@@ -35,7 +33,26 @@ namespace Buchungssystem.Database
             context.Raeume.Add(new Raum()
             {
                 Name = "Terrasse",
-                RaumId = 1
+            });
+
+            context.Raeume.Add(new Raum()
+            {
+                Name = "Saal",
+            });
+
+            context.Tische.Add(new Tisch()
+            {
+
+                Plaetze = 4,
+                RaumId = 2,
+                Name = "Tisch 1"
+            });
+
+            context.Tische.Add(new Tisch()
+            { 
+                Plaetze = 4,
+                RaumId = 2,
+                Name = "Tisch 2"
             });
 
             base.Seed(context);

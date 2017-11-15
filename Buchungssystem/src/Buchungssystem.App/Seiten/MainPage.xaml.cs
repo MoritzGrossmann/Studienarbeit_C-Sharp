@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Buchungssystem.App
 {
     /// <summary>
-    /// Interaktionslogik für Tisch.xaml
+    /// Interaktionslogik für MainPage.xaml
     /// </summary>
-    public partial class Tisch : UserControl
+    public partial class MainPage : Page
     {
-        public Tisch()
+        public MainPage()
         {
             InitializeComponent();
         }

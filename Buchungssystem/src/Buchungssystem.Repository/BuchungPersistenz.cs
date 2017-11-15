@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Buchungssystem.Domain.Model;
 
-namespace Buchungssystem.Database
+namespace Buchungssystem.Repository
 {
     public class BuchungPersistenz
     {

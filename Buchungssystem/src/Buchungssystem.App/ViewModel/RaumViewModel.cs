@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Buchungssystem.Database;
+using Buchungssystem.App.ViewModel;
+using Buchungssystem.Domain.Model;
+using Buchungssystem.Repository;
 
 namespace Buchungssystem.App
 {
@@ -9,7 +11,7 @@ namespace Buchungssystem.App
     {
         public StammdatenPersistenz StammdatenPersistenz = new StammdatenPersistenz();
         public Raum Raum { get; }
-        public List<Database.Tisch> Tische { get; }
+        public List<Tisch> Tische { get; }
         public TischViewModel AktiverTisch { get; set; }
         public string Name
         {

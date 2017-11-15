@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Buchungssystem.Database;
+using Buchungssystem.Domain.Model;
+using Buchungssystem.Repository;
 
 namespace Buchungssystem.App
 {

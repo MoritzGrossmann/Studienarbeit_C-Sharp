@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
-using System.Security.Policy;
-using System.Text;
 using System.Threading.Tasks;
 using Buchungssystem.Domain.Model;
 
-namespace Buchungssystem.Database
+namespace Buchungssystem.Repository
 {
     public class StammdatenPersistenz
     {
@@ -50,19 +46,19 @@ namespace Buchungssystem.Database
             }
         }
 
-        public Task<List<Ware>> Waren()
+        public List<Ware> Waren()
         {
             using (var context = new BuchungssystemEntities())
             {
-                return Task.Run(() => context.Waren.Where(w => !w.Deleted).ToList());
+                return context.Waren.Where(w => !w.Deleted).ToList();
             }
         }
 
-        public Task<List<Ware>> Waren(Warengruppe warengruppe)
+        public List<Ware> Waren(Warengruppe warengruppe)
         {
             using (var context = new BuchungssystemEntities())
             {
-                return Task.Run(() => context.Waren.Where(w => w.Warengruppe == warengruppe && !w.Deleted).ToList());
+                return context.Waren.Where(w => w.Warengruppe == warengruppe && !w.Deleted).ToList();
             }
         }
 
@@ -138,19 +134,19 @@ namespace Buchungssystem.Database
             }
         }
 
-        public Task<List<Tisch>> Tische()
+        public List<Tisch> Tische()
         {
             using (var context = new BuchungssystemEntities())
             {
-                return Task.Run(() => context.Tische.ToList());
+                return context.Tische.ToList();
             }
         }
 
-        public Task<List<Tisch>> Tische(Raum raum)
+        public List<Tisch> Tische(Raum raum)
         {
             using (var context = new BuchungssystemEntities())
             {
-                return Task.Run(() => context.Tische.Where(t => t.Raum == raum).ToList());
+                return context.Tische.Where(t => t.RaumId == raum.RaumId).ToList();
             }
         }
 

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Buchungssystem.Database;
+using Buchungssystem.Repository;
+using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.Konsole
 {
@@ -11,8 +12,17 @@ namespace Buchungssystem.Konsole
     {
         static void Main(string[] args)
         {
-            StammdatenPersistenz stammdatenPersistenz = new StammdatenPersistenz();
-            stammdatenPersistenz.Raeume().ForEach(r => Console.WriteLine($"{r.Name} mit Id {r.Id}"));
+            using (var context = new BuchungssystemEntities())
+            {
+
+                var raeume = new StammdatenPersistenz().Raeume();
+                foreach (var raum in raeume)
+                {
+                    Console.WriteLine($"{raum.RaumId} {raum.Name}");
+ 
+                        new StammdatenPersistenz().Tische(raum).ForEach(t => Console.WriteLine($"\t{t.TischId} {t.Name}"));
+                }
+            }
             Console.ReadKey();
         }
     }

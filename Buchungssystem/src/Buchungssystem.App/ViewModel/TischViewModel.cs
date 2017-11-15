@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Buchungssystem.Database;
+using Buchungssystem.Domain.Model;
+using Buchungssystem.Repository;
 
-namespace Buchungssystem.App
+namespace Buchungssystem.App.ViewModel
 {
     internal class TischViewModel
     {
-        public Database.Tisch Tisch{get;}
+        public Tisch Tisch{get;}
 
         public List<BuchungViewModel> OffeneBuchungen { get; set; }
 
@@ -50,7 +47,7 @@ namespace Buchungssystem.App
             AngewaelteBuchungen.Clear();
         }
 
-        public TischViewModel(Database.Tisch tisch)
+        public TischViewModel(Tisch tisch)
         {
             Tisch = tisch;
             AngewaelteBuchungen = new List<BuchungViewModel>();

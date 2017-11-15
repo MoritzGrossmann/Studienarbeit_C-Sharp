@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("Buchungssystem.Domain")]
+[assembly: AssemblyTitle("Buchungssystem.Repository")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Buchungssystem.Domain")]
+[assembly: AssemblyProduct("Buchungssystem.Repository")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("546cf593-c4e7-4f7e-8cae-c94d0864e1ae")]
+[assembly: Guid("fc6a2ef4-fec2-4f24-88f2-97675be3988f")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Buchungssystem.App
@@ -15,7 +14,7 @@ namespace Buchungssystem.App
 
         protected void SetProperty<T>(ref T property, T value, [CallerMemberName] string name = "")
         {
-            if(!Object.Equals(property, value))
+            if(!Equals(property, value))
             {
                 property = value;
                 RaisePropertyChanged(name);
