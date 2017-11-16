@@ -5,7 +5,7 @@ namespace Buchungssystem.App
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
         protected void RaisePropertyChanged(string propertyName)
         {

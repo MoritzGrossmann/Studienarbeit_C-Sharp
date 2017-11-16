@@ -24,6 +24,7 @@ namespace Buchungssystem.App
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
