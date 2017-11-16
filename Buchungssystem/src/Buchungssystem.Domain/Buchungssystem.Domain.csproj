@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\IchPersistiereStammdaten.cs" />
     <Compile Include="Model\Buchung.cs" />
     <Compile Include="Model\BuchungsStatus.cs" />
     <Compile Include="Model\Raum.cs" />

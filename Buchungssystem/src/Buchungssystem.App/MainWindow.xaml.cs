@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Buchungssystem.Repository;
 
 namespace Buchungssystem.App
 {
@@ -23,6 +24,11 @@ namespace Buchungssystem.App
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            new StammdatenPersistenz().Raeume().ForEach(raum => RaumView.Items.Add(new TabItem() {Header = raum.Name, Tag = raum}));
         }
     }
 }

@@ -8,16 +8,44 @@
     Title="MainWindow"
     Width="525"
     Height="350"
+    Loaded="MainWindow_OnLoaded"
     WindowState="Maximized"
     mc:Ignorable="d">
 
     <Window.Resources />
-    <Grid HorizontalAlignment="Stretch">
-        <StackPanel
-            Margin="0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch" />
 
+    <Grid>
+        <StackPanel>
+            <Menu Height="20">
+                <MenuItem />
+            </Menu>
+
+            <Border Padding="5">
+                <TabControl x:Name="RaumView" VerticalContentAlignment="Stretch">
+                    <TabControl.Resources>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="20" Text="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <ListView />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Resources>
+                </TabControl>
+            </Border>
+        </StackPanel>
     </Grid>
 </Window>
 

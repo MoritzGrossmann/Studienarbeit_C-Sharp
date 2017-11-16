@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
 
@@ -12,13 +13,11 @@ namespace Buchungssystem.App
     {
         public MainViewModel()
         {
-            Raeume = StammdatenPersistenz.Raeume();
-            AktiverRaum = new RaumViewModel(Raeume.First());
+            Raeume = StammdatenPersistenz.Raeume().ToList().Select(r => new RaumViewModel(r)).ToList();
         }
- 
-        public StammdatenPersistenz StammdatenPersistenz = new StammdatenPersistenz();
-        public List<Raum> Raeume { get; }
 
-        public RaumViewModel AktiverRaum { get; set; }
+        private IchPersistiereStammdaten StammdatenPersistenz;
+
+        public List<RaumViewModel> Raeume { get; }
     }
 }

@@ -11,8 +11,7 @@ namespace Buchungssystem.App
     {
         public StammdatenPersistenz StammdatenPersistenz = new StammdatenPersistenz();
         public Raum Raum { get; }
-        public List<Tisch> Tische { get; }
-        public TischViewModel AktiverTisch { get; set; }
+        public List<TischViewModel> Tische { get; }
         public string Name
         {
             get => Raum.Name;
@@ -28,8 +27,7 @@ namespace Buchungssystem.App
         public RaumViewModel(Raum raum)
         {
             Raum = raum;
-            Tische = StammdatenPersistenz.Tische(raum).Result;
-            AktiverTisch = new TischViewModel(Tische.First());
+            Tische = StammdatenPersistenz.Tische(raum);
         }
     }
 }
