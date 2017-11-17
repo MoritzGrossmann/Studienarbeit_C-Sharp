@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Buchungssystem.App.ViewModel;
 using Buchungssystem.Repository;
 
 namespace Buchungssystem.App

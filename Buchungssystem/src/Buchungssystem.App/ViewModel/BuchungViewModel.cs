@@ -1,4 +1,5 @@
-﻿using Buchungssystem.Domain.Model;
+﻿using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel
 {

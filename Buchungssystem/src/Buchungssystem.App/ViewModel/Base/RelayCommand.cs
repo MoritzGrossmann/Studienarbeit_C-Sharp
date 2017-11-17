@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Buchungssystem.App
+namespace Buchungssystem.App.ViewModel.Base
 {
     class RelayCommand : ICommand
     {

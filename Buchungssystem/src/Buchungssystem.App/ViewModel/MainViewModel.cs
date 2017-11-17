@@ -8,19 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.Annotations;
+using Buchungssystem.App.ViewModel;
+using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
 
-namespace Buchungssystem.App
+namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
         public MainViewModel()
         {
+            StammdatenPersistenz = new StammdatenPersistenz();
             this.ShowRoomCommand = new RelayCommand(ShowRoom);
-
             Raeume = new ObservableCollection<RaumViewModel>(StammdatenPersistenz.Raeume().Select(raum => new RaumViewModel(raum)));
+            Raeume[0].ChooseTableCommand.Execute(null);
         }
 
         private IchPersistiereStammdaten StammdatenPersistenz;

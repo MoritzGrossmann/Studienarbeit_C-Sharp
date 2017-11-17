@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Buchungssystem.App.Annotations;
-using Buchungssystem.App.ViewModel;
+using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
 
-namespace Buchungssystem.App
+namespace Buchungssystem.App.ViewModel
 {
 
     /// <summary>
@@ -20,16 +15,17 @@ namespace Buchungssystem.App
     {
 
         #region Properties
-        public Raum Raum
-        {
-            get => Raum;
-            set
-            {
-                if (Raum.Equals(value)) return;
-                this.Raum = value;
-                RaisePropertyChanged(nameof(Raum));
-            }
-        }
+        //public Raum Raum
+        //{
+        //    get => Raum;
+
+        //    set
+        //    {
+        //        if (Raum.Equals(value)) return;
+        //        Raum = value;
+        //        RaisePropertyChanged(nameof(Raum));
+        //    }
+        //}
 
         /// <summary>
         /// Repräsentiert die Tische, die in einem Raum stehen
@@ -41,7 +37,7 @@ namespace Buchungssystem.App
             set
             {
                 if (Tische.Equals(value)) return;
-                this.Tische = value;
+                Tische = value;
                 RaisePropertyChanged(nameof(Tische));
             }
         }
@@ -61,13 +57,31 @@ namespace Buchungssystem.App
             }
         }
 
+        public bool CanSelect
+        {
+            get => Tische.Any();
+        }
+
+        public bool IsSelected
+        {
+            get => IsSelected;
+            set
+            {
+                if (IsSelected.Equals(value)) return;
+                IsSelected = value;
+                RaisePropertyChanged(nameof(IsSelected));
+                if (value) Select();
+            }
+        }
+
         #endregion
 
         #region Contructor
 
         public RaumViewModel(Raum raum)
         {
-            this.ChooseTableCommand = new RelayCommand(ChooseTable);
+            ChooseTableCommand = new RelayCommand(ChooseTable);
+            SelectCommand = new RelayCommand(Select);
             Raum = raum;
             Tische = new ObservableCollection<TischViewModel>(
                 new StammdatenPersistenz().Tische(raum).Select(tisch => new TischViewModel(tisch))
@@ -77,6 +91,13 @@ namespace Buchungssystem.App
         #endregion
 
         #region Commands
+
+        public ICommand SelectCommand;
+
+        public void Select()
+        {
+            
+        }
 
         public ICommand ChooseTableCommand;
 

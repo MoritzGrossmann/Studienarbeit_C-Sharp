@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
 using Unity.Interception.Utilities;
