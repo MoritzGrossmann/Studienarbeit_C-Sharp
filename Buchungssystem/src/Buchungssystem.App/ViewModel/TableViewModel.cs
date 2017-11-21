@@ -115,7 +115,7 @@ namespace Buchungssystem.App.ViewModel
             {
                 if (_openBookings.Any())
                 {
-                    return _openBookings.Last().Booking.Timestamp.ToString();
+                    return _openBookings.Last().Booking.Timestamp.ToString(CultureInfo.CurrentCulture);
                 }
                 return "Keine Buchungen";
             }
@@ -123,7 +123,8 @@ namespace Buchungssystem.App.ViewModel
 
         public bool InUse => _openBookings.Any();
 
-        public Color Color => InUse ? Color.FromRgb(255, 230, 230) :  Color.FromRgb(204, 255, 204);
+        public Brush Color => 
+            InUse ? (Brush)new BrushConverter().ConvertFrom("#FFE6E6") : (Brush)new BrushConverter().ConvertFrom("#CCFFCC");
 
         private bool _selected;
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.Repository
 {
-    public class BookingPersistence
+    public class BookingPersistence : IPersistBooking
     {
         public Booking Book(Booking booking)
         {
@@ -53,7 +54,7 @@ namespace Buchungssystem.Repository
             }
         }
 
-        public List<Booking> Bookings(Table table, BookingStatus status)
+        public List<Booking> Bookings(Table table, Domain.Model.BookingStatus status)
         {
             using (var context = new BookingsystemEntities())
             {

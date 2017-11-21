@@ -11,10 +11,26 @@ namespace Buchungssystem.Domain.Database
     {
         List<Room> Rooms();
 
-        List<Table> Tables(Room room);
+        Room PersistRoom(Room room);
 
         List<Table> Tables();
 
+        List<Table> Tables(Room room);
+
+        Table PersistTable(Table table);
+
+        void DeleteTable(Table table);
+
         List<ProductGroup> ProductGroups();
+
+        ProductGroup PersistProductGroup(ProductGroup productGroup);
+
+        List<Product> Products(ProductGroup productGroup);
+
+        Product PersistProduct(Product product);
+
+        void ChangePrice(Product product, decimal price);
+
+        void DeleteProduct(Product product);
     }
 }

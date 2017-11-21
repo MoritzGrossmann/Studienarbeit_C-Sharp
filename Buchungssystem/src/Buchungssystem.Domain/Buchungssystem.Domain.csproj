@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\IPersistBaseData.cs" />
+    <Compile Include="Database\IPersistBooking.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="Model\BookingStatus.cs" />
     <Compile Include="Model\Room.cs" />

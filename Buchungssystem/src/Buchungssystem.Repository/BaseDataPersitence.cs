@@ -10,7 +10,7 @@ namespace Buchungssystem.Repository
     {
         #region ProductGroup
 
-        private ProductGroup PersistProductGroup(ProductGroup productGroup)
+        public ProductGroup PersistProductGroup(ProductGroup productGroup)
         { 
             using (var context = new BookingsystemEntities())
             {

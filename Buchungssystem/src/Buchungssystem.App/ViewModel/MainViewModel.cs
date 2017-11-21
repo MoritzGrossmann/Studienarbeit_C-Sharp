@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Buchungssystem.App.Annotations;
-using Buchungssystem.App.ViewModel;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
-using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
+using Unity;
+using Unity.Attributes;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
-        public MainViewModel()
+        [InjectionConstructor]
+        public MainViewModel(IUnityContainer container)
         {
             BaseDataPersistence = new BaseDataPersitence();
             this.ShowRoomCommand = new RelayCommand(ShowRoom);

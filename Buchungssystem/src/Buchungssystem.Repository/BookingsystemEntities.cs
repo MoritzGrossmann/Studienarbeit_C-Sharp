@@ -11,9 +11,10 @@ namespace Buchungssystem.Repository
             // Not initialize database
             //  Database.SetInitializer<ProjectDatabase>(null);
             // Database initialize
-            System.Data.Entity.Database.SetInitializer<BookingsystemEntities>(new DbInitializer());
-            using (BookingsystemEntities db = new BookingsystemEntities())
-                db.Database.Initialize(false);
+
+            //System.Data.Entity.Database.SetInitializer<BookingsystemEntities>(new DbInitializer());
+            //using (BookingsystemEntities db = new BookingsystemEntities())
+            //    db.Database.Initialize(false);
 
             //var context = new BookingsystemEntities();
             //context.Database.Create();

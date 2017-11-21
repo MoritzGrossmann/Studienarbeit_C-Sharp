@@ -2,8 +2,8 @@
 {
     public enum BookingStatus
     {
-        Offen = 1,
-        Bezahlt = 2,
-        Storiert = 3
+        Open = 1,
+        Paid = 2,
+        Cancled = 3
     }
 }
