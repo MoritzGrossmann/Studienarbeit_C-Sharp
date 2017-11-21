@@ -5,8 +5,16 @@ namespace Buchungssystem.App.ViewModel
 {
     internal class BuchungViewModel : BaseViewModel
     {
-        public TischViewModel TischViewModel { get; set; }
-        public Buchung Buchung { get; }
+        private TischViewModel _tischViewModel;
+
+        public TischViewModel TischViewModel
+        {
+            get => _tischViewModel;
+            set => _tischViewModel = value;
+        }
+
+        private Buchung _buchung;
+        public Buchung Buchung { get => _buchung; }
 
         public void WaehleBuchung()
         {
@@ -34,8 +42,8 @@ namespace Buchungssystem.App.ViewModel
 
         public BuchungViewModel(Buchung buchung, TischViewModel tischViewModel)
         {
-            this.Buchung = buchung;
-            this.TischViewModel = tischViewModel;
+            this._buchung = buchung;
+            this._tischViewModel = tischViewModel;
         }
     }
 }

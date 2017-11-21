@@ -22,7 +22,7 @@ namespace Buchungssystem.App.ViewModel
         {
             StammdatenPersistenz = new StammdatenPersistenz();
             this.ShowRoomCommand = new RelayCommand(ShowRoom);
-            Raeume = new ObservableCollection<RaumViewModel>(StammdatenPersistenz.Raeume().Select(raum => new RaumViewModel(raum)));
+            _raeume = new ObservableCollection<RaumViewModel>(StammdatenPersistenz.Raeume().Select(raum => new RaumViewModel(raum)));
             //Raeume[0].ChooseTableCommand.Execute(null);
         }
 
@@ -30,13 +30,14 @@ namespace Buchungssystem.App.ViewModel
 
         #region Propertys
 
+        private ObservableCollection<RaumViewModel> _raeume;
         public ObservableCollection<RaumViewModel> Raeume
         {
-            get => Raeume;
+            get => _raeume;
             set
             {
-                if (Raeume == value) return;
-                Raeume = value;
+                if (_raeume == value) return;
+                _raeume = value;
                 RaisePropertyChanged(nameof(Raeume));
             }
         }

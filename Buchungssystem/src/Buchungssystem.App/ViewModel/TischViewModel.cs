@@ -10,35 +10,38 @@ namespace Buchungssystem.App.ViewModel
 {
     internal class TischViewModel : BaseViewModel
     {
+        private Tisch _tisch;
         public Tisch Tisch
         {
-            get => Tisch;
+            get => _tisch;
             set
             {
-                if (Tisch.Equals(value)) return;
-                Tisch = value;
+                if (_tisch.Equals(value)) return;
+                _tisch = value;
                 RaisePropertyChanged(nameof(Tisch));
             }
         }
 
+        private ObservableCollection<BuchungViewModel> _offeneBuchungen;
         public ObservableCollection<BuchungViewModel> OffeneBuchungen
         {
-            get => OffeneBuchungen;
+            get => _offeneBuchungen;
             set
             {
-                if (OffeneBuchungen.Equals(value)) return;
-                OffeneBuchungen = value;
+                if (_offeneBuchungen.Equals(value)) return;
+                _offeneBuchungen = value;
                 RaisePropertyChanged(nameof(OffeneBuchungen));
             }
         }
 
+        private ObservableCollection<BuchungViewModel> _angewaehlteBuchungen;
         public ObservableCollection<BuchungViewModel> AngewaelteBuchungen
         {
-            get => AngewaelteBuchungen;
+            get => _angewaehlteBuchungen;
             set
             {
-                if (AngewaelteBuchungen.Equals(value)) return;
-                AngewaelteBuchungen = value;
+                if (_angewaehlteBuchungen.Equals(value)) return;
+                _angewaehlteBuchungen = value;
                 RaisePropertyChanged(nameof(AngewaelteBuchungen));
             }
         }
@@ -48,7 +51,7 @@ namespace Buchungssystem.App.ViewModel
             get
             {
                 decimal sum = 0;
-                OffeneBuchungen.ForEach(b => sum += b.Preis);
+                _offeneBuchungen.ForEach(b => sum += b.Preis);
                 return sum;
             }
         }
@@ -66,22 +69,22 @@ namespace Buchungssystem.App.ViewModel
         public void Bezahle()
         {
             var buchungPersistenz = new BuchungPersistenz();
-            AngewaelteBuchungen.ForEach(b => buchungPersistenz.Bezahle(b.Buchung));
-            AngewaelteBuchungen.Clear();
+            _angewaehlteBuchungen.ForEach(b => buchungPersistenz.Bezahle(b.Buchung));
+            _angewaehlteBuchungen.Clear();
         }
 
         public void Storniere()
         {
             var buchungPersistenz = new BuchungPersistenz();
-            AngewaelteBuchungen.ForEach(b => buchungPersistenz.Storniere(b.Buchung));
-            AngewaelteBuchungen.Clear();
+            _angewaehlteBuchungen.ForEach(b => buchungPersistenz.Storniere(b.Buchung));
+            _angewaehlteBuchungen.Clear();
         }
 
         public TischViewModel(Tisch tisch)
         {
-            Tisch = tisch;
-            AngewaelteBuchungen = new ObservableCollection<BuchungViewModel>();
-            OffeneBuchungen = new ObservableCollection<BuchungViewModel>(new BuchungPersistenz().Buchungen(tisch).Select(b => new BuchungViewModel(b, this)));
+            _tisch = tisch;
+            _angewaehlteBuchungen = new ObservableCollection<BuchungViewModel>();
+            _offeneBuchungen = new ObservableCollection<BuchungViewModel>(new BuchungPersistenz().Buchungen(tisch).Select(b => new BuchungViewModel(b, this)));
         }
     }
 }

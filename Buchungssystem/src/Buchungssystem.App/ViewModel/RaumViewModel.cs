@@ -27,35 +27,36 @@ namespace Buchungssystem.App.ViewModel
                 if (_raum.Equals(value)) return;
                 _raum = value;
                 RaisePropertyChanged(nameof(Raum));
-}
+            }
         }
 
         /// <summary>
         /// Repräsentiert die Tische, die in einem Raum stehen
         /// </summary>
 
+        private ObservableCollection<TischViewModel> _tische;
         public ObservableCollection<TischViewModel> Tische
         {
-            get => new ObservableCollection<TischViewModel>(_raum.Tische);
+            get => _tische;
             set
             {
-                if (_raum.Tische.Equals(value)) return;
-                _raum.Tische = value;
+                if (_tische.Equals(value)) return;
+                _tische = value;
                 RaisePropertyChanged(nameof(Tische));
-    }
-}
+            }
+        }
 
 
-/// <summary>
-/// Name des Raumes
-/// </summary>
-public string Name
+    /// <summary>
+    /// Name des Raumes
+    /// </summary>
+        public string Name
         {
-            get => Raum.Name;
+            get => _raum.Name;
             set
             {
-                if (Equals(Raum.Name, value)) return;
-                Raum.Name = value;
+                if (Equals(_raum.Name, value)) return;
+                _raum.Name = value;
                 RaisePropertyChanged(nameof(Name));
             }
         }
@@ -65,14 +66,15 @@ public string Name
             get => Tische.Any();
         }
 
-        public bool IsSelected
+        private bool _selected;
+        public bool Selected
         {
-            get => IsSelected;
+            get => Selected;
             set
             {
-                if (IsSelected.Equals(value)) return;
-                IsSelected = value;
-                RaisePropertyChanged(nameof(IsSelected));
+                if (_selected.Equals(value)) return;
+                _selected = value;
+                RaisePropertyChanged(nameof(Selected));
                 if (value) Select();
             }
         }
@@ -85,8 +87,8 @@ public string Name
         {
             ChooseTableCommand = new RelayCommand(ChooseTable);
             SelectCommand = new RelayCommand(Select);
-            Raum = Raum;
-            Tische = new ObservableCollection<TischViewModel>(
+            _raum = raum;
+            _tische = new ObservableCollection<TischViewModel>(
                 new StammdatenPersistenz().Tische(raum).Select(tisch => new TischViewModel(tisch))
             );
         }
