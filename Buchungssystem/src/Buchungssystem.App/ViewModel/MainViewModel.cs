@@ -20,25 +20,25 @@ namespace Buchungssystem.App.ViewModel
     {
         public MainViewModel()
         {
-            StammdatenPersistenz = new StammdatenPersistenz();
+            BaseDataPersistence = new BaseDataPersitence();
             this.ShowRoomCommand = new RelayCommand(ShowRoom);
-            _raeume = new ObservableCollection<RaumViewModel>(StammdatenPersistenz.Raeume().Select(raum => new RaumViewModel(raum)));
-            //Raeume[0].ChooseTableCommand.Execute(null);
+            _rooms = new ObservableCollection<RoomViewModel>(BaseDataPersistence.Rooms().Select(raum => new RoomViewModel(raum)));
+            //Rooms[0].ChooseTableCommand.Execute(null);
         }
 
-        private IchPersistiereStammdaten StammdatenPersistenz;
+        private IPersistBaseData BaseDataPersistence;
 
         #region Propertys
 
-        private ObservableCollection<RaumViewModel> _raeume;
-        public ObservableCollection<RaumViewModel> Raeume
+        private ObservableCollection<RoomViewModel> _rooms;
+        public ObservableCollection<RoomViewModel> Rooms
         {
-            get => _raeume;
+            get => _rooms;
             set
             {
-                if (_raeume == value) return;
-                _raeume = value;
-                RaisePropertyChanged(nameof(Raeume));
+                if (_rooms == value) return;
+                _rooms = value;
+                RaisePropertyChanged(nameof(Rooms));
             }
         }
 

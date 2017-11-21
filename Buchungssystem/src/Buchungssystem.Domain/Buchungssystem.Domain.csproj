@@ -41,13 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\IchPersistiereStammdaten.cs" />
-    <Compile Include="Model\Buchung.cs" />
-    <Compile Include="Model\BuchungsStatus.cs" />
-    <Compile Include="Model\Raum.cs" />
-    <Compile Include="Model\Tisch.cs" />
-    <Compile Include="Model\Ware.cs" />
-    <Compile Include="Model\Warengruppe.cs" />
+    <Compile Include="Database\IPersistBaseData.cs" />
+    <Compile Include="Model\Booking.cs" />
+    <Compile Include="Model\BookingStatus.cs" />
+    <Compile Include="Model\Room.cs" />
+    <Compile Include="Model\Table.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\ProductGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

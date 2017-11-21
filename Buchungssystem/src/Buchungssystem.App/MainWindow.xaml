@@ -28,7 +28,7 @@
                 <TabControl
                     x:Name="RaumView"
                     Height="auto"
-                    ItemsSource="{Binding Path=Raeume, Mode=OneWay}">
+                    ItemsSource="{Binding Path=Rooms, Mode=OneWay}">
 
                     <TabControl.ItemContainerStyle>
                         <Style TargetType="TabItem">
@@ -38,7 +38,7 @@
                     </TabControl.ItemContainerStyle>
 
                     <TabControl.ItemTemplate>
-                        <DataTemplate DataType="viewModel:RaumViewModel">
+                        <DataTemplate DataType="viewModel:RoomViewModel">
                             <StackPanel
                                 Height="auto"
                                 MinWidth="100"
@@ -52,11 +52,11 @@
                         </DataTemplate>
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
-                        <DataTemplate DataType="viewModel:RaumViewModel">
+                        <DataTemplate DataType="viewModel:RoomViewModel">
                             <ListView
                                 x:Name="ListViewTables"
                                 Height="auto"
-                                ItemsSource="{Binding Path=Tische, Mode=OneWay}">
+                                ItemsSource="{Binding Path=Tables, Mode=OneWay}">
 
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
@@ -72,8 +72,9 @@
                                 </ListView.ItemsPanel>
 
                                 <ListView.ItemTemplate>
-                                    <DataTemplate DataType="viewModel:TischViewModel">
+                                    <DataTemplate DataType="viewModel:TableViewModel">
                                         <StackPanel Background="{Binding Path=Color, Mode=OneWay}">
+
                                             <Grid MinHeight="40">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="5*" />
@@ -97,7 +98,7 @@
                                                         Grid.Row="1"
                                                         Grid.Column="0"
                                                         FontStyle="Italic"
-                                                        Text="{Binding Path=LetzteBuchung, Mode=OneWay}" />
+                                                        Text="{Binding Path=LastBooking, Mode=OneWay}" />
                                                 </Grid>
 
                                                 <TextBlock

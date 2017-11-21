@@ -7,8 +7,14 @@ using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.Domain.Database
 {
-    public interface IchPersistiereStammdaten
+    public interface IPersistBaseData
     {
-        List<Raum> Raeume();
+        List<Room> Rooms();
+
+        List<Table> Tables(Room room);
+
+        List<Table> Tables();
+
+        List<ProductGroup> ProductGroups();
     }
 }

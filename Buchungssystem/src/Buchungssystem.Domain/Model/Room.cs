@@ -3,14 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Buchungssystem.Domain.Model
 {
-    public class Warengruppe
+    public class Room
     {
         [Key]
-        public int WarengruppenId { get; set; }
+        public int RoomId { get; set; }
 
         [Required]
+        [StringLength(100)]
         public string Name { get; set; }
 
-        public List<Ware> Waren { get; set; }
+        public List<Table> Tables { get; set; }
     }
 }

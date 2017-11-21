@@ -12,15 +12,15 @@ namespace Buchungssystem.Konsole
     {
         static void Main(string[] args)
         {
-            using (var context = new BuchungssystemEntities())
+            using (var context = new BookingsystemEntities())
             {
 
-                var raeume = new StammdatenPersistenz().Raeume();
+                var raeume = new BaseDataPersitence().Rooms();
                 foreach (var raum in raeume)
                 {
-                    Console.WriteLine($"{raum.RaumId} {raum.Name}");
+                    Console.WriteLine($"{raum.RoomId} {raum.Name}");
  
-                        new StammdatenPersistenz().Tische(raum).ForEach(t => Console.WriteLine($"\t{t.TischId} {t.Name}"));
+                        new BaseDataPersitence().Tables(raum).ForEach(t => Console.WriteLine($"\t{t.TableId} {t.Name}"));
                 }
             }
             Console.ReadKey();

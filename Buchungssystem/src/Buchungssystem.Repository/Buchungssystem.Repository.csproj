@@ -54,11 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuchungPersistenz.cs" />
-    <Compile Include="BuchungsStatus.cs" />
-    <Compile Include="BuchungssystemEntities.cs" />
+    <Compile Include="BookingPersistence.cs" />
+    <Compile Include="BookingStatus.cs" />
+    <Compile Include="BookingsystemEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StammdatenPersistenz.cs" />
+    <Compile Include="BaseDataPersitence.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Buchungssystem.Domain\Buchungssystem.Domain.csproj">

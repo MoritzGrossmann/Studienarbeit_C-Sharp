@@ -10,60 +10,73 @@ namespace Buchungssystem.App.ViewModel
 {
 
     /// <summary>
-    /// View Model for each Raum
+    /// View Model for each Room
     /// </summary>
-    internal class RaumViewModel : BaseViewModel
+    internal class RoomViewModel : BaseViewModel
     {
 
         #region Properties
 
-        private Raum _raum;
-        public Raum Raum
+        private Room _room;
+        public Room Room
         {
-            get => _raum;
+            get => _room;
 
             set
             {
-                if (_raum.Equals(value)) return;
-                _raum = value;
-                RaisePropertyChanged(nameof(Raum));
+                if (_room.Equals(value)) return;
+                _room = value;
+                RaisePropertyChanged(nameof(Room));
             }
         }
 
         /// <summary>
-        /// Repräsentiert die Tische, die in einem Raum stehen
+        /// Repräsentiert die Tables, die in einem Room stehen
         /// </summary>
 
-        private ObservableCollection<TischViewModel> _tische;
-        public ObservableCollection<TischViewModel> Tische
+        private ObservableCollection<TableViewModel> _tables;
+        public ObservableCollection<TableViewModel> Tables
         {
-            get => _tische;
+            get => _tables;
             set
             {
-                if (_tische.Equals(value)) return;
-                _tische = value;
-                RaisePropertyChanged(nameof(Tische));
+                if (_tables.Equals(value)) return;
+                _tables = value;
+                RaisePropertyChanged(nameof(Tables));
             }
         }
 
+        private TableViewModel _selectedTable;
 
-    /// <summary>
-    /// Name des Raumes
-    /// </summary>
-        public string Name
+        public TableViewModel SelectedTable
         {
-            get => _raum.Name;
+            get => _selectedTable;
             set
             {
-                if (Equals(_raum.Name, value)) return;
-                _raum.Name = value;
+                if (_selectedTable.Equals(value)) return;
+                _selectedTable = value;
+                RaisePropertyChanged(nameof(SelectedTable));
+            }
+        }
+
+        /// <summary>
+        /// Name des Raumes
+        /// </summary>
+        
+        public string Name
+        {
+            get => _room.Name;
+            set
+            {
+                if (Equals(_room.Name, value)) return;
+                _room.Name = value;
                 RaisePropertyChanged(nameof(Name));
             }
         }
 
         public bool CanSelect
         {
-            get => Tische.Any();
+            get => Tables.Any();
         }
 
         private bool _selected;
@@ -83,13 +96,13 @@ namespace Buchungssystem.App.ViewModel
 
         #region Contructor
 
-        public RaumViewModel(Raum raum)
+        public RoomViewModel(Room room)
         {
             ChooseTableCommand = new RelayCommand(ChooseTable);
             SelectCommand = new RelayCommand(Select);
-            _raum = raum;
-            _tische = new ObservableCollection<TischViewModel>(
-                new StammdatenPersistenz().Tische(raum).Select(tisch => new TischViewModel(tisch))
+            _room = room;
+            _tables = new ObservableCollection<TableViewModel>(
+                new BaseDataPersitence().Tables(room).Select(table => new TableViewModel(table))
             );
         }
 

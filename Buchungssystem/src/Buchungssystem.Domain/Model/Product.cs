@@ -4,24 +4,24 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Buchungssystem.Domain.Model
 {
-    public class Ware
+    public class Product
     {
         [Key]
-        public int WarenId { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
         public string Name { get; set; }
 
         [Required]
-        public decimal Preis { get; set; }
+        public decimal Price { get; set; }
 
         [Required]
-        public int WarengruppenId { get; set; }
+        public int ProductGroupId { get; set; }
 
-        [ForeignKey("WarengruppenId")]
-        public Warengruppe Warengruppe { get; set; }
+        [ForeignKey("ProductGroupId")]
+        public ProductGroup ProductGroup { get; set; }
 
-        public List<Buchung> Buchungen { get; set; }
+        public List<Booking> Bookings { get; set; }
 
         [Required]
         public bool Deleted { get; set; }

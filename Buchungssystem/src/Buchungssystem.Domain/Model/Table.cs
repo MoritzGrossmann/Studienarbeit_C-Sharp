@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace Buchungssystem.Domain.Model
 {
-    public class Tisch
+    public class Table
     {
         [Key]
-        public int TischId { get; set; }
+        public int TableId { get; set; }
 
-        public int Plaetze { get; set; }
+        public int Places { get; set; }
 
         [Required]
         [StringLength(40)]
         public string Name { get; set; }
 
         [Required]
-        public int RaumId { get; set; }
+        public int RoomId { get; set; }
 
-        [ForeignKey("RaumId")]
-        public Raum Raum { get; set; }
+        [ForeignKey("RoomId")]
+        public Room Room { get; set; }
 
-        public List<Buchung> Buchungen { get; set; }
+        public List<Booking> Bookings { get; set; }
     }
 }
