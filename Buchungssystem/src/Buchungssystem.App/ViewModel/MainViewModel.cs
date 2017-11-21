@@ -23,7 +23,7 @@ namespace Buchungssystem.App.ViewModel
             StammdatenPersistenz = new StammdatenPersistenz();
             this.ShowRoomCommand = new RelayCommand(ShowRoom);
             Raeume = new ObservableCollection<RaumViewModel>(StammdatenPersistenz.Raeume().Select(raum => new RaumViewModel(raum)));
-            Raeume[0].ChooseTableCommand.Execute(null);
+            //Raeume[0].ChooseTableCommand.Execute(null);
         }
 
         private IchPersistiereStammdaten StammdatenPersistenz;
