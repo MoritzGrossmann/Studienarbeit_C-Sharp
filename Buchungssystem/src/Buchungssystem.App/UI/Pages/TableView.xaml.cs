@@ -12,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Buchungssystem.App.ViewModel;
-using Buchungssystem.Repository;
 
-namespace Buchungssystem.App
+namespace Buchungssystem.App.UI.Pages
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interaktionslogik für TableView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TableView : Page
     {
-        public MainWindow()
+        public TableView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }

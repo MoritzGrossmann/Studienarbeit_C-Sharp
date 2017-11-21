@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.Repository
@@ -30,6 +31,48 @@ namespace Buchungssystem.Repository
     {
         protected override void Seed(BuchungssystemEntities context)
         {
+            //context.Warengruppen.Add(new Warengruppe()
+            //{
+            //    Name = "Longdrinks"
+            //});
+
+            //context.Waren.Add(new Ware()
+            //{
+            //    Name = "Gin Tonic",
+            //    Preis = (decimal)5.5,
+            //    WarengruppenId = 1
+            //});
+            //context.Waren.Add(new Ware()
+            //{
+            //    Name = "Whiskey Cola",
+            //    Preis = (decimal)6,
+            //    WarengruppenId = 1
+            //});
+            //context.Waren.Add(new Ware()
+            //{
+            //    Name = "Wodka Lemon",
+            //    Preis = (decimal)5.5,
+            //    WarengruppenId = 1
+            //});
+            //context.Waren.Add(new Ware()
+            //{
+            //    Name = "Wodka Orange",
+            //    Preis = (decimal)5.5,
+            //    WarengruppenId = 1
+            //});
+            //context.Waren.Add(new Ware()
+            //{
+            //    Name = "Campari Orange",
+            //    Preis = (decimal)5.5,
+            //    WarengruppenId = 1
+            //});
+            //context.Waren.Add(new Ware()
+            //{
+            //    Name = "Gin Lemon",
+            //    Preis = (decimal)5.5,
+            //    WarengruppenId = 1
+            //});
+
             context.Raeume.Add(new Raum()
             {
                 Name = "Terrasse",
@@ -40,20 +83,34 @@ namespace Buchungssystem.Repository
                 Name = "Saal",
             });
 
-            context.Tische.Add(new Tisch()
+            for (int i = 1; i <= 20; i++)
             {
+                context.Tische.Add(new Tisch()
+                {
+                    Plaetze = new Random().Next(2,4),
+                    RaumId = 1,
+                    Name = $"Terrasse {i}"
+                });
 
-                Plaetze = 4,
-                RaumId = 2,
-                Name = "Tisch 1"
-            });
+                context.Tische.Add(new Tisch()
+                {
+                    Plaetze = new Random().Next(2, 8),
+                    RaumId = 2,
+                    Name = $"Tisch {i}"
 
-            context.Tische.Add(new Tisch()
-            { 
-                Plaetze = 4,
-                RaumId = 2,
-                Name = "Tisch 2"
-            });
+                });
+            }
+
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    context.Buchungen.Add(new Buchung()
+            //    {
+            //        Status = (int) BuchungsStatus.Offen,
+            //        TischId = new Random().Next(1, 10),
+            //        WarenId = new Random().Next(1, 5),
+            //        Zeitpunkt = DateTime.Now
+            //    });
+            //}
 
             base.Seed(context);
         }

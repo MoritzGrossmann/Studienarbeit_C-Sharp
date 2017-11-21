@@ -69,7 +69,7 @@ namespace Buchungssystem.App.ViewModel
         private bool _selected;
         public bool Selected
         {
-            get => Selected;
+            get => _selected;
             set
             {
                 if (_selected.Equals(value)) return;
