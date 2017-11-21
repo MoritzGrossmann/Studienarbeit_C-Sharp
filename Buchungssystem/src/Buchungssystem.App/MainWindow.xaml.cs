@@ -30,7 +30,7 @@ namespace Buchungssystem.App
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            new StammdatenPersistenz().Raeume().ForEach(raum => RaumView.Items.Add(new TabItem() {Header = raum.Name, Tag = raum}));
+            //new StammdatenPersistenz().Raeume().ForEach(raum => RaumView.Items.Add(new TabItem() {Header = raum.Name, Tag = raum}));
         }
     }
 }

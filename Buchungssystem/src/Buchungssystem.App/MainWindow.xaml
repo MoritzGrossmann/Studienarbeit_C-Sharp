@@ -9,11 +9,14 @@
     Title="MainWindow"
     Width="525"
     Height="350"
-    Loaded="MainWindow_OnLoaded"
     WindowState="Maximized"
     mc:Ignorable="d">
 
     <Window.Resources />
+    
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
 
     <Grid>
         <StackPanel>
@@ -22,7 +25,7 @@
             </Menu>
 
             <Border Padding="5">
-                <TabControl x:Name="RaumView" ItemsSource="{Binding Raeume}">
+                <TabControl x:Name="RaumView" ItemsSource="{Binding Raeume, Mode=TwoWay}">
                     <!--<TabControl.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />

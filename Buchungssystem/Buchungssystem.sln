@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buchungssystem.App", "src\Buchungssystem.App\Buchungssystem.App.csproj", "{721D5810-38F6-45E1-9B7D-E646E6B0B3E6}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buchungssystem.Domain", "src\Buchungssystem.Domain\Buchungssystem.Domain.csproj", "{546CF593-C4E7-4F7E-8CAE-C94D0864E1AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buchungssystem.Repository", "src\Buchungssystem.Repository\Buchungssystem.Repository.csproj", "{FC6A2EF4-FEC2-4F24-88F2-97675BE3988F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buchungssystem.Webservice", "src\Buchungssystem.Webservice\Buchungssystem.Webservice.csproj", "{4536D77A-D6F9-4B91-8A42-00905261D7E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FC6A2EF4-FEC2-4F24-88F2-97675BE3988F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC6A2EF4-FEC2-4F24-88F2-97675BE3988F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC6A2EF4-FEC2-4F24-88F2-97675BE3988F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4536D77A-D6F9-4B91-8A42-00905261D7E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4536D77A-D6F9-4B91-8A42-00905261D7E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4536D77A-D6F9-4B91-8A42-00905261D7E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4536D77A-D6F9-4B91-8A42-00905261D7E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

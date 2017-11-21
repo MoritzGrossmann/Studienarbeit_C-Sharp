@@ -15,17 +15,17 @@ namespace Buchungssystem.App.ViewModel
     {
 
         #region Properties
-        //public Raum Raum
-        //{
-        //    get => Raum;
+        public Raum Raum
+        {
+            get { return this.Raum; }
 
-        //    set
-        //    {
-        //        if (Raum.Equals(value)) return;
-        //        Raum = value;
-        //        RaisePropertyChanged(nameof(Raum));
-        //    }
-        //}
+            set
+            {
+                if (Raum.Equals(value)) return;
+                Raum = value;
+                RaisePropertyChanged(nameof(Raum));
+            }
+        }
 
         /// <summary>
         /// Repräsentiert die Tische, die in einem Raum stehen
@@ -48,7 +48,7 @@ namespace Buchungssystem.App.ViewModel
         /// </summary>
         public string Name
         {
-            get => Raum.Name;
+            get => Name;
             set
             {
                 if (Equals(Name, value)) return;
@@ -82,7 +82,8 @@ namespace Buchungssystem.App.ViewModel
         {
             ChooseTableCommand = new RelayCommand(ChooseTable);
             SelectCommand = new RelayCommand(Select);
-            Raum = raum;
+            //Raum = raum;
+            Name = raum.Name;
             Tische = new ObservableCollection<TischViewModel>(
                 new StammdatenPersistenz().Tische(raum).Select(tisch => new TischViewModel(tisch))
             );
