@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Buchungssystem.App.UI.Pages
 {
     /// <summary>
-    /// Interaktionslogik für TableView.xaml
+    /// Interaktionslogik für RoomsView.xaml
     /// </summary>
-    public partial class TableView : UserControl
+    public partial class RoomsView : UserControl
     {
-        public TableView()
+        public RoomsView()
         {
             InitializeComponent();
         }

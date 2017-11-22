@@ -25,7 +25,7 @@ namespace Buchungssystem.App
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(new BaseDataPersitence(), new BookingPersistence());
         }
     }
 }

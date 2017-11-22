@@ -1,35 +1,49 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using Buchungssystem.App.ViewModel.Base;
+﻿using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
-using Buchungssystem.Repository;
+using Buchungssystem.Domain.Model;
+using Unity.Injection;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
-        public MainViewModel()
+        public MainViewModel() : this(null, null)
         {
-            BaseDataPersistence = new BaseDataPersitence();
-            this.ShowRoomCommand = new RelayCommand(ShowRoom);
-            _rooms = new ObservableCollection<RoomViewModel>(BaseDataPersistence.Rooms().Select(raum => new RoomViewModel(raum)));
-            //Rooms[0].ChooseTableCommand.Execute(null);
         }
 
-        private IPersistBaseData BaseDataPersistence;
+
+        public MainViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence)
+        {
+            _baseDataPersistence = baseDataPersistence;
+            _bookingPersistence = bookingPersistence;
+
+            _currentViewModel = baseDataPersistence == null
+                ? new RoomsViewModel()
+                : new RoomsViewModel(_baseDataPersistence.Rooms(), TableSelected);
+        }
+
+        void TableSelected(Table table)
+        {
+            _currentViewModel = new TableBookViewModel(table, _baseDataPersistence, _bookingPersistence);
+            RaisePropertyChanged(nameof(CurrentViewModel));
+        }
+
+        private readonly IPersistBaseData _baseDataPersistence;
+
+        private readonly IPersistBooking _bookingPersistence;
 
         #region Propertys
 
-        private ObservableCollection<RoomViewModel> _rooms;
-        public ObservableCollection<RoomViewModel> Rooms
+        private BaseViewModel _currentViewModel;
+
+        public BaseViewModel CurrentViewModel
         {
-            get => _rooms;
+            get => _currentViewModel;
             set
             {
-                if (_rooms == value) return;
-                _rooms = value;
-                RaisePropertyChanged(nameof(Rooms));
+                if (_currentViewModel.Equals(value)) return;
+                _currentViewModel = value;
+                RaisePropertyChanged(nameof(CurrentViewModel));
             }
         }
 
@@ -37,13 +51,7 @@ namespace Buchungssystem.App.ViewModel
 
         #region Commands
 
-        public ICommand ShowRoomCommand;
-
-        public void ShowRoom()
-        {
-            
-        }
-
         #endregion
+
     }
 }

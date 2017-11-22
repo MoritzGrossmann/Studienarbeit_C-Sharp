@@ -8,6 +8,8 @@ namespace Buchungssystem.Repository
 {
     public class BaseDataPersitence : IPersistBaseData
     {
+        private IPersistBooking _bookingPersistence = new BookingPersistence();
+
         #region ProductGroup
 
         public ProductGroup PersistProductGroup(ProductGroup productGroup)
@@ -84,7 +86,9 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Rooms.ToList();
+                var rooms = context.Rooms.ToList();
+                rooms.ForEach(room => room.Tables = Tables(room));
+                return rooms;
             }
         }
 
@@ -134,7 +138,9 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Tables.ToList();
+                var tables = context.Tables.ToList();
+                tables.ForEach(table => table.Bookings = _bookingPersistence.Bookings(table, BookingStatus.Open));
+                return tables;
             }
         }
 
@@ -142,7 +148,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Tables.Where(t => t.RoomId == room.RoomId).ToList();
+                return Tables().Where(table => table.RoomId == room.RoomId).ToList();
             }
         }
 

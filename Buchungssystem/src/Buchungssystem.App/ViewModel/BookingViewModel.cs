@@ -1,49 +1,44 @@
-﻿using Buchungssystem.App.ViewModel.Base;
+﻿using System;
+using System.Windows.Input;
+using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class BookingViewModel : BaseViewModel
     {
-        private TableViewModel _tableViewModel;
-
-        public TableViewModel TableViewModel
-        {
-            get => _tableViewModel;
-            set => _tableViewModel = value;
-        }
 
         private Booking _booking;
-        public Booking Booking { get => _booking; }
+        public Booking Booking => _booking;
 
-        public void WaehleBuchung()
+        public string Ware => Booking.Product.Name;
+
+        public decimal Preis => Booking.Product.Price;
+
+        public BookingViewModel(Booking booking)
         {
-            if (TableViewModel.SelectedBookings.Contains(this))
-            {
-                TableViewModel.SelectedBookings.Remove(this);
-                TableViewModel.OpenBookings.Add(this);
-            }
-            else
-            {
-                TableViewModel.OpenBookings.Remove(this);
-                TableViewModel.SelectedBookings.Add(this);
-            }
+            _booking = booking;
         }
 
-        public string Ware
+        public BookingViewModel(Booking booking, Action<Booking> onSelect)
         {
-            get { return Booking.Product.Name; }
+            _onSelect = onSelect;
+            _booking = booking;
+
+            SelectCommand = new RelayCommand(Select);
         }
 
-        public decimal Preis
+        #region Commands
+
+        private readonly Action<Booking> _onSelect;
+
+        public ICommand SelectCommand { get; }
+
+        public void Select()
         {
-            get { return Booking.Product.Price; }
+            _onSelect?.Invoke(_booking);
         }
 
-        public BookingViewModel(Booking booking, TableViewModel tableViewModel)
-        {
-            this._booking = booking;
-            this._tableViewModel = tableViewModel;
-        }
+        #endregion
     }
 }

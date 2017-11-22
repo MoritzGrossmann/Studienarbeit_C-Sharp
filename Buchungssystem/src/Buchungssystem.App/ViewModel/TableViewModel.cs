@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using Buchungssystem.App.Converter;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
@@ -54,39 +53,6 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        private ObservableCollection<BookingViewModel> _selectedBookings;
-        public ObservableCollection<BookingViewModel> SelectedBookings
-        {
-            get => _selectedBookings;
-            set
-            {
-                if (_selectedBookings.Equals(value)) return;
-                _selectedBookings = value;
-                RaisePropertyChanged(nameof(SelectedBookings));
-            }
-        }
-
-        private ObservableCollection<Product> _selectedProducts;
-        public ObservableCollection<Product> SelectedProducts
-        {
-            get => _selectedProducts;
-            set
-            {
-                if (_selectedProducts.Equals(value)) return;
-                _selectedProducts = value;
-                RaisePropertyChanged(nameof(SelectedProducts));
-            }
-        }
-
-        public void BookProducts()
-        {
-            foreach (var ware in SelectedProducts)
-            {
-                OpenBookings.Add(new BookingViewModel(new BookingPersistence().Book(new Booking() {TableId = Table.TableId, Product = ware, Timestamp = DateTime.Now}), this));
-                SelectedProducts.Remove(ware);
-            }
-        }
-
         public string VerbleibenderPreis
         {
             get
@@ -96,16 +62,6 @@ namespace Buchungssystem.App.ViewModel
                 var culture = CultureInfo.CurrentCulture;
                 return
                     $"{decimal.Round(sum, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)} {culture.NumberFormat.CurrencySymbol}";
-            }
-        }
-
-        public decimal SelectedBookingsPrice
-        {
-            get
-            {
-                decimal sum = 0;
-                SelectedBookings.ForEach(b => sum += b.Preis);
-                return sum;
             }
         }
 
@@ -142,43 +98,32 @@ namespace Buchungssystem.App.ViewModel
 
         #endregion
 
-        public void Pay()
-        {
-            var buchungPersistenz = new BookingPersistence();
-            _selectedBookings.ForEach(booking => buchungPersistenz.Pay(booking.Booking));
-            _selectedBookings.Clear();
-        }
-
-        public void Cancle()
-        {
-            var buchungPersistenz = new BookingPersistence();
-            _selectedBookings.ForEach(booking => buchungPersistenz.Cancel(booking.Booking));
-            _selectedBookings.Clear();
-        }
-
         #region Contructor
-        public TableViewModel(Table table)
+        public TableViewModel(Table table, Action<Table> onTableSelected)
         {
+            _onTableSelected = onTableSelected;
             _table = table;
-            _selectedBookings = new ObservableCollection<BookingViewModel>();
+
             _openBookings = new ObservableCollection<BookingViewModel>(
-                new BookingPersistence().Bookings(table)
-                .Select(booking => new BookingViewModel(booking, this)));
+                table.Bookings
+                .Select(booking => new BookingViewModel(booking)));
+
             SelectCommand = new RelayCommand(Select);
         }
 
+        private readonly Action<Table> _onTableSelected;
         public TableViewModel()
         {
-            
+            Name = "Test";
         }
 
         #endregion
 
-        public ICommand SelectCommand;
+        public ICommand SelectCommand { get; }
 
         public void Select()
         {
-            this.Selected = true;
+            _onTableSelected?.Invoke(_table);
         }
     }
 }

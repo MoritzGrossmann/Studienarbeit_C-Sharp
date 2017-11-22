@@ -1,0 +1,114 @@
+﻿<UserControl
+    x:Class="Buchungssystem.App.UI.Pages.RoomsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+
+    <!--<UserControl.DataContext>
+        <viewModel:RoomsViewModel />
+    </UserControl.DataContext>-->
+
+    <Grid>
+        <TabControl Height="auto" ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}">
+
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="TabItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                </Style>
+            </TabControl.ItemContainerStyle>
+
+            <TabControl.ItemTemplate>
+                <DataTemplate DataType="viewModel:RoomViewModel">
+                    <StackPanel
+                        Height="auto"
+                        MinWidth="100"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="{Binding Path=Name, Mode=OneWay}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate DataType="viewModel:RoomViewModel">
+                    <ListView
+                        x:Name="ListViewTables"
+                        Height="auto"
+                        ItemsSource="{Binding Path=Tables, Mode=OneWay}">
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="viewModel:TableViewModel">
+                                <StackPanel Background="{Binding Path=Color, Mode=OneWay}">
+                                    <StackPanel.InputBindings>
+                                        <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                                    </StackPanel.InputBindings>
+                                    <Grid MinHeight="40">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Row="0" Grid.Column="0">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="3*" />
+                                                <RowDefinition Height="1*" />
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                FontSize="18"
+                                                Text="{Binding Path=Name, Mode=OneWay}" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                FontStyle="Italic"
+                                                Text="{Binding Path=LastBooking, Mode=OneWay}" />
+                                        </Grid>
+
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Background="{Binding Path=Color, Mode=OneWay}"
+                                            FontSize="24"
+                                            FontWeight="Bold"
+                                            Text="{Binding Path=VerbleibenderPreis, Mode=OneWay}" />
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+
+    </Grid>
+</UserControl>
+

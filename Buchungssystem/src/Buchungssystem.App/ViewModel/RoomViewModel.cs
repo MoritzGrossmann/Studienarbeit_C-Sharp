@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -18,6 +19,9 @@ namespace Buchungssystem.App.ViewModel
         #region Properties
 
         private Room _room;
+
+        private readonly Action<Table> _onTableSelected;
+
         public Room Room
         {
             get => _room;
@@ -96,13 +100,14 @@ namespace Buchungssystem.App.ViewModel
 
         #region Contructor
 
-        public RoomViewModel(Room room)
+        public RoomViewModel(Room room, Action<Table> onTableSelected)
         {
             ChooseTableCommand = new RelayCommand(ChooseTable);
             SelectCommand = new RelayCommand(Select);
             _room = room;
+            _onTableSelected = onTableSelected;
             _tables = new ObservableCollection<TableViewModel>(
-                new BaseDataPersitence().Tables(room).Select(table => new TableViewModel(table))
+                room.Tables.Select(table => new TableViewModel(table, onTableSelected))
             );
         }
 
