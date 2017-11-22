@@ -98,6 +98,12 @@
     <Compile Include="UI\Pages\RoomsView.xaml.cs">
       <DependentUpon>RoomsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\SubPages\ProductGroupSidebar.xaml.cs">
+      <DependentUpon>ProductGroupSidebar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\SubPages\ProductSidebar.xaml.cs">
+      <DependentUpon>ProductSidebar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
@@ -106,8 +112,12 @@
     <Compile Include="ViewModel\Base\RelayCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ProductViewModel.cs" />
+    <Compile Include="ViewModel\SubViewModels\ProductGroupSidebarViewModel.cs" />
+    <Compile Include="ViewModel\ProductGroupViewModel.cs" />
     <Compile Include="ViewModel\RoomsViewModel.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
+    <Compile Include="ViewModel\SubViewModels\ProductSidebarViewModel.cs" />
     <Compile Include="ViewModel\TableBookViewModel.cs" />
     <Compile Include="ViewModel\TableViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -123,6 +133,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UI\Pages\RoomsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\SubPages\ProductGroupSidebar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\SubPages\ProductSidebar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

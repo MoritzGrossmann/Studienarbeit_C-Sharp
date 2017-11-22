@@ -5,6 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:subPages="clr-namespace:Buchungssystem.App.UI.Pages.SubPages"
+    xmlns:subViewModels="clr-namespace:Buchungssystem.App.ViewModel.SubViewModels"
     xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
     d:DesignHeight="300"
     d:DesignWidth="300"
@@ -12,68 +14,126 @@
     <!--<UserControl.DataContext>
         <ViewModel:TableBookViewModel />
     </UserControl.DataContext>-->
-    <StackPanel>
-        <TextBlock Text="{Binding Path=TableName}" />
-        <ListView ItemsSource="{Binding Path=OpenBookingsViewModels}">
 
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
-                </Style>
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type subViewModels:ProductGroupSidebarViewModel}">
+            <subPages:ProductGroupSidebar />
+        </DataTemplate>
 
-            </ListView.ItemContainerStyle>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
+        <DataTemplate DataType="{x:Type subViewModels:ProductSidebarViewModel}">
+            <subPages:ProductSidebar />
+        </DataTemplate>
+    </UserControl.Resources>
+    <DockPanel>
 
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="viewModel:BookingViewModel">
-                    <StackPanel>
+        <StackPanel DockPanel.Dock="Left">
+            <ContentControl Content="{Binding SidebarViewModel}" />
+        </StackPanel>
 
-                        <StackPanel.InputBindings>
-                            <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
-                        </StackPanel.InputBindings>
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock FontSize="20px" Text="{Binding Path=TableName}" />
 
-                        <TextBlock Text="{Binding Path=Ware}" />
-                        <TextBlock Text="{Binding Path=Preis}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <StackPanel>
+                <TextBlock FontSize="16px" Text="Angewählte Waren" />
+                <ListView ItemsSource="{Binding Path=SelectedProductViewModels}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
 
-        <ListView ItemsSource="{Binding Path=SelectedBookingsViewModels}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
 
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
-                </Style>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="viewModel:ProductViewModel">
+                            <StackPanel>
 
-            </ListView.ItemContainerStyle>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
+                                <StackPanel.InputBindings>
+                                    <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                                </StackPanel.InputBindings>
 
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="viewModel:BookingViewModel">
-                    <StackPanel>
+                                <TextBlock Text="{Binding Path=Name}" />
+                                <TextBlock Text="{Binding Path=Price}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-                        <StackPanel.InputBindings>
-                            <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
-                        </StackPanel.InputBindings>
+                </ListView>
+            </StackPanel>
 
-                        <TextBlock Text="{Binding Path=Ware}" />
-                        <TextBlock Text="{Binding Path=Preis}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackPanel>
+            <StackPanel>
+                <TextBlock FontSize="16px" Text="Buchungen" />
+                <ListView ItemsSource="{Binding Path=OpenBookingsViewModels}">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="viewModel:BookingViewModel">
+                            <StackPanel>
+
+                                <StackPanel.InputBindings>
+                                    <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                                </StackPanel.InputBindings>
+
+                                <TextBlock Text="{Binding Path=Ware}" />
+                                <TextBlock Text="{Binding Path=Preis}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock FontSize="16px" Text="Angewählte Buchungen" />
+                <ListView ItemsSource="{Binding Path=SelectedBookingsViewModels}">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="viewModel:BookingViewModel">
+                            <StackPanel>
+
+                                <StackPanel.InputBindings>
+                                    <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                                </StackPanel.InputBindings>
+
+                                <TextBlock Text="{Binding Path=Ware}" />
+                                <TextBlock Text="{Binding Path=Preis}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
 </UserControl>

@@ -56,7 +56,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Products.Where(w => w.ProductGroup == productGroup && !w.Deleted).ToList();
+                return context.Products.Where(w => w.ProductGroupId == productGroup.ProductGroupId && !w.Deleted).ToList();
             }
         }
 

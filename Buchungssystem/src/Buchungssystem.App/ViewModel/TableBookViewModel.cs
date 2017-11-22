@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.App.ViewModel.SubViewModels;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
@@ -31,7 +32,7 @@ namespace Buchungssystem.App.ViewModel
         {
             _openBookings = new List<Booking>();
             _selectedBookings = new List<Booking>();
-            _selectedProducts = new ObservableCollection<Product>();
+            _selectedProducts = new List<Product>();
             _productGroups = new List<ProductGroup>();
 
             _table = table;
@@ -49,6 +50,10 @@ namespace Buchungssystem.App.ViewModel
         private void GetProductGroups()
         {
             _productGroups = _baseDataPersistence?.ProductGroups();
+            RaisePropertyChanged(nameof(ProductGroups));
+
+            _sidebarViewModel = new ProductGroupSidebarViewModel(_productGroups, SelectProductGroup);
+            RaisePropertyChanged(nameof(SidebarViewModel));
         }
 
         #endregion
@@ -74,7 +79,7 @@ namespace Buchungssystem.App.ViewModel
 
         public ObservableCollection<ProductGroupViewModel> ProductGroups
         {
-            get => new ObservableCollection<ProductGroupViewModel>(_productGroups.Select(p => new ProductGroupViewModel(p)));
+            get => new ObservableCollection<ProductGroupViewModel>(_productGroups.Select(p => new ProductGroupViewModel(p, SelectProductGroup)));
         }
 
         private List<Booking> _openBookings;
@@ -106,8 +111,8 @@ namespace Buchungssystem.App.ViewModel
 
         public ObservableCollection<BookingViewModel> SelectedBookingsViewModels => new ObservableCollection<BookingViewModel>(_selectedBookings.Select(b => new BookingViewModel(b, SelectBooking)));
 
-        private ObservableCollection<Product> _selectedProducts = new ObservableCollection<Product>(new List<Product>());
-        public ObservableCollection<Product> SelectedProducts
+        private List<Product> _selectedProducts;
+        public List<Product> SelectedProducts
         {
             get => _selectedProducts;
             set
@@ -115,7 +120,39 @@ namespace Buchungssystem.App.ViewModel
                 if (_selectedProducts.Equals(value)) return;
                 _selectedProducts = value;
                 RaisePropertyChanged(nameof(SelectedProducts));
+                RaisePropertyChanged(nameof(SelectedBookingsViewModels));
             }
+        }
+
+        public ObservableCollection<ProductViewModel> SelectedProductViewModels => new ObservableCollection<ProductViewModel>(_selectedProducts.Select(p => new ProductViewModel(p, SelectProduct)));
+
+        private BaseViewModel _sidebarViewModel;
+
+        public BaseViewModel SidebarViewModel
+        {
+            get => _sidebarViewModel;
+            set
+            {
+                if (_sidebarViewModel.Equals(value)) return;
+                _sidebarViewModel = value;
+                RaisePropertyChanged(nameof(SidebarViewModel));
+            }
+        }
+
+        #endregion
+
+        #region Actions
+
+        private void SelectProductGroup(ProductGroup productGroup)
+        {
+            SidebarViewModel = new ProductSidebarViewModel(_baseDataPersistence?.Products(productGroup), SelectProduct);
+        }
+
+        private void SelectProduct(Product product)
+        {
+            SelectedProducts.Add(product);
+            RaisePropertyChanged(nameof(SelectedProducts));
+            RaisePropertyChanged(nameof(SelectedProductViewModels));
         }
 
         #endregion
@@ -136,13 +173,6 @@ namespace Buchungssystem.App.ViewModel
 
             RaisePropertyChanged(nameof(SelectedBookingsViewModels));
             RaisePropertyChanged(nameof(OpenBookingsViewModels));
-        }
-
-        public ICommand SelectProductCommand;
-
-        private void SelectProduct(Product product)
-        {
-            SelectedProducts.Add(product);
         }
 
         public ICommand BookProductsCommand;
@@ -193,18 +223,5 @@ namespace Buchungssystem.App.ViewModel
         }
 
         #endregion
-    }
-
-    internal class ProductGroupViewModel : BaseViewModel
-    {
-        #region Constructor
-
-        public ProductGroupViewModel(ProductGroup productGroup)
-        {
-            
-        }
-
-        #endregion
-
     }
 }
