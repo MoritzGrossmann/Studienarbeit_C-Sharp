@@ -4,15 +4,12 @@ using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Repository;
-using Unity;
-using Unity.Attributes;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
-        [InjectionConstructor]
-        public MainViewModel(IUnityContainer container)
+        public MainViewModel()
         {
             BaseDataPersistence = new BaseDataPersitence();
             this.ShowRoomCommand = new RelayCommand(ShowRoom);

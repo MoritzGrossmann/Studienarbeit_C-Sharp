@@ -12,9 +12,9 @@ namespace Buchungssystem.Repository
             //  Database.SetInitializer<ProjectDatabase>(null);
             // Database initialize
 
-            //System.Data.Entity.Database.SetInitializer<BookingsystemEntities>(new DbInitializer());
-            //using (BookingsystemEntities db = new BookingsystemEntities())
-            //    db.Database.Initialize(false);
+            System.Data.Entity.Database.SetInitializer<BookingsystemEntities>(new DbInitializer());
+            using (BookingsystemEntities db = new BookingsystemEntities())
+                db.Database.Initialize(false);
 
             //var context = new BookingsystemEntities();
             //context.Database.Create();
@@ -32,47 +32,49 @@ namespace Buchungssystem.Repository
     {
         protected override void Seed(BookingsystemEntities context)
         {
-            //context.ProductGroups.Add(new ProductGroup()
-            //{
-            //    Name = "Longdrinks"
-            //});
+            context.ProductGroups.Add(new ProductGroup()
+            {
+                Name = "Longdrinks"
+            });
 
-            //context.Products.Add(new Product()
-            //{
-            //    Name = "Gin Tonic",
-            //    Price = (decimal)5.5,
-            //    ProductGroupId = 1
-            //});
-            //context.Products.Add(new Product()
-            //{
-            //    Name = "Whiskey Cola",
-            //    Price = (decimal)6,
-            //    ProductGroupId = 1
-            //});
-            //context.Products.Add(new Product()
-            //{
-            //    Name = "Wodka Lemon",
-            //    Price = (decimal)5.5,
-            //    ProductGroupId = 1
-            //});
-            //context.Products.Add(new Product()
-            //{
-            //    Name = "Wodka Orange",
-            //    Price = (decimal)5.5,
-            //    ProductGroupId = 1
-            //});
-            //context.Products.Add(new Product()
-            //{
-            //    Name = "Campari Orange",
-            //    Price = (decimal)5.5,
-            //    ProductGroupId = 1
-            //});
-            //context.Products.Add(new Product()
-            //{
-            //    Name = "Gin Lemon",
-            //    Price = (decimal)5.5,
-            //    ProductGroupId = 1
-            //});
+            context.SaveChanges();
+
+            context.Products.Add(new Product()
+            {
+                Name = "Gin Tonic",
+                Price = (decimal)5.5,
+                ProductGroupId = 1
+            });
+            context.Products.Add(new Product()
+            {
+                Name = "Whiskey Cola",
+                Price = (decimal)6,
+                ProductGroupId = 1
+            });
+            context.Products.Add(new Product()
+            {
+                Name = "Wodka Lemon",
+                Price = (decimal)5.5,
+                ProductGroupId = 1
+            });
+            context.Products.Add(new Product()
+            {
+                Name = "Wodka Orange",
+                Price = (decimal)5.5,
+                ProductGroupId = 1
+            });
+            context.Products.Add(new Product()
+            {
+                Name = "Campari Orange",
+                Price = (decimal)5.5,
+                ProductGroupId = 1
+            });
+            context.Products.Add(new Product()
+            {
+                Name = "Gin Lemon",
+                Price = (decimal)5.5,
+                ProductGroupId = 1
+            });
 
             context.Rooms.Add(new Room()
             {
@@ -97,21 +99,23 @@ namespace Buchungssystem.Repository
                 {
                     Places = new Random().Next(2, 8),
                     RoomId = 2,
-                    Name = $"Table {i}"
+                    Name = $"Tisch {i}"
 
                 });
             }
 
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    context.Bookings.Add(new Booking()
-            //    {
-            //        Status = (int) BookingStatus.Open,
-            //        TableId = new Random().Next(1, 10),
-            //        ProductId = new Random().Next(1, 5),
-            //        Timestamp = DateTime.Now
-            //    });
-            //}
+            context.SaveChanges();
+
+            for (int i = 0; i < 20; i++)
+            {
+                context.Bookings.Add(new Booking()
+                {
+                    Status = (int)BookingStatus.Open,
+                    TableId = new Random().Next(1, 10),
+                    ProductId = new Random().Next(1, 5),
+                    Timestamp = DateTime.Now
+                });
+            }
 
             base.Seed(context);
         }

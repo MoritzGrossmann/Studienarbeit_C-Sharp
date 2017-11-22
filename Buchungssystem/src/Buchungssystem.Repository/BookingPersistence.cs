@@ -42,7 +42,10 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Bookings.Where(b => b.TableId == table.TableId).ToList();
+                var bookings = context.Bookings.Where(b => b.TableId == table.TableId).ToList();
+                bookings.ForEach(booking => booking.Product = context.Products.First(p => p.ProductId == booking.ProductId));
+                bookings.ForEach(booking => booking.Table = context.Tables.First(t => t.TableId == booking.TableId));
+                return bookings;
             }
         }
 
@@ -50,15 +53,21 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Bookings.Where(b => b.Timestamp.Date == dateTime.Date).ToList();
+                var bookings = context.Bookings.Where(b => b.Timestamp.Date == dateTime.Date).ToList();
+                bookings.ForEach(booking => booking.Product = context.Products.First(p => p.ProductId == booking.ProductId));
+                bookings.ForEach(booking => booking.Table = context.Tables.First(t => t.TableId == booking.TableId));
+                return bookings;
             }
         }
 
-        public List<Booking> Bookings(Table table, Domain.Model.BookingStatus status)
+        public List<Booking> Bookings(Table table, BookingStatus status)
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Bookings.Where(b => b.TableId == table.TableId && b.Status == (int) status).ToList();
+                var bookings = context.Bookings.Where(b => b.TableId == table.TableId && b.Status == (int) status).ToList();
+                bookings.ForEach(booking => booking.Product = context.Products.First(p => p.ProductId == booking.ProductId));
+                bookings.ForEach(booking => booking.Table = context.Tables.First(t => t.TableId == booking.TableId));
+                return bookings;
             }
         }
     }

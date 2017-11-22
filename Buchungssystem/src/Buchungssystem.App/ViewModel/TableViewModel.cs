@@ -115,7 +115,8 @@ namespace Buchungssystem.App.ViewModel
             {
                 if (_openBookings.Any())
                 {
-                    return _openBookings.Last().Booking.Timestamp.ToString(CultureInfo.CurrentCulture);
+                    return
+                        $"Letzte Buchung {_openBookings.Last().Booking.Timestamp.ToString(CultureInfo.CurrentCulture)}";
                 }
                 return "Keine Buchungen";
             }
@@ -144,14 +145,14 @@ namespace Buchungssystem.App.ViewModel
         public void Pay()
         {
             var buchungPersistenz = new BookingPersistence();
-            _selectedBookings.ForEach(b => buchungPersistenz.Pay(b.Booking));
+            _selectedBookings.ForEach(booking => buchungPersistenz.Pay(booking.Booking));
             _selectedBookings.Clear();
         }
 
         public void Cancle()
         {
             var buchungPersistenz = new BookingPersistence();
-            _selectedBookings.ForEach(b => buchungPersistenz.Cancel(b.Booking));
+            _selectedBookings.ForEach(booking => buchungPersistenz.Cancel(booking.Booking));
             _selectedBookings.Clear();
         }
 
@@ -160,7 +161,9 @@ namespace Buchungssystem.App.ViewModel
         {
             _table = table;
             _selectedBookings = new ObservableCollection<BookingViewModel>();
-            _openBookings = new ObservableCollection<BookingViewModel>(new BookingPersistence().Bookings(table).Select(b => new BookingViewModel(b, this)));
+            _openBookings = new ObservableCollection<BookingViewModel>(
+                new BookingPersistence().Bookings(table)
+                .Select(booking => new BookingViewModel(booking, this)));
             SelectCommand = new RelayCommand(Select);
         }
 
