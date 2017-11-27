@@ -86,9 +86,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var rooms = context.Rooms.ToList();
-                rooms.ForEach(room => room.Tables = Tables(room));
-                return rooms;
+                return context.Rooms.ToList();
             }
         }
 
@@ -138,9 +136,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var tables = context.Tables.ToList();
-                tables.ForEach(table => table.Bookings = _bookingPersistence.Bookings(table, BookingStatus.Open));
-                return tables;
+                return context.Tables.ToList();
             }
         }
 

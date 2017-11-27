@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
 using Unity.Interception.Utilities;
@@ -13,6 +14,9 @@ namespace Buchungssystem.App.ViewModel
 {
     internal class TableViewModel : BaseViewModel
     {
+        private readonly IPersistBaseData _baseDataPersistence;
+
+        private readonly IPersistBooking _bookingPersistence;
 
         #region Properties
 
@@ -99,14 +103,17 @@ namespace Buchungssystem.App.ViewModel
         #endregion
 
         #region Contructor
-        public TableViewModel(Table table, Action<Table> onTableSelected)
+        public TableViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, Table table, Action<Table> onTableSelected)
         {
+            _baseDataPersistence = baseDataPersistence;
+            _bookingPersistence = bookingPersistence;
+
             _onTableSelected = onTableSelected;
             _table = table;
 
             _openBookings = new ObservableCollection<BookingViewModel>(
-                table.Bookings
-                .Select(booking => new BookingViewModel(booking)));
+                _bookingPersistence.Bookings(_table, BookingStatus.Open)
+                .Select(booking => new BookingViewModel(_baseDataPersistence, _bookingPersistence, booking)));
 
             SelectCommand = new RelayCommand(Select);
         }
@@ -114,7 +121,7 @@ namespace Buchungssystem.App.ViewModel
         private readonly Action<Table> _onTableSelected;
         public TableViewModel()
         {
-            Name = "Test";
+            
         }
 
         #endregion

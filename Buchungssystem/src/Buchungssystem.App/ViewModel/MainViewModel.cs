@@ -1,14 +1,19 @@
 ﻿using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
+using Buchungssystem.TestRepository;
 using Unity.Injection;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
-        public MainViewModel() : this(null, null)
+        public MainViewModel()
         {
+            _baseDataPersistence = new TestPersitence();
+            _bookingPersistence = new TestPersitence();
+
+            _currentViewModel = new RoomViewModel();
         }
 
 
@@ -19,12 +24,12 @@ namespace Buchungssystem.App.ViewModel
 
             _currentViewModel = baseDataPersistence == null
                 ? new RoomsViewModel()
-                : new RoomsViewModel(_baseDataPersistence.Rooms(), TableSelected);
+                : new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
         }
 
         void TableSelected(Table table)
         {
-            _currentViewModel = new TableBookViewModel(table, _baseDataPersistence, _bookingPersistence);
+            _currentViewModel = new TableBookViewModel(_baseDataPersistence, _bookingPersistence, table);
             RaisePropertyChanged(nameof(CurrentViewModel));
         }
 

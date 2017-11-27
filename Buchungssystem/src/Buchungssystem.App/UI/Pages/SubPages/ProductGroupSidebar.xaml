@@ -5,33 +5,44 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.SubPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:subViewModels="clr-namespace:Buchungssystem.App.ViewModel.SubViewModels"
     xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
 
+    <!--<UserControl.DataContext>
+        <subViewModels:ProductGroupSidebarViewModel />
+    </UserControl.DataContext>-->
+
     <Grid>
-        <ListView ItemsSource="{Binding Path=ProductGroups}">
+        <StackPanel>
+            <TextBlock FontSize="20px" Text="Warengruppen" />
+            <ListView ItemsSource="{Binding Path=ProductGroups}">
 
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
-                </Style>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
 
-            </ListView.ItemContainerStyle>
+                </ListView.ItemContainerStyle>
 
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="viewModel:ProductGroupViewModel">
-                    <StackPanel>
-                        <StackPanel.InputBindings>
-                            <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
-                        </StackPanel.InputBindings>
-                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="viewModel:ProductGroupViewModel">
+                        <StackPanel>
+                            <StackPanel.InputBindings>
+                                <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                            </StackPanel.InputBindings>
+                            <TextBlock
+                                FontSize="18px"
+                                FontWeight="Bold"
+                                Text="{Binding Path=Name, Mode=OneWay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
 </UserControl>

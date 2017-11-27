@@ -42,10 +42,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var bookings = context.Bookings.Where(b => b.TableId == table.TableId).ToList();
-                bookings.ForEach(booking => booking.Product = context.Products.First(p => p.ProductId == booking.ProductId));
-                bookings.ForEach(booking => booking.Table = context.Tables.First(t => t.TableId == booking.TableId));
-                return bookings;
+                return context.Bookings.Where(b => b.TableId == table.TableId).ToList();
             }
         }
 
@@ -53,10 +50,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var bookings = context.Bookings.Where(b => b.Timestamp.Date == dateTime.Date).ToList();
-                bookings.ForEach(booking => booking.Product = context.Products.First(p => p.ProductId == booking.ProductId));
-                bookings.ForEach(booking => booking.Table = context.Tables.First(t => t.TableId == booking.TableId));
-                return bookings;
+                return context.Bookings.Where(b => b.Timestamp.Date == dateTime.Date).ToList();
             }
         }
 
@@ -64,10 +58,23 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var bookings = context.Bookings.Where(b => b.TableId == table.TableId && b.Status == (int) status).ToList();
-                bookings.ForEach(booking => booking.Product = context.Products.First(p => p.ProductId == booking.ProductId));
-                bookings.ForEach(booking => booking.Table = context.Tables.First(t => t.TableId == booking.TableId));
-                return bookings;
+                return context.Bookings.Where(b => b.TableId == table.TableId && b.Status == (int) status).ToList();
+            }
+        }
+
+        public Product Product(Booking booking)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                return context.Products.FirstOrDefault(p => p.ProductId == booking.ProductId);
+            }
+        }
+
+        public Table Table(Booking booking)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                return context.Tables.FirstOrDefault(t => t.TableId == booking.TableId);
             }
         }
     }

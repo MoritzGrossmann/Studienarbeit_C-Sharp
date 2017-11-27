@@ -10,29 +10,59 @@
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
+
+    <!--<UserControl.DataContext>
+        <subViewModels:ProductSidebarViewModel />
+    </UserControl.DataContext>-->
+
     <Grid>
-        <ListView ItemsSource="{Binding Path=Products}">
+        <StackPanel>
+            <Button Command="{Binding RevertCommand}">
+                <TextBlock Text="Zurück" />
+            </Button>
+            <TextBlock FontSize="20px" Text="{Binding Path=ProductGroup, Mode=OneWay}" />
+            <ListView
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding Path=Products}">
 
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
-                </Style>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="Padding" Value="0" />
 
-            </ListView.ItemContainerStyle>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Trigger>
+                        </Style.Triggers>
 
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="viewModel:ProductViewModel">
-                    <StackPanel>
-                        <StackPanel.InputBindings>
-                            <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
-                        </StackPanel.InputBindings>
-                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    </Style>
 
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="viewModel:ProductViewModel">
+                        <StackPanel Margin="5">
+                            <StackPanel.InputBindings>
+                                <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                            </StackPanel.InputBindings>
+                            <Border
+                                Padding="5px"
+                                BorderBrush="LightGray"
+                                BorderThickness="3">
+                                <TextBlock
+                                    FontSize="18px"
+                                    FontWeight="Bold"
+                                    Text="{Binding Path=Name, Mode=OneWay}" />
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class ProductGroupViewModel : BaseViewModel
     {
+        private readonly IPersistBaseData _baseDataPersistence;
+
+        private readonly IPersistBooking _bookingPersistence;
+
         #region Constructor
 
-        public ProductGroupViewModel(ProductGroup productGroup, Action<ProductGroup> onProductGroupSelect)
+        public ProductGroupViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, ProductGroup productGroup, Action<ProductGroup> onProductGroupSelect)
         {
+            _baseDataPersistence = baseDataPersistence;
+            _bookingPersistence = bookingPersistence;
             _productGroup = productGroup;
             _onProductGroupSelect = onProductGroupSelect;
 

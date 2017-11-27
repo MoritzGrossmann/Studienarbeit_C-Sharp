@@ -10,6 +10,7 @@ using Buchungssystem.App.ViewModel.SubViewModels;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
+using Buchungssystem.TestRepository;
 using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel
@@ -23,12 +24,27 @@ namespace Buchungssystem.App.ViewModel
 
         #region Constructor
 
-        public TableBookViewModel() : this(null, null, null)
+        public TableBookViewModel()
         {
+            _openBookings = new List<Booking>();
+            _selectedBookings = new List<Booking>();
+            _selectedProducts = new List<Product>();
+            _productGroups = new List<ProductGroup>();
 
+            _baseDataPersistence = new TestPersitence();
+            _bookingPersistence = new TestPersitence();
+            _table = _baseDataPersistence.Tables().FirstOrDefault();
+
+            GetProductGroups();
+
+            OpenBookings = _bookingPersistence.Bookings(_table, BookingStatus.Open);
+
+            PayBookingsCommand = new RelayCommand(PayBookings); // TODO no relaycommand, only can executed, if Bookings are selected
+            BookProductsCommand = new RelayCommand(BookProducts); // TODO no relaycommand, only can execute if products are selected
+            CancelBookingsCommand = new RelayCommand(CancleBookings);
         }
 
-        public TableBookViewModel(Table table, IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence)
+        public TableBookViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, Table table)
         {
             _openBookings = new List<Booking>();
             _selectedBookings = new List<Booking>();
@@ -41,10 +57,11 @@ namespace Buchungssystem.App.ViewModel
 
             GetProductGroups();
 
-            OpenBookings = table.Bookings;
+            OpenBookings = _bookingPersistence.Bookings(_table, BookingStatus.Open);
 
             PayBookingsCommand = new RelayCommand(PayBookings); // TODO no relaycommand, only can executed, if Bookings are selected
             BookProductsCommand = new RelayCommand(BookProducts); // TODO no relaycommand, only can execute if products are selected
+            CancelBookingsCommand = new RelayCommand(CancleBookings);
         }
 
         private void GetProductGroups()
@@ -52,7 +69,7 @@ namespace Buchungssystem.App.ViewModel
             _productGroups = _baseDataPersistence?.ProductGroups();
             RaisePropertyChanged(nameof(ProductGroups));
 
-            _sidebarViewModel = new ProductGroupSidebarViewModel(_productGroups, SelectProductGroup);
+            _sidebarViewModel = new ProductGroupSidebarViewModel(_baseDataPersistence, _bookingPersistence, SelectProductGroup);
             RaisePropertyChanged(nameof(SidebarViewModel));
         }
 
@@ -79,7 +96,7 @@ namespace Buchungssystem.App.ViewModel
 
         public ObservableCollection<ProductGroupViewModel> ProductGroups
         {
-            get => new ObservableCollection<ProductGroupViewModel>(_productGroups.Select(p => new ProductGroupViewModel(p, SelectProductGroup)));
+            get => new ObservableCollection<ProductGroupViewModel>(_productGroups.Select(p => new ProductGroupViewModel(_baseDataPersistence, _bookingPersistence, p, SelectProductGroup)));
         }
 
         private List<Booking> _openBookings;
@@ -95,7 +112,7 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        public ObservableCollection<BookingViewModel> OpenBookingsViewModels => new ObservableCollection<BookingViewModel>(_openBookings.Select(b => new BookingViewModel(b, SelectBooking)));
+        public ObservableCollection<BookingViewModel> OpenBookingsViewModels => new ObservableCollection<BookingViewModel>(_openBookings.Select(b => new BookingViewModel(_baseDataPersistence, _bookingPersistence, b, SelectBooking)));
 
         private List<Booking> _selectedBookings = new List<Booking>();
         public List<Booking> SelectedBookings
@@ -109,7 +126,7 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        public ObservableCollection<BookingViewModel> SelectedBookingsViewModels => new ObservableCollection<BookingViewModel>(_selectedBookings.Select(b => new BookingViewModel(b, SelectBooking)));
+        public ObservableCollection<BookingViewModel> SelectedBookingsViewModels => new ObservableCollection<BookingViewModel>(_selectedBookings.Select(b => new BookingViewModel(_baseDataPersistence, _bookingPersistence, b, SelectBooking)));
 
         private List<Product> _selectedProducts;
         public List<Product> SelectedProducts
@@ -145,7 +162,12 @@ namespace Buchungssystem.App.ViewModel
 
         private void SelectProductGroup(ProductGroup productGroup)
         {
-            SidebarViewModel = new ProductSidebarViewModel(_baseDataPersistence?.Products(productGroup), SelectProduct);
+            SidebarViewModel = new ProductSidebarViewModel(_baseDataPersistence, _bookingPersistence, productGroup, SelectProduct, ReturnToProductGroups);
+        }
+
+        private void ReturnToProductGroups()
+        {
+            SidebarViewModel = new ProductGroupSidebarViewModel(_baseDataPersistence, _bookingPersistence, SelectProductGroup);
         }
 
         private void SelectProduct(Product product)
@@ -175,7 +197,7 @@ namespace Buchungssystem.App.ViewModel
             RaisePropertyChanged(nameof(OpenBookingsViewModels));
         }
 
-        public ICommand BookProductsCommand;
+        public ICommand BookProductsCommand { get; }
 
         private void BookProducts()
         {
@@ -195,16 +217,18 @@ namespace Buchungssystem.App.ViewModel
                 {
                     _bookingPersistence.Book(booking);
                     OpenBookings.Add(booking);
-                    SelectedProducts.Remove(product);
                 }
                 catch (Exception)
                 {
                     // TODO
                 }
             }
+            SelectedProducts.Clear();
+            RaisePropertyChanged(nameof(OpenBookingsViewModels));
+            RaisePropertyChanged(nameof(SelectedProductViewModels));
         }
 
-        public ICommand PayBookingsCommand;
+        public ICommand PayBookingsCommand { get; }
 
         public void PayBookings()
         {
@@ -213,13 +237,33 @@ namespace Buchungssystem.App.ViewModel
                 try
                 {
                     _bookingPersistence.Pay(booking);
-                    SelectedBookings.Remove(booking);
                 }
                 catch (Exception)
                 {
                     // TODO
                 }
             }
+            SelectedBookings.Clear();
+            RaisePropertyChanged(nameof(SelectedBookingsViewModels));
+        }
+
+        public ICommand CancelBookingsCommand { get; }
+
+        public void CancleBookings()
+        {
+            foreach (var booking in _selectedBookings)
+            {
+                try
+                {
+                    _bookingPersistence.Cancel(booking);
+                }
+                catch (Exception)
+                {
+                    // TODO
+                }
+            }
+            SelectedBookings.Clear();
+            RaisePropertyChanged(nameof(SelectedBookingsViewModels));
         }
 
         #endregion

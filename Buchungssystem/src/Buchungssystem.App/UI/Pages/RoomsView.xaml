@@ -14,8 +14,6 @@
         <viewModel:RoomsViewModel />
     </UserControl.DataContext>-->
 
-
-
     <Grid>
         <TabControl Height="auto" ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}">
 
@@ -45,7 +43,7 @@
                     <ListView
                         x:Name="ListViewTables"
                         Height="auto"
-                        ItemsSource="{Binding Path=Tables, Mode=OneWay}">
+                        ItemsSource="{Binding Path=TableViewModels, Mode=OneWay}">
 
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -90,6 +88,7 @@
                                                 Grid.Row="1"
                                                 Grid.Column="0"
                                                 FontStyle="Italic"
+                                                Foreground="#FF4C4B4B"
                                                 Text="{Binding Path=LastBooking, Mode=OneWay}" />
                                         </Grid>
 

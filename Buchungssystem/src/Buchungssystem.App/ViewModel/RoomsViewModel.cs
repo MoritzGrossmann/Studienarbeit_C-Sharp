@@ -5,12 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
+using Buchungssystem.TestRepository;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class RoomsViewModel : BaseViewModel
     {
+        private readonly IPersistBaseData _baseDataPersitence;
+
+        private readonly IPersistBooking _bookingPersistence;
+
         private ICollection<Room> _rooms;
 
         public ICollection<Room> Rooms
@@ -25,26 +31,22 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        public ObservableCollection<RoomViewModel> RoomViewModels => new ObservableCollection<RoomViewModel>(_rooms.Select(room => new RoomViewModel(room, _onTableSelected)));
+        public ObservableCollection<RoomViewModel> RoomViewModels => new ObservableCollection<RoomViewModel>(_rooms.Select(room => new RoomViewModel(_baseDataPersitence, _bookingPersistence, room, _onTableSelected)));
 
-        public RoomsViewModel() : this(new List<Room>() { 
-            new Room() {
-            Name = "Test",
-            RoomId = 1,
-            Tables = new List<Table>(new[]
-            {
-                new Table {Bookings = new List<Booking>(), Name = "Tisch1", Places = 4, RoomId = 1}
-            })
-            }  
-        }, null)
+        public RoomsViewModel() 
         {
-            
+            _baseDataPersitence = new TestPersitence();
+            _bookingPersistence = new TestPersitence();
+            _onTableSelected = null;
+            _rooms = _baseDataPersitence.Rooms();
         }
 
-        public RoomsViewModel(ICollection<Room> rooms, Action<Table> onTableSelected)
+        public RoomsViewModel(IPersistBaseData baseDataPersitence, IPersistBooking bookingPersistence, Action<Table> onTableSelected)
         {
+            _baseDataPersitence = baseDataPersitence;
+            _bookingPersistence = bookingPersistence;
             _onTableSelected = onTableSelected;
-            _rooms = rooms;
+            _rooms = _baseDataPersitence.Rooms();
         }
 
         private Action<Table> _onTableSelected;

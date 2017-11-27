@@ -12,7 +12,7 @@
     d:DesignWidth="300"
     mc:Ignorable="d">
     <!--<UserControl.DataContext>
-        <ViewModel:TableBookViewModel />
+        <viewModel:TableBookViewModel />
     </UserControl.DataContext>-->
 
     <UserControl.Resources>
@@ -24,13 +24,22 @@
             <subPages:ProductSidebar />
         </DataTemplate>
     </UserControl.Resources>
-    <DockPanel>
+    <Grid>
 
-        <StackPanel DockPanel.Dock="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0">
             <ContentControl Content="{Binding SidebarViewModel}" />
         </StackPanel>
 
-        <StackPanel DockPanel.Dock="Top">
+        <StackPanel Grid.Column="1" Margin="10,0,0,0">
             <TextBlock FontSize="20px" Text="{Binding Path=TableName}" />
 
             <StackPanel>
@@ -65,6 +74,9 @@
                     </ListView.ItemTemplate>
 
                 </ListView>
+                <Button Command="{Binding BookProductsCommand}">
+                    <TextBlock Text="Buchen" />
+                </Button>
             </StackPanel>
 
             <StackPanel>
@@ -133,7 +145,15 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+
+                <Button Command="{Binding PayBookingsCommand}">
+                    <TextBlock Text="Bezahlen" />
+                </Button>
+
+                <Button Command="{Binding CancleBookingsCommand}">
+                    <TextBlock Text="Stornieren" />
+                </Button>
             </StackPanel>
         </StackPanel>
-    </DockPanel>
+    </Grid>
 </UserControl>

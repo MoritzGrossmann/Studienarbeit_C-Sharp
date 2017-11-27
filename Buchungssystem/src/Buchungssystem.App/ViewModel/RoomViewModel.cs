@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
+using Buchungssystem.TestRepository;
 
 namespace Buchungssystem.App.ViewModel
 {
@@ -15,6 +17,10 @@ namespace Buchungssystem.App.ViewModel
     /// </summary>
     internal class RoomViewModel : BaseViewModel
     {
+        private readonly IPersistBaseData _basedataPersistence;
+
+        private readonly IPersistBooking _bookingPersistence;
+
 
         #region Properties
 
@@ -38,8 +44,8 @@ namespace Buchungssystem.App.ViewModel
         /// Repräsentiert die Tables, die in einem Room stehen
         /// </summary>
 
-        private ObservableCollection<TableViewModel> _tables;
-        public ObservableCollection<TableViewModel> Tables
+        private List<Table> _tables;
+        public List<Table> Tables
         {
             get => _tables;
             set
@@ -49,6 +55,9 @@ namespace Buchungssystem.App.ViewModel
                 RaisePropertyChanged(nameof(Tables));
             }
         }
+
+        public ObservableCollection<TableViewModel> TableViewModels => new ObservableCollection<TableViewModel>(
+            _tables.Select(t => new TableViewModel(_basedataPersistence, _bookingPersistence, t, _onTableSelected)));
 
         private TableViewModel _selectedTable;
 
@@ -100,15 +109,25 @@ namespace Buchungssystem.App.ViewModel
 
         #region Contructor
 
-        public RoomViewModel(Room room, Action<Table> onTableSelected)
+        public RoomViewModel(IPersistBaseData basedataPersistence, IPersistBooking bookingPersistence, Room room, Action<Table> onTableSelected)
         {
+            _basedataPersistence = basedataPersistence;
+            _bookingPersistence = bookingPersistence;
+
             ChooseTableCommand = new RelayCommand(ChooseTable);
             SelectCommand = new RelayCommand(Select);
             _room = room;
             _onTableSelected = onTableSelected;
-            _tables = new ObservableCollection<TableViewModel>(
-                room.Tables.Select(table => new TableViewModel(table, onTableSelected))
-            );
+            _tables = _basedataPersistence.Tables(_room);
+        }
+
+        public RoomViewModel()
+        {
+            _basedataPersistence = new TestPersitence();
+            _bookingPersistence = new TestPersitence();
+
+            _room = _basedataPersistence.Rooms().FirstOrDefault();
+            _onTableSelected = null;
         }
 
         #endregion

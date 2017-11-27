@@ -20,5 +20,9 @@ namespace Buchungssystem.Domain.Database
         List<Booking> Bookings(DateTime dateTime);
 
         List<Booking> Bookings(Table table, BookingStatus status);
+
+        Product Product(Booking booking);
+
+        Table Table(Booking booking);
     }
 }
