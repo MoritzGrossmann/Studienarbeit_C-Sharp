@@ -82,10 +82,10 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        public bool InUse => _openBookings.Any();
+        public bool InUse => _table.Occupied;
 
         public Brush Color => 
-            InUse ? (Brush)new BrushConverter().ConvertFrom("#FFE6E6") : (Brush)new BrushConverter().ConvertFrom("#CCFFCC");
+            InUse ? (Brush)new BrushConverter().ConvertFrom("#FFE6E6") : OpenBookings.Any() ? (Brush)new BrushConverter().ConvertFrom("#f7ffb7") : (Brush)new BrushConverter().ConvertFrom("#CCFFCC");
 
         private bool _selected;
 
@@ -100,10 +100,14 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
+        public string ChangeStatusTest => InUse ? "Tisch abräumen" : "Tisch besetzen";
+
         #endregion
 
         #region Contructor
-        public TableViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, Table table, Action<Table> onTableSelected)
+
+        public TableViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, Table table,
+            Action<Table> onTableSelected)
         {
             _baseDataPersistence = baseDataPersistence;
             _bookingPersistence = bookingPersistence;
@@ -113,9 +117,11 @@ namespace Buchungssystem.App.ViewModel
 
             _openBookings = new ObservableCollection<BookingViewModel>(
                 _bookingPersistence.Bookings(_table, BookingStatus.Open)
-                .Select(booking => new BookingViewModel(_baseDataPersistence, _bookingPersistence, booking)));
+                    .Select(booking => new BookingViewModel(_baseDataPersistence, _bookingPersistence, booking)));
 
             SelectCommand = new RelayCommand(Select);
+            ChangeStatusCommand = new RelayCommand(ChangeStatus);
+
         }
 
         private readonly Action<Table> _onTableSelected;
@@ -131,6 +137,26 @@ namespace Buchungssystem.App.ViewModel
         public void Select()
         {
             _onTableSelected?.Invoke(_table);
+        }
+
+        public ICommand ChangeStatusCommand { get; }
+
+        private void ChangeStatus()
+        {
+
+            if (Table.Occupied)
+            {
+                _bookingPersistence.Clear(Table);
+            }
+            else
+            {
+                _bookingPersistence.Occupy(Table);
+            }
+
+            Table.Occupied = !Table.Occupied;
+            RaisePropertyChanged(nameof(InUse));
+            RaisePropertyChanged(nameof(ChangeStatusTest));
+            RaisePropertyChanged(nameof(Color));
         }
     }
 }

@@ -18,9 +18,10 @@
     <Grid>
         <StackPanel>
             <TextBlock FontSize="20px" Text="Warengruppen" />
-            <ListView ItemsSource="{Binding Path=ProductGroups}" 
-                      Background="Transparent"
-                      BorderThickness="0">
+            <ListView
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding Path=ProductGroups}">
 
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -33,7 +34,7 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="viewModel:ProductGroupViewModel">
-                        <StackPanel Margin="1">
+                        <StackPanel Margin="1" Cursor="Hand">
                             <StackPanel.InputBindings>
                                 <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
                             </StackPanel.InputBindings>
@@ -43,10 +44,13 @@
                                 BorderThickness="1">
                                 <StackPanel>
                                     <TextBlock
-                                    FontSize="18px"
-                                    FontWeight="Bold"
-                                    Text="{Binding Path=Name, Mode=OneWay}" />
-                                    <TextBlock FontSize="14px" FontStyle="Italic" Text="{Binding Path=ProductCount}"></TextBlock>
+                                        FontSize="18px"
+                                        FontWeight="Bold"
+                                        Text="{Binding Path=Name, Mode=OneWay}" />
+                                    <TextBlock
+                                        FontSize="14px"
+                                        FontStyle="Italic"
+                                        Text="{Binding Path=ProductCount}" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

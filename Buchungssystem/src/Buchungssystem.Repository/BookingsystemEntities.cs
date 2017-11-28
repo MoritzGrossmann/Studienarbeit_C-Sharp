@@ -28,13 +28,33 @@ namespace Buchungssystem.Repository
 
     }
 
-    class DbInitializer : DropCreateDatabaseAlways<BookingsystemEntities>
+    class DbInitializer : DropCreateDatabaseIfModelChanges<BookingsystemEntities>
     {
         protected override void Seed(BookingsystemEntities context)
         {
             context.ProductGroups.Add(new ProductGroup()
             {
                 Name = "Longdrinks"
+            });
+
+            context.ProductGroups.Add(new ProductGroup()
+            {
+                Name = "Cocktails"
+            });
+
+            context.ProductGroups.Add(new ProductGroup()
+            {
+                Name = "Vodka"
+            });
+
+            context.ProductGroups.Add(new ProductGroup()
+            {
+                Name = "Rum"
+            });
+
+            context.ProductGroups.Add(new ProductGroup()
+            {
+                Name = "Gin"
             });
 
             context.SaveChanges();

@@ -23,6 +23,11 @@ namespace Buchungssystem.TestRepository
             return room;
         }
 
+        public Room Room(Table table)
+        {
+            return Repository.Rooms.FirstOrDefault(r => r.RoomId == table.RoomId);
+        }
+
         public List<Table> Tables()
         {
             return Repository.Tables;
@@ -115,6 +120,16 @@ namespace Buchungssystem.TestRepository
         public Table Table(Booking booking)
         {
             return Repository.Tables.FirstOrDefault(t => t.TableId == booking.ProductId);
+        }
+
+        public void Occupy(Table table)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear(Table table)
+        {
+            throw new NotImplementedException();
         }
     }
 }

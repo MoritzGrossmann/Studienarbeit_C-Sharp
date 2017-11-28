@@ -54,7 +54,7 @@ namespace Buchungssystem.App.ViewModel
 
         public ICommand SelectCommand { get; }
 
-        public void Select()
+        private void Select()
         {
             _onSelect?.Invoke(_booking);
         }

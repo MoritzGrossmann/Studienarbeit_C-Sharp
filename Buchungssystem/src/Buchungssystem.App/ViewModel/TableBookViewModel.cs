@@ -81,6 +81,8 @@ namespace Buchungssystem.App.ViewModel
 
         #region Properties
 
+        public string Room => _baseDataPersistence.Room(_table).Name;
+
         private Table _table;
 
         public Table Table
@@ -145,7 +147,7 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        public ObservableCollection<ProductViewModel> SelectedProductViewModels => new ObservableCollection<ProductViewModel>(_selectedProducts.Select(p => new ProductViewModel(p, DeSelectProduct)));
+        public ObservableCollection<ProductViewModel> SelectedProductViewModels => new ObservableCollection<ProductViewModel>(_selectedProducts.Select(p => new ProductViewModel(p, DeSelectProduct, BookProduct)));
 
         private BaseViewModel _sidebarViewModel;
 
@@ -160,13 +162,27 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
+        public bool ShowSelectedBooking => SelectedBookings.Any();
+
+        public bool ShowSelectedProducts => SelectedProducts.Any();
+
+        public decimal SelectedBookingsPrice
+        {
+            get
+            {
+                decimal sum = 0;
+                SelectedBookingsViewModels.ForEach(b => sum += b.Price);
+                return sum;
+            }
+        }
+
         #endregion
 
         #region Actions
 
         private void SelectProductGroup(ProductGroup productGroup)
         {
-            SidebarViewModel = new ProductSidebarViewModel(_baseDataPersistence, _bookingPersistence, productGroup, SelectProduct, ReturnToProductGroups);
+            SidebarViewModel = new ProductSidebarViewModel(_baseDataPersistence, _bookingPersistence, productGroup, SelectProduct, BookProduct, ReturnToProductGroups);
         }
 
         private void ReturnToProductGroups()
@@ -179,6 +195,7 @@ namespace Buchungssystem.App.ViewModel
             SelectedProducts.Add(product);
             RaisePropertyChanged(nameof(SelectedProducts));
             RaisePropertyChanged(nameof(SelectedProductViewModels));
+            RaisePropertyChanged(nameof(ShowSelectedProducts));
         }
 
         private void DeSelectProduct(Product product)
@@ -186,6 +203,35 @@ namespace Buchungssystem.App.ViewModel
             SelectedProducts.Remove(product);
             RaisePropertyChanged(nameof(SelectedProducts));
             RaisePropertyChanged(nameof(SelectedProductViewModels));
+            RaisePropertyChanged(nameof(ShowSelectedProducts));
+        }
+
+        private void BookProduct(Product product)
+        {
+            var booking = new Booking()
+            {
+                TableId = Table.TableId,
+                ProductId = product.ProductId,
+                Product = product,
+                Table = Table,
+                Status = (int)BookingStatus.Open,
+                Timestamp = DateTime.Now
+            };
+
+            try
+            {
+                _bookingPersistence.Book(booking);
+                OpenBookings.Add(booking);
+            }
+            catch (Exception)
+            {
+                // TODO
+            }
+
+            SelectedProducts.Remove(product);
+            RaisePropertyChanged(nameof(OpenBookingsViewModels));
+            RaisePropertyChanged(nameof(SelectedProductViewModels));
+            RaisePropertyChanged(nameof(ShowSelectedProducts));
         }
 
         #endregion
@@ -206,6 +252,8 @@ namespace Buchungssystem.App.ViewModel
 
             RaisePropertyChanged(nameof(SelectedBookingsViewModels));
             RaisePropertyChanged(nameof(OpenBookingsViewModels));
+            RaisePropertyChanged(nameof(ShowSelectedBooking));
+            RaisePropertyChanged(nameof(SelectedBookingsPrice));
         }
 
         public ICommand BookProductsCommand { get; }
@@ -237,6 +285,7 @@ namespace Buchungssystem.App.ViewModel
             SelectedProducts.Clear();
             RaisePropertyChanged(nameof(OpenBookingsViewModels));
             RaisePropertyChanged(nameof(SelectedProductViewModels));
+            RaisePropertyChanged(nameof(ShowSelectedProducts));
         }
 
         public ICommand PayBookingsCommand { get; }
@@ -256,6 +305,8 @@ namespace Buchungssystem.App.ViewModel
             }
             SelectedBookings.Clear();
             RaisePropertyChanged(nameof(SelectedBookingsViewModels));
+            RaisePropertyChanged(nameof(ShowSelectedBooking));
+            RaisePropertyChanged(nameof(SelectedBookingsPrice));
         }
 
         public ICommand CancelBookingsCommand { get; }
@@ -275,6 +326,8 @@ namespace Buchungssystem.App.ViewModel
             }
             SelectedBookings.Clear();
             RaisePropertyChanged(nameof(SelectedBookingsViewModels));
+            RaisePropertyChanged(nameof(ShowSelectedBooking));
+            RaisePropertyChanged(nameof(SelectedBookingsPrice));
         }
 
         public ICommand ToRoomsViewCommand { get; }

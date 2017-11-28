@@ -13,6 +13,8 @@ namespace Buchungssystem.Domain.Database
 
         Room PersistRoom(Room room);
 
+        Room Room(Table table);
+
         List<Table> Tables();
 
         List<Table> Tables(Room room);

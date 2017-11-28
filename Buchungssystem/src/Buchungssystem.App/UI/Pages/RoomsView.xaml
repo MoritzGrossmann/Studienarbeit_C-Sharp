@@ -14,8 +14,8 @@
         <viewModel:RoomsViewModel />
     </UserControl.DataContext>-->
 
-    <Grid>
-        <TabControl Height="auto" ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}">
+    <Grid VerticalAlignment="Stretch">
+        <TabControl ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}">
 
             <TabControl.ItemContainerStyle>
                 <Style TargetType="TabItem">
@@ -43,6 +43,7 @@
                     <ListView
                         x:Name="ListViewTables"
                         Height="auto"
+                        VerticalAlignment="Stretch"
                         ItemsSource="{Binding Path=TableViewModels, Mode=OneWay}">
 
                         <ListView.ItemContainerStyle>
@@ -53,15 +54,17 @@
                             </Style>
 
                         </ListView.ItemContainerStyle>
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
 
                         <ListView.ItemTemplate>
                             <DataTemplate DataType="viewModel:TableViewModel">
                                 <StackPanel Background="{Binding Path=Color, Mode=OneWay}">
+
+                                    <StackPanel.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{Binding ChangeStatusCommand}" Header="{Binding ChangeStatusTest}" />
+                                        </ContextMenu>
+                                    </StackPanel.ContextMenu>
+
                                     <StackPanel.InputBindings>
                                         <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
                                     </StackPanel.InputBindings>
@@ -109,7 +112,6 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-
     </Grid>
 </UserControl>
 

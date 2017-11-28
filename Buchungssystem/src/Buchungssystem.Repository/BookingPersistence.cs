@@ -89,5 +89,23 @@ namespace Buchungssystem.Repository
                 return context.Tables.FirstOrDefault(t => t.TableId == booking.TableId);
             }
         }
+
+        public void Occupy(Table table)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.Tables.FirstOrDefault(t => t.TableId == table.TableId).Occupied = true;
+                context.SaveChanges();
+            }
+        }
+
+        public void Clear(Table table)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.Tables.FirstOrDefault(t => t.TableId == table.TableId).Occupied = false;
+                context.SaveChanges();
+            }
+        }
     }
 }

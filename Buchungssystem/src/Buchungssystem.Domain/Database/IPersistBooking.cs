@@ -24,5 +24,9 @@ namespace Buchungssystem.Domain.Database
         Product Product(Booking booking);
 
         Table Table(Booking booking);
+
+        void Occupy(Table table);
+
+        void Clear(Table table);
     }
 }

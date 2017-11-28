@@ -21,6 +21,15 @@ namespace Buchungssystem.App.ViewModel
             SelectCommand = new RelayCommand(Select);
         }
 
+        public ProductViewModel(Product product, Action<Product> onProductSelect, Action<Product> onProductBook)
+        {
+            _product = product;
+            _onProductSelect = onProductSelect;
+            _onProductBook = onProductBook;
+            SelectCommand = new RelayCommand(Select);
+            BookCommand = new RelayCommand(Book);
+        }
+
         #endregion
 
         #region Properties
@@ -42,11 +51,20 @@ namespace Buchungssystem.App.ViewModel
             _onProductSelect?.Invoke(_product);
         }
 
+        public ICommand BookCommand { get; }
+
+        private void Book()
+        {
+            _onProductBook?.Invoke(_product);
+        }
+
         #endregion
 
         #region Actions
 
         private readonly Action<Product> _onProductSelect;
+
+        private readonly Action<Product> _onProductBook;
 
         #endregion
     }

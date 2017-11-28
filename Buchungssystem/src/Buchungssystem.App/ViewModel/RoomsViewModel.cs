@@ -49,6 +49,6 @@ namespace Buchungssystem.App.ViewModel
             _rooms = _baseDataPersitence.Rooms();
         }
 
-        private Action<Table> _onTableSelected;
+        private readonly Action<Table> _onTableSelected;
     }
 }

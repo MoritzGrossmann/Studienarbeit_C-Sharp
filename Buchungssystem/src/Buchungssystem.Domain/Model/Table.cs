@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,5 +26,8 @@ namespace Buchungssystem.Domain.Model
         public Room Room { get; set; }
 
         public List<Booking> Bookings { get; set; }
+
+        [Required]
+        public bool Occupied { get; set; }
     }
 }

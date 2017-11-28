@@ -10,6 +10,7 @@
     Title="MainWindow"
     Width="525"
     Height="350"
+    Icon="UI/Ressources/icon.png"
     WindowState="Maximized"
     mc:Ignorable="d">
 
@@ -28,21 +29,24 @@
     </Window.DataContext>
 
     <Grid>
-        <StackPanel>
-            <Menu Height="20">
-                <MenuItem />
-            </Menu>
-            <Border>
-                <Border.BorderThickness>
-                    <Thickness
-                        Bottom="5"
-                        Left="5"
-                        Right="5"
-                        Top="5" />
-                </Border.BorderThickness>
-                <ContentControl Content="{Binding CurrentViewModel}" />
-            </Border>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" Height="20">
+            <MenuItem />
+        </Menu>
+        <Border Grid.Row="1">
+            <Border.BorderThickness>
+                <Thickness
+                    Bottom="5"
+                    Left="5"
+                    Right="5"
+                    Top="5" />
+            </Border.BorderThickness>
+            <ContentControl Content="{Binding CurrentViewModel}" />
+        </Border>
     </Grid>
 </Window>
 

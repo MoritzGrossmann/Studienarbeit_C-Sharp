@@ -100,6 +100,14 @@ namespace Buchungssystem.Repository
             }
         }
 
+        public Room Room(Table table)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                return context.Rooms.FirstOrDefault(r => r.RoomId == table.RoomId);
+            }
+        }
+
         public void DeleteRoom(Room room)
         {
             using (var context = new BookingsystemEntities())
@@ -117,6 +125,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
+                table.Occupied = false;
                 context.Tables.Add(table);
                 context.SaveChanges();
                 return table;

@@ -191,11 +191,12 @@
       <Name>Buchungssystem.TestRepository</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\Ressources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Ressources\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

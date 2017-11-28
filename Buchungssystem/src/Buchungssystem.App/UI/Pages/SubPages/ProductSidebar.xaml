@@ -17,10 +17,19 @@
 
     <Grid>
         <StackPanel>
-            <Button Command="{Binding RevertCommand}">
-                <TextBlock Text="Zurück" />
-            </Button>
-            <TextBlock FontSize="20px" Text="{Binding Path=ProductGroup, Mode=OneWay}" />
+            <StackPanel Height="40px" Orientation="Horizontal">
+                <TextBlock
+                    Cursor="Hand"
+                    FontSize="20px"
+                    Text="Warengruppen">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Command="{Binding Path=RevertCommand}" MouseAction="LeftClick" />
+                    </TextBlock.InputBindings>
+                </TextBlock>
+                <TextBlock FontSize="20px" Text=" &gt;&gt; " />
+                <TextBlock FontSize="20px" Text="{Binding Path=ProductGroup, Mode=OneWay}" />
+            </StackPanel>
+
             <ListView
                 Background="Transparent"
                 BorderThickness="0"
@@ -46,11 +55,14 @@
                                 BorderBrush="LightGray"
                                 BorderThickness="1">
                                 <StackPanel>
-                                <TextBlock
-                                    FontSize="18px"
-                                    FontWeight="Bold"
-                                    Text="{Binding Path=Name, Mode=OneWay}" />
-                                    <TextBlock FontSize="14px" FontStyle="Italic" Text="{Binding Path=Price}"></TextBlock>
+                                    <TextBlock
+                                        FontSize="18px"
+                                        FontWeight="Bold"
+                                        Text="{Binding Path=Name, Mode=OneWay}" />
+                                    <TextBlock
+                                        FontSize="14px"
+                                        FontStyle="Italic"
+                                        Text="{Binding Path=Price}" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

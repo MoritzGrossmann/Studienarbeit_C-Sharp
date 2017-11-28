@@ -2,16 +2,17 @@
     x:Class="Buchungssystem.App.UI.Pages.TableView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:subPages="clr-namespace:Buchungssystem.App.UI.Pages.SubPages"
     xmlns:subViewModels="clr-namespace:Buchungssystem.App.ViewModel.SubViewModels"
     xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
-    xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
+
     <!--<UserControl.DataContext>
         <viewModel:TableBookViewModel />
     </UserControl.DataContext>-->
@@ -28,27 +29,137 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0">
             <ContentControl Content="{Binding SidebarViewModel}" />
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="10,0,0,0">
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Zurück" Command="{Binding Path=ToRoomsViewCommand}"></Button>
+        <Grid
+            Grid.Column="1"
+            Margin="10,0,10,10"
+            VerticalAlignment="Stretch">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+
+
+            <StackPanel
+                Grid.Row="0"
+                Grid.Column="0"
+                Orientation="Horizontal">
+                <TextBlock FontSize="20px" Text="{Binding Path=Room}">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Command="{Binding Path=ToRoomsViewCommand}" MouseAction="LeftClick" />
+                        <MouseBinding Command="{Binding Path=ToRoomsViewCommand}" MouseAction="LeftDoubleClick" />
+                    </TextBlock.InputBindings>
+                </TextBlock>
+                <TextBlock FontSize="20px" Text=" &gt;&gt; " />
                 <TextBlock FontSize="20px" Text="{Binding Path=TableName}" />
             </StackPanel>
-            <StackPanel>
-                <TextBlock FontSize="16px" Text="Angewählte Waren" />
-                <ListView ItemsSource="{Binding Path=SelectedProductViewModels}" Background="Transparent"
-                          BorderThickness="0">
+
+            <!--  Selected Products !  -->
+
+            <Grid
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,0,0,10"
+                VerticalAlignment="Stretch"
+                Visibility="{Binding Path=ShowSelectedProducts, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    FontSize="16px"
+                    Text="Angewählte Waren" />
+                <ListView
+                    Grid.Row="1"
+                    MinHeight="100"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemsSource="{Binding Path=SelectedProductViewModels}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="viewModel:ProductViewModel">
+                            <StackPanel>
+                                <StackPanel.InputBindings>
+                                    <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                                </StackPanel.InputBindings>
+
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Command="{Binding Path=BookCommand}" Header="Buchen" />
+                                        <MenuItem Command="{Binding Path=SelectCommand}" Header="Löschen" />
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
+
+                                <Border
+                                    Padding="10,15,15,15"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1">
+
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="18px"
+                                            FontWeight="Bold"
+                                            Text="{Binding Path=Name, Mode=OneWay}" />
+                                        <TextBlock
+                                            FontSize="14px"
+                                            FontStyle="Italic"
+                                            Text="{Binding Path=Price, Mode=OneWay}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Grid.Row="2" Command="{Binding BookProductsCommand}">
+                    <TextBlock Text="Buchen" />
+                </Button>
+            </Grid>
+
+            <!--  Bookings !  -->
+
+            <Grid Grid.Row="1" Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    FontSize="16px"
+                    Text="Buchungen" />
+                <ListView
+                    Grid.Row="1"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemsSource="{Binding Path=OpenBookingsViewModels}">
+
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -64,85 +175,80 @@
                     </ListView.ItemsPanel>
 
                     <ListView.ItemTemplate>
-                        <DataTemplate DataType="viewModel:ProductViewModel">
+                        <DataTemplate DataType="viewModel:BookingViewModel">
                             <StackPanel>
 
                                 <StackPanel.InputBindings>
                                     <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
                                 </StackPanel.InputBindings>
 
-                                <TextBlock Text="{Binding Path=Name}" />
-                                <TextBlock Text="{Binding Path=Price}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-
-                </ListView>
-                <Button Command="{Binding BookProductsCommand}">
-                    <TextBlock Text="Buchen" />
-                </Button>
-            </StackPanel>
-
-            <StackPanel>
-                <TextBlock FontSize="16px" Text="Buchungen" />
-                <ScrollViewer>
-                    <ListView ItemsSource="{Binding Path=OpenBookingsViewModels}" Background="Transparent"
-                              BorderThickness="0">
-
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                                <Setter Property="Padding" Value="0" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate DataType="viewModel:BookingViewModel">
-                                <StackPanel>
-
-                                    <StackPanel.InputBindings>
-                                        <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
-                                    </StackPanel.InputBindings>
-
+                                <Border
+                                    Padding="10,15,15,15"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition></ColumnDefinition>
-                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
-                                    
-                                    
-
-                                        <TextBlock Text="{Binding Path=Ware}" FontSize="16" FontWeight="Bold" Grid.Column="0" Grid.Row="0"/>
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="{Binding Path=Ware}" />
 
                                         <Grid Grid.Column="1">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="2*"></RowDefinition>
-                                                <RowDefinition Height="1*"></RowDefinition>
+                                                <RowDefinition Height="2*" />
+                                                <RowDefinition Height="1*" />
                                             </Grid.RowDefinitions>
 
-                                            <TextBlock Text="{Binding Path=Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" FontWeight="Bold" FontSize="14" Grid.Row="0" HorizontalAlignment="Right"/>
-                                            <TextBlock Text="{Binding Path=TimeStamp}" FontStyle="Italic" FontSize="12" Grid.Row="1" HorizontalAlignment="Right"/>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                HorizontalAlignment="Right"
+                                                FontSize="14"
+                                                FontWeight="Bold"
+                                                Text="{Binding Path=Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                HorizontalAlignment="Right"
+                                                FontSize="12"
+                                                FontStyle="Italic"
+                                                Text="{Binding Path=TimeStamp}" />
                                         </Grid>
                                     </Grid>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </ScrollViewer>
-            </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
 
-            <StackPanel>
-                <TextBlock FontSize="16px" Text="Angewählte Buchungen" />
-                <ScrollViewer>
-                <ListView ItemsSource="{Binding Path=SelectedBookingsViewModels}" Background="Transparent"
-                          BorderThickness="0">
+            <!--  Selected Bookings !  -->
+
+            <Grid
+                Grid.Row="2"
+                Grid.Column="0"
+                Visibility="{Binding Path=ShowSelectedBooking, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}">
+
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    FontSize="16px"
+                    Text="Angewählte Buchungen" />
+                <ListView
+                    Grid.Row="1"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemsSource="{Binding Path=SelectedBookingsViewModels}">
 
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -161,37 +267,88 @@
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="viewModel:BookingViewModel">
                             <StackPanel>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <TextBlock Text="{Binding Path=Ware}" FontSize="16" FontWeight="Bold" Grid.Column="0" Grid.Row="0"/>
+                                <StackPanel.InputBindings>
+                                    <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                                </StackPanel.InputBindings>
+                                <Border
+                                    Padding="10,15,15,15"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="1">
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="{Binding Path=Ware}" />
+
+                                        <Grid Grid.Column="1">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="2*"></RowDefinition>
-                                                <RowDefinition Height="1*"></RowDefinition>
+                                                <RowDefinition Height="2*" />
+                                                <RowDefinition Height="1*" />
                                             </Grid.RowDefinitions>
 
-                                        <TextBlock Text="{Binding Path=Price}" FontWeight="Bold" FontSize="14" Grid.Row="0" HorizontalAlignment="Right"/>
-                                        <TextBlock Text="{Binding Path=TimeStamp}" FontStyle="Italic" FontSize="12" Grid.Row="1" HorizontalAlignment="Right"/>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                HorizontalAlignment="Right"
+                                                FontSize="14"
+                                                FontWeight="Bold"
+                                                Text="{Binding Path=Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                HorizontalAlignment="Right"
+                                                FontSize="12"
+                                                FontStyle="Italic"
+                                                Text="{Binding Path=TimeStamp}" />
+                                        </Grid>
                                     </Grid>
-                                </Grid>
+                                </Border>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                </ScrollViewer>
-                <Button Command="{Binding PayBookingsCommand}">
-                    <TextBlock Text="Bezahlen" />
-                </Button>
 
-                <Button Command="{Binding CancleBookingsCommand}">
-                    <TextBlock Text="Stornieren" />
-                </Button>
-            </StackPanel>
-        </StackPanel>
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="0,10,0,10"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="16px"
+                        FontWeight="Bold"
+                        Text="Betrag: " />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        FontSize="16px"
+                        FontWeight="Bold"
+                        Text="{Binding Path=SelectedBookingsPrice, Mode=OneWay, Converter={converter:PriceToStringConverter}}" />
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <Button
+                        Width="150px"
+                        Height="Auto"
+                        Padding="10"
+                        Command="{Binding PayBookingsCommand}">
+                        <TextBlock FontSize="18px" Text="Bezahlen" />
+                    </Button>
+
+                    <Button
+                        Width="150px"
+                        Height="Auto"
+                        Padding="10"
+                        Command="{Binding CancleBookingsCommand}">
+                        <TextBlock FontSize="18px" Text="Stornieren" />
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

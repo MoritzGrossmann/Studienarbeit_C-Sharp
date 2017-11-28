@@ -22,7 +22,7 @@ namespace Buchungssystem.App.ViewModel.SubViewModels
 
         private readonly List<Product> _products;
 
-        public ObservableCollection<ProductViewModel> Products => new ObservableCollection<ProductViewModel>(_products.Select(p => new ProductViewModel(p, _onProductSelect)));
+        public ObservableCollection<ProductViewModel> Products => new ObservableCollection<ProductViewModel>(_products.Select(p => new ProductViewModel(p, _onProductSelect, _onProductBook)));
 
         private readonly ProductGroup _productGroup;
 
@@ -32,7 +32,7 @@ namespace Buchungssystem.App.ViewModel.SubViewModels
 
         #region Constructor
 
-        public ProductSidebarViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, ProductGroup productGroup, Action<Product> onProductSelect, Action onRevert)
+        public ProductSidebarViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, ProductGroup productGroup, Action<Product> onProductSelect, Action<Product> onProductBook, Action onRevert)
         {
             _baseDataPersistence = baseDataPersistence;
             _bookingPersistence = bookingPersistence;
@@ -43,6 +43,7 @@ namespace Buchungssystem.App.ViewModel.SubViewModels
             _products = _baseDataPersistence.Products(productGroup);
 
             _onProductSelect = onProductSelect;
+            _onProductBook = onProductBook;
             _onRevert = onRevert;
 
             RaisePropertyChanged(nameof(Products));
@@ -66,6 +67,8 @@ namespace Buchungssystem.App.ViewModel.SubViewModels
         #region Actions
 
         private readonly Action<Product> _onProductSelect;
+
+        private readonly Action<Product> _onProductBook;
 
         private readonly Action _onRevert;
 
