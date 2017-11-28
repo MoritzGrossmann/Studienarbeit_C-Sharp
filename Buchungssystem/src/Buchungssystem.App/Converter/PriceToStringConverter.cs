@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace Buchungssystem.App.Converter
 {
-    internal class PriceToStringConverter : IValueConverter
+    internal class PriceToStringConverter : BaseConverter, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

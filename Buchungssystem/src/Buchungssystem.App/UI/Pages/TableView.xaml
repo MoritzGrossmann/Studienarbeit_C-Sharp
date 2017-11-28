@@ -8,6 +8,7 @@
     xmlns:subPages="clr-namespace:Buchungssystem.App.UI.Pages.SubPages"
     xmlns:subViewModels="clr-namespace:Buchungssystem.App.ViewModel.SubViewModels"
     xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -27,8 +28,8 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -40,11 +41,14 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="10,0,0,0">
-            <TextBlock FontSize="20px" Text="{Binding Path=TableName}" />
-
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Zurück" Command="{Binding Path=ToRoomsViewCommand}"></Button>
+                <TextBlock FontSize="20px" Text="{Binding Path=TableName}" />
+            </StackPanel>
             <StackPanel>
                 <TextBlock FontSize="16px" Text="Angewählte Waren" />
-                <ListView ItemsSource="{Binding Path=SelectedProductViewModels}">
+                <ListView ItemsSource="{Binding Path=SelectedProductViewModels}" Background="Transparent"
+                          BorderThickness="0">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -81,41 +85,64 @@
 
             <StackPanel>
                 <TextBlock FontSize="16px" Text="Buchungen" />
-                <ListView ItemsSource="{Binding Path=OpenBookingsViewModels}">
+                <ScrollViewer>
+                    <ListView ItemsSource="{Binding Path=OpenBookingsViewModels}" Background="Transparent"
+                              BorderThickness="0">
 
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                            <Setter Property="Padding" Value="0" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
 
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate DataType="viewModel:BookingViewModel">
-                            <StackPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="viewModel:BookingViewModel">
+                                <StackPanel>
 
-                                <StackPanel.InputBindings>
-                                    <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
-                                </StackPanel.InputBindings>
+                                    <StackPanel.InputBindings>
+                                        <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
+                                    </StackPanel.InputBindings>
 
-                                <TextBlock Text="{Binding Path=Ware}" />
-                                <TextBlock Text="{Binding Path=Preis}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                    
+                                    
+
+                                        <TextBlock Text="{Binding Path=Ware}" FontSize="16" FontWeight="Bold" Grid.Column="0" Grid.Row="0"/>
+
+                                        <Grid Grid.Column="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="2*"></RowDefinition>
+                                                <RowDefinition Height="1*"></RowDefinition>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Text="{Binding Path=Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" FontWeight="Bold" FontSize="14" Grid.Row="0" HorizontalAlignment="Right"/>
+                                            <TextBlock Text="{Binding Path=TimeStamp}" FontStyle="Italic" FontSize="12" Grid.Row="1" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
             </StackPanel>
 
             <StackPanel>
                 <TextBlock FontSize="16px" Text="Angewählte Buchungen" />
-                <ListView ItemsSource="{Binding Path=SelectedBookingsViewModels}">
+                <ScrollViewer>
+                <ListView ItemsSource="{Binding Path=SelectedBookingsViewModels}" Background="Transparent"
+                          BorderThickness="0">
 
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -134,18 +161,29 @@
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="viewModel:BookingViewModel">
                             <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Text="{Binding Path=Ware}" FontSize="16" FontWeight="Bold" Grid.Column="0" Grid.Row="0"/>
 
-                                <StackPanel.InputBindings>
-                                    <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
-                                </StackPanel.InputBindings>
+                                    <Grid Grid.Column="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="2*"></RowDefinition>
+                                                <RowDefinition Height="1*"></RowDefinition>
+                                            </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding Path=Ware}" />
-                                <TextBlock Text="{Binding Path=Preis}" />
+                                        <TextBlock Text="{Binding Path=Price}" FontWeight="Bold" FontSize="14" Grid.Row="0" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Path=TimeStamp}" FontStyle="Italic" FontSize="12" Grid.Row="1" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </Grid>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
+                </ScrollViewer>
                 <Button Command="{Binding PayBookingsCommand}">
                     <TextBlock Text="Bezahlen" />
                 </Button>

@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\BaseConverter.cs" />
     <Compile Include="Converter\PriceToStringConverter.cs" />
     <Compile Include="UI\Pages\RoomsView.xaml.cs">
       <DependentUpon>RoomsView.xaml</DependentUpon>

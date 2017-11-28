@@ -31,33 +31,27 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
                         <Setter Property="Padding" Value="0" />
-
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="BorderBrush" Value="Transparent" />
-                                <Setter Property="BorderThickness" Value="0" />
-                            </Trigger>
-                        </Style.Triggers>
-
                     </Style>
 
                 </ListView.ItemContainerStyle>
 
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="viewModel:ProductViewModel">
-                        <StackPanel Margin="5">
+                        <StackPanel Margin="1">
                             <StackPanel.InputBindings>
                                 <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
                             </StackPanel.InputBindings>
                             <Border
-                                Padding="5px"
+                                Padding="10,15,15,15"
                                 BorderBrush="LightGray"
-                                BorderThickness="3">
+                                BorderThickness="1">
+                                <StackPanel>
                                 <TextBlock
                                     FontSize="18px"
                                     FontWeight="Bold"
                                     Text="{Binding Path=Name, Mode=OneWay}" />
+                                    <TextBlock FontSize="14px" FontStyle="Italic" Text="{Binding Path=Price}"></TextBlock>
+                                </StackPanel>
                             </Border>
                         </StackPanel>
                     </DataTemplate>

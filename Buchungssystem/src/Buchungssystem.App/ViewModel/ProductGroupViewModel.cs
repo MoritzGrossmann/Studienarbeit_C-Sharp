@@ -21,6 +21,8 @@ namespace Buchungssystem.App.ViewModel
             _productGroup = productGroup;
             _onProductGroupSelect = onProductGroupSelect;
 
+            _productCount = _baseDataPersistence.Products(_productGroup).Count;
+
             SelectCommand = new RelayCommand(Select);
         }
 
@@ -48,6 +50,10 @@ namespace Buchungssystem.App.ViewModel
         #region Commands
 
         public ICommand SelectCommand { get; }
+
+        private readonly int _productCount;
+
+        public string ProductCount => $"{_productCount} Waren";
 
         private void Select()
         {

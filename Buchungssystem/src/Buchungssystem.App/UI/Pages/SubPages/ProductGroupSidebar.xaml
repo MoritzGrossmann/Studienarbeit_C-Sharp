@@ -18,7 +18,9 @@
     <Grid>
         <StackPanel>
             <TextBlock FontSize="20px" Text="Warengruppen" />
-            <ListView ItemsSource="{Binding Path=ProductGroups}">
+            <ListView ItemsSource="{Binding Path=ProductGroups}" 
+                      Background="Transparent"
+                      BorderThickness="0">
 
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -31,14 +33,22 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="viewModel:ProductGroupViewModel">
-                        <StackPanel>
+                        <StackPanel Margin="1">
                             <StackPanel.InputBindings>
                                 <MouseBinding Command="{Binding SelectCommand}" MouseAction="LeftClick" />
                             </StackPanel.InputBindings>
-                            <TextBlock
-                                FontSize="18px"
-                                FontWeight="Bold"
-                                Text="{Binding Path=Name, Mode=OneWay}" />
+                            <Border
+                                Padding="10,15,15,15"
+                                BorderBrush="LightGray"
+                                BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock
+                                    FontSize="18px"
+                                    FontWeight="Bold"
+                                    Text="{Binding Path=Name, Mode=OneWay}" />
+                                    <TextBlock FontSize="14px" FontStyle="Italic" Text="{Binding Path=ProductCount}"></TextBlock>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

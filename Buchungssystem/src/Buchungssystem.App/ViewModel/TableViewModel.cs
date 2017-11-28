@@ -62,7 +62,7 @@ namespace Buchungssystem.App.ViewModel
             get
             {
                 decimal sum = 0;
-                _openBookings.ForEach(b => sum += b.Preis);
+                _openBookings.ForEach(b => sum += b.Price);
                 var culture = CultureInfo.CurrentCulture;
                 return
                     $"{decimal.Round(sum, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)} {culture.NumberFormat.CurrencySymbol}";

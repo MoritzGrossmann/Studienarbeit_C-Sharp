@@ -10,6 +10,18 @@ namespace Buchungssystem.Repository
     {
         public Booking Book(Booking booking)
         {
+            if (booking.Product != null)
+            {
+                booking.ProductId = booking.Product.ProductId;
+                booking.Product = null;
+            }
+
+            if (booking.Table != null)
+            {
+                booking.TableId = booking.Table.TableId;
+                booking.Table = null;
+            }
+
             using (var context = new BookingsystemEntities())
             {
                 context.Bookings.Add(booking);

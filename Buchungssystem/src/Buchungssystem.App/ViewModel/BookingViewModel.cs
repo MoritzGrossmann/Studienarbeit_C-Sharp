@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
@@ -12,14 +13,16 @@ namespace Buchungssystem.App.ViewModel
 
         private readonly IPersistBooking _bookingPersistence;
 
-        private Booking _booking;
+        private readonly Booking _booking;
         public Booking Booking => _booking;
 
-        private Product _product;
+        private readonly Product _product;
 
         public string Ware => _product.Name;
 
-        public decimal Preis => _product.Price;
+        public decimal Price => _product.Price;
+
+        public string TimeStamp => _booking.Timestamp.ToShortTimeString();
 
         public BookingViewModel(Booking booking)
         {
@@ -36,8 +39,6 @@ namespace Buchungssystem.App.ViewModel
 
             SelectCommand = new RelayCommand(Select);
         }
-
-
 
         #region Commands
 

@@ -44,7 +44,7 @@ namespace Buchungssystem.App.ViewModel
             CancelBookingsCommand = new RelayCommand(CancleBookings);
         }
 
-        public TableBookViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, Table table)
+        public TableBookViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, Action toRoomsViewAction, Table table)
         {
             _openBookings = new List<Booking>();
             _selectedBookings = new List<Booking>();
@@ -54,6 +54,10 @@ namespace Buchungssystem.App.ViewModel
             _table = table;
             _baseDataPersistence = baseDataPersistence;
             _bookingPersistence = bookingPersistence;
+
+            _toRoomsViewAction = toRoomsViewAction;
+
+            ToRoomsViewCommand = new RelayCommand(ToRoomsView);
 
             GetProductGroups();
 
@@ -141,7 +145,7 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        public ObservableCollection<ProductViewModel> SelectedProductViewModels => new ObservableCollection<ProductViewModel>(_selectedProducts.Select(p => new ProductViewModel(p, SelectProduct)));
+        public ObservableCollection<ProductViewModel> SelectedProductViewModels => new ObservableCollection<ProductViewModel>(_selectedProducts.Select(p => new ProductViewModel(p, DeSelectProduct)));
 
         private BaseViewModel _sidebarViewModel;
 
@@ -173,6 +177,13 @@ namespace Buchungssystem.App.ViewModel
         private void SelectProduct(Product product)
         {
             SelectedProducts.Add(product);
+            RaisePropertyChanged(nameof(SelectedProducts));
+            RaisePropertyChanged(nameof(SelectedProductViewModels));
+        }
+
+        private void DeSelectProduct(Product product)
+        {
+            SelectedProducts.Remove(product);
             RaisePropertyChanged(nameof(SelectedProducts));
             RaisePropertyChanged(nameof(SelectedProductViewModels));
         }
@@ -264,6 +275,15 @@ namespace Buchungssystem.App.ViewModel
             }
             SelectedBookings.Clear();
             RaisePropertyChanged(nameof(SelectedBookingsViewModels));
+        }
+
+        public ICommand ToRoomsViewCommand { get; }
+
+        private readonly Action _toRoomsViewAction;
+
+        public void ToRoomsView()
+        {
+            _toRoomsViewAction?.Invoke();
         }
 
         #endregion

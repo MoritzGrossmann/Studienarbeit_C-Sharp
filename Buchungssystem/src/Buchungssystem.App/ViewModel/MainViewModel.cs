@@ -13,7 +13,7 @@ namespace Buchungssystem.App.ViewModel
             _baseDataPersistence = new TestPersitence();
             _bookingPersistence = new TestPersitence();
 
-            _currentViewModel = new RoomViewModel();
+            _currentViewModel = new RoomsViewModel();
         }
 
 
@@ -22,15 +22,12 @@ namespace Buchungssystem.App.ViewModel
             _baseDataPersistence = baseDataPersistence;
             _bookingPersistence = bookingPersistence;
 
-            _currentViewModel = baseDataPersistence == null
-                ? new RoomsViewModel()
-                : new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
+            _currentViewModel = new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
         }
 
         void TableSelected(Table table)
         {
-            _currentViewModel = new TableBookViewModel(_baseDataPersistence, _bookingPersistence, table);
-            RaisePropertyChanged(nameof(CurrentViewModel));
+            CurrentViewModel = new TableBookViewModel(_baseDataPersistence, _bookingPersistence, ShowRoomsView, table);
         }
 
         private readonly IPersistBaseData _baseDataPersistence;
@@ -55,6 +52,15 @@ namespace Buchungssystem.App.ViewModel
         #endregion
 
         #region Commands
+
+        #endregion
+
+        #region Actions
+
+        private void ShowRoomsView()
+        {
+            CurrentViewModel = new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
+        }
 
         #endregion
 
