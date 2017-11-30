@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Buchungssystem.App.ViewModel.Base;
+﻿using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.TestRepository;
 
-namespace Buchungssystem.App.ViewModel.SubViewModels.BaseDataManagement
+namespace Buchungssystem.App.ViewModel.BaseDataManagement
 {
     internal class BaseDataManagementViewModel : BaseViewModel
     {
@@ -23,7 +18,7 @@ namespace Buchungssystem.App.ViewModel.SubViewModels.BaseDataManagement
         public BaseDataManagementViewModel(IPersistBaseData baseDataPersistence)
         {
             _baseDataPersistence = baseDataPersistence;
-            CurrentViewModel = new ChangeRoomsViewModel(_baseDataPersistence);
+            CurrentViewModel = new ChangeRoomsViewModel(_baseDataPersistence.Rooms());
         }
 
         #endregion

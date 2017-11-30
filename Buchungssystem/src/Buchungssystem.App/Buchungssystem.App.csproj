@@ -121,21 +121,21 @@
     <Compile Include="UI\Pages\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\BookingViewModel.cs" />
+    <Compile Include="ViewModel\TableView\BookingViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\Base\RelayCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
-    <Compile Include="ViewModel\SubViewModels\BaseDataManagement\BaseDataManagementViewModel.cs" />
-    <Compile Include="ViewModel\SubViewModels\BaseDataManagement\ChangeRoomsViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\BaseDataManagementViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\ChangeRoomsViewModel.cs" />
     <Compile Include="ViewModel\SubViewModels\ProductGroupSidebarViewModel.cs" />
     <Compile Include="ViewModel\ProductGroupViewModel.cs" />
-    <Compile Include="ViewModel\RoomsViewModel.cs" />
-    <Compile Include="ViewModel\RoomViewModel.cs" />
+    <Compile Include="ViewModel\RoomView\RoomListViewModel.cs" />
+    <Compile Include="ViewModel\RoomView\RoomViewModel.cs" />
     <Compile Include="ViewModel\SubViewModels\ProductSidebarViewModel.cs" />
-    <Compile Include="ViewModel\TableBookViewModel.cs" />
-    <Compile Include="ViewModel\TableViewModel.cs" />
+    <Compile Include="ViewModel\TableView\TableBookViewModel.cs" />
+    <Compile Include="ViewModel\TableView\TableViewModel.cs" />
     <Compile Include="ViewModel\TableView\BookingListViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -6,6 +6,8 @@
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
+    xmlns:roomView="clr-namespace:Buchungssystem.App.ViewModel.RoomView"
+    xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -28,7 +30,7 @@
             </TabControl.ItemContainerStyle>
 
             <TabControl.ItemTemplate>
-                <DataTemplate DataType="viewModel:RoomViewModel">
+                <DataTemplate DataType="roomView:RoomViewModel">
                     <StackPanel
                         Height="auto"
                         MinWidth="100"
@@ -42,7 +44,7 @@
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
-                <DataTemplate DataType="viewModel:RoomViewModel">
+                <DataTemplate DataType="roomView:RoomViewModel">
                     <ListView
                         x:Name="ListViewTables"
                         Height="auto"
@@ -59,7 +61,7 @@
                         </ListView.ItemContainerStyle>
 
                         <ListView.ItemTemplate>
-                            <DataTemplate DataType="viewModel:TableViewModel">
+                            <DataTemplate DataType="tableView:TableViewModel">
                                 <StackPanel Background="{Binding Path=Color, Mode=OneWay}">
 
                                     <StackPanel.ContextMenu>

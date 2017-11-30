@@ -7,18 +7,16 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
+using Buchungssystem.Domain.Model;
+using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
 {
     internal class BookingListViewModel : BaseViewModel
     {
-        private readonly IPersistBooking _bookingPersistence;
-
-        public BookingListViewModel(IPersistBooking bookingPersistence, List<BookingViewModel> bookingViewModels,
-            Action<BookingViewModel> selectBooking)
+        public BookingListViewModel(List<Booking> bookings, Action<BookingViewModel> onBookingSelect)
         {
-            _bookingPersistence = bookingPersistence;
-            _bookingViewModels = new ObservableCollection<BookingViewModel>(bookingViewModels);
+            _bookingViewModels = new ObservableCollection<BookingViewModel>(bookings.Select(b => new BookingViewModel(b, onBookingSelect)));
             _selectBooking = SelectBooking;
         }
 
@@ -32,6 +30,16 @@ namespace Buchungssystem.App.ViewModel.TableView
             set => _bookingViewModels = value;
         }
 
+        public decimal Price
+        {
+            get
+            {
+                decimal sum = 0;
+                _bookingViewModels.ForEach(bvm => sum += bvm.Booking.Product.Price);
+                return sum;
+            }
+        }
+
         #endregion
 
         #region Actions
@@ -41,7 +49,15 @@ namespace Buchungssystem.App.ViewModel.TableView
         private void SelectBooking(BookingViewModel bookingViewModel)
         {
             BookingViewModels.Remove(bookingViewModel);
+            RaisePropertyChanged(nameof(Price));
             _selectBooking?.Invoke(bookingViewModel);
+        }
+
+        public void AddBookingViewModel(BookingViewModel bookingViewModel, Action<BookingViewModel> newSelectAction)
+        {
+            bookingViewModel.OnSelect = newSelectAction;
+            BookingViewModels.Add(bookingViewModel);
+            RaisePropertyChanged(nameof(Price));
         }
 
         #region Actions for Commands
@@ -52,7 +68,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             {
                 try
                 {
-                    _bookingPersistence.Pay(bookingViewModel.Booking);
+                    // TODO
                 }
                 catch (Exception)
                 {

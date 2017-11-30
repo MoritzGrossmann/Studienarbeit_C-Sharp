@@ -7,10 +7,9 @@ using System.Windows.Media;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
-using Buchungssystem.Repository;
 using Unity.Interception.Utilities;
 
-namespace Buchungssystem.App.ViewModel
+namespace Buchungssystem.App.ViewModel.TableView
 {
     internal class TableViewModel : BaseViewModel
     {
@@ -62,7 +61,7 @@ namespace Buchungssystem.App.ViewModel
             get
             {
                 decimal sum = 0;
-                _openBookings.ForEach(b => sum += b.Price);
+                _openBookings.ForEach(b => sum += b.Booking.Product.Price);
                 var culture = CultureInfo.CurrentCulture;
                 return
                     $"{decimal.Round(sum, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)} {culture.NumberFormat.CurrencySymbol}";
@@ -117,7 +116,7 @@ namespace Buchungssystem.App.ViewModel
 
             _openBookings = new ObservableCollection<BookingViewModel>(
                 _bookingPersistence.Bookings(_table, BookingStatus.Open)
-                    .Select(booking => new BookingViewModel(_baseDataPersistence, _bookingPersistence, booking)));
+                    .Select(booking => new BookingViewModel(booking)));
 
             SelectCommand = new RelayCommand(Select);
             ChangeStatusCommand = new RelayCommand(ChangeStatus);

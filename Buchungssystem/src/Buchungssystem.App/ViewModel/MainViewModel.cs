@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
-using Buchungssystem.App.ViewModel.SubViewModels.BaseDataManagement;
+using Buchungssystem.App.ViewModel.BaseDataManagement;
+using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.TestRepository;
@@ -10,12 +11,15 @@ namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
+        private readonly IPersistBaseData _baseDataPersistence;
+
+        private readonly IPersistBooking _bookingPersistence;
         public MainViewModel()
         {
             _baseDataPersistence = new TestPersitence();
             _bookingPersistence = new TestPersitence();
 
-            _currentViewModel = new RoomsViewModel();
+            _currentViewModel = new RoomListViewModel(_baseDataPersistence.Rooms());
         }
 
 
@@ -24,19 +28,10 @@ namespace Buchungssystem.App.ViewModel
             _baseDataPersistence = baseDataPersistence;
             _bookingPersistence = bookingPersistence;
 
-            _currentViewModel = new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
+            _currentViewModel = new RoomListViewModel(_baseDataPersistence.Rooms());
 
             ToBaseDataCommand = new RelayCommand(ToBaseData);
         }
-
-        void TableSelected(Table table)
-        {
-            CurrentViewModel = new TableBookViewModel(_baseDataPersistence, _bookingPersistence, ShowRoomsView, table);
-        }
-
-        private readonly IPersistBaseData _baseDataPersistence;
-
-        private readonly IPersistBooking _bookingPersistence;
 
         #region Propertys
 
@@ -56,17 +51,12 @@ namespace Buchungssystem.App.ViewModel
         #endregion
 
         #region Commands
-
+   
         public ICommand ToBaseDataCommand {get;}
 
         #endregion
 
         #region Actions
-
-        private void ShowRoomsView()
-        {
-            CurrentViewModel = new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
-        }
 
         private void ToBaseData()
         {

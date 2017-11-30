@@ -4,12 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:ViewModel="clr-namespace:Buchungssystem.App.ViewModel"
-    xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.ViewModel.SubViewModels.BaseDataManagement"
     xmlns:baseDataManagement1="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Buchungssystem.App"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="clr-namespace:Buchungssystem.App.UI.Pages"
+    xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement"
+    xmlns:roomView="clr-namespace:Buchungssystem.App.ViewModel.RoomView"
+    xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
     Title="MainWindow"
     Width="525"
     Height="350"
@@ -18,11 +20,11 @@
     mc:Ignorable="d">
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type ViewModel:TableBookViewModel}">
+        <DataTemplate DataType="{x:Type tableView:TableBookViewModel}">
             <pages:TableView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type ViewModel:RoomsViewModel}">
+        <DataTemplate DataType="{x:Type roomView:RoomListViewModel}">
             <pages:RoomsView />
         </DataTemplate>
 
