@@ -44,7 +44,7 @@ namespace Buchungssystem.App.ViewModel
         /// Repräsentiert die Tables, die in einem Room stehen
         /// </summary>
 
-        private List<Table> _tables;
+        private List<Table> _tables = new List<Table>();
         public List<Table> Tables
         {
             get => _tables;
@@ -121,6 +121,20 @@ namespace Buchungssystem.App.ViewModel
             _tables = _basedataPersistence.Tables(_room);
         }
 
+        public RoomViewModel(IPersistBaseData baseDataPErsistence, Room room, Action<Room> onSave, Action<Room> onSelect)
+        {
+            _basedataPersistence = baseDataPErsistence;
+            _onSave = onSave;
+            _onSelect = onSelect;
+            _room = room;
+
+            Tables = _basedataPersistence.Tables(_room);
+
+            SaveCommand = new RelayCommand(Save);
+            SelectCommand = new RelayCommand(Select);
+            EditCommand = new RelayCommand(() => Edit = !Edit);
+        }
+
         public RoomViewModel()
         {
             _basedataPersistence = new TestPersitence();
@@ -134,12 +148,11 @@ namespace Buchungssystem.App.ViewModel
 
         #region Commands
 
-        public ICommand SelectCommand;
+        public ICommand SaveCommand { get; }
 
-        public void Select()
-        {
-            
-        }
+        public ICommand SelectCommand { get; }
+
+        public ICommand EditCommand { get; }
 
         public ICommand ChooseTableCommand;
 
@@ -147,6 +160,49 @@ namespace Buchungssystem.App.ViewModel
         {
             
         }
+
+        #endregion
+
+        #region Actions
+
+        private readonly Action<Room> _onSave;
+
+        private readonly Action<Room> _onSelect;
+
+        public void Save()
+        {
+            var r = new Room() { Name = Name };
+            if (_room.RoomId > 0)
+            {
+                r.RoomId = _room.RoomId;
+            }
+            _onSave?.Invoke(r);
+        }
+
+        public void Select()
+        {
+            _onSelect?.Invoke(_room);
+        }
+
+        #endregion
+
+        #region States
+
+        private bool _edit = false;
+
+        public bool Edit
+        {
+            get => _edit;
+            set
+            {
+                if (_edit == value) return;
+                _edit = value;
+                RaisePropertyChanged(nameof(Edit));
+                RaisePropertyChanged(nameof(NoEdit));
+            }
+        }
+
+        public bool NoEdit => !Edit;
 
         #endregion
     }

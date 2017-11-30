@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="Buchungssystem.App.UI.Pages.BaseDataManagement.BaseDataManagementView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.ViewModel.SubViewModels.BaseDataManagement"
+    xmlns:baseDataManagement1="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type baseDataManagement:ChangeRoomsViewModel}">
+            <baseDataManagement1:ChangeRoomsView />
+        </DataTemplate>
+    </UserControl.Resources>
+
+
+    <DockPanel>
+        <ListView DockPanel.Dock="Left">
+            <ListViewItem Content="Räume" />
+            <ListViewItem Content="Tische" />
+            <ListViewItem Content="Warengruppen" />
+            <ListViewItem Content="Waren" />
+        </ListView>
+
+        <Grid DockPanel.Dock="Bottom">
+            <ContentControl
+                Grid.ColumnSpan="2"
+                Margin="0,0,0.4,0"
+                Content="{Binding CurrentViewModel}" />
+        </Grid>
+    </DockPanel>
+</UserControl>

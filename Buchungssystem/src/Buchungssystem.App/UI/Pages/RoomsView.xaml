@@ -15,7 +15,10 @@
     </UserControl.DataContext>-->
 
     <Grid VerticalAlignment="Stretch">
-        <TabControl ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}">
+        <TabControl
+            ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}"
+            SelectedIndex="{Binding Path=SelectedIndex, Mode=TwoWay}"
+            SelectedItem="{Binding Path=SelectedRoom, Mode=TwoWay}">
 
             <TabControl.ItemContainerStyle>
                 <Style TargetType="TabItem">

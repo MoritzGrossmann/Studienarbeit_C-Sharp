@@ -31,6 +31,33 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
+        private RoomViewModel _selectedRoom;
+
+        public RoomViewModel SelectedRoom
+        {
+            get => _selectedRoom;
+            set
+            {
+                if (_selectedRoom == value) return;
+                _selectedRoom = value;
+                RaisePropertyChanged(nameof(SelectedRoom));
+            }
+        }
+
+        private int _selectedIndex = 0;
+
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                if (_selectedIndex == value) return;
+                _selectedIndex = value;
+                RaisePropertyChanged(nameof(SelectedIndex));
+                RaisePropertyChanged(nameof(SelectedRoom));
+            }
+        }
+
         public ObservableCollection<RoomViewModel> RoomViewModels => new ObservableCollection<RoomViewModel>(_rooms.Select(room => new RoomViewModel(_baseDataPersitence, _bookingPersistence, room, _onTableSelected)));
 
         public RoomsViewModel() 
@@ -39,6 +66,8 @@ namespace Buchungssystem.App.ViewModel
             _bookingPersistence = new TestPersitence();
             _onTableSelected = null;
             _rooms = _baseDataPersitence.Rooms();
+
+            SelectedRoom = RoomViewModels[0];
         }
 
         public RoomsViewModel(IPersistBaseData baseDataPersitence, IPersistBooking bookingPersistence, Action<Table> onTableSelected)
@@ -47,6 +76,8 @@ namespace Buchungssystem.App.ViewModel
             _bookingPersistence = bookingPersistence;
             _onTableSelected = onTableSelected;
             _rooms = _baseDataPersitence.Rooms();
+
+            SelectedIndex = 0;
         }
 
         private readonly Action<Table> _onTableSelected;

@@ -1,4 +1,6 @@
-﻿using Buchungssystem.App.ViewModel.Base;
+﻿using System.Windows.Input;
+using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.App.ViewModel.SubViewModels.BaseDataManagement;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.TestRepository;
@@ -23,6 +25,8 @@ namespace Buchungssystem.App.ViewModel
             _bookingPersistence = bookingPersistence;
 
             _currentViewModel = new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
+
+            ToBaseDataCommand = new RelayCommand(ToBaseData);
         }
 
         void TableSelected(Table table)
@@ -53,6 +57,8 @@ namespace Buchungssystem.App.ViewModel
 
         #region Commands
 
+        public ICommand ToBaseDataCommand {get;}
+
         #endregion
 
         #region Actions
@@ -60,6 +66,11 @@ namespace Buchungssystem.App.ViewModel
         private void ShowRoomsView()
         {
             CurrentViewModel = new RoomsViewModel(_baseDataPersistence, _bookingPersistence, TableSelected);
+        }
+
+        private void ToBaseData()
+        {
+            CurrentViewModel = new BaseDataManagementViewModel(_baseDataPersistence);
         }
 
         #endregion

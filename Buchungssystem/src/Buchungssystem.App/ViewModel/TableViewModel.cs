@@ -124,6 +124,15 @@ namespace Buchungssystem.App.ViewModel
 
         }
 
+        public TableViewModel(IPersistBaseData baseDataPersistence, Table table, Action<Table> onSelect)
+        {
+            _baseDataPersistence = baseDataPersistence;
+            _onTableSelected = onSelect;
+            _table = table;
+
+            SelectCommand = new RelayCommand(Select);
+        }
+
         private readonly Action<Table> _onTableSelected;
         public TableViewModel()
         {

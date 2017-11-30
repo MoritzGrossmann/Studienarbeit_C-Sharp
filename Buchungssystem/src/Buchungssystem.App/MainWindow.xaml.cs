@@ -16,13 +16,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Buchungssystem.App.ViewModel;
 using Buchungssystem.Repository;
+using MahApps.Metro.Controls;
 
 namespace Buchungssystem.App
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {

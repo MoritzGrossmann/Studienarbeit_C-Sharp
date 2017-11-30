@@ -34,6 +34,7 @@ namespace Buchungssystem.App.ViewModel
             _baseDataPersistence = new TestPersitence();
             _bookingPersistence = new TestPersitence();
             _table = _baseDataPersistence.Tables().FirstOrDefault();
+          
 
             GetProductGroups();
 
@@ -176,6 +177,16 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
+        public decimal BookingsPrice
+        {
+            get
+            {
+                decimal sum = 0;
+                OpenBookingsViewModels.ForEach(b => sum += b.Price);
+                return sum;
+            }
+        }
+
         #endregion
 
         #region Actions
@@ -234,6 +245,8 @@ namespace Buchungssystem.App.ViewModel
             RaisePropertyChanged(nameof(ShowSelectedProducts));
         }
 
+        private readonly Action _toRoomsViewAction;
+
         #endregion
 
         #region Commands
@@ -254,6 +267,7 @@ namespace Buchungssystem.App.ViewModel
             RaisePropertyChanged(nameof(OpenBookingsViewModels));
             RaisePropertyChanged(nameof(ShowSelectedBooking));
             RaisePropertyChanged(nameof(SelectedBookingsPrice));
+            RaisePropertyChanged(nameof(BookingsPrice));
         }
 
         public ICommand BookProductsCommand { get; }
@@ -286,6 +300,7 @@ namespace Buchungssystem.App.ViewModel
             RaisePropertyChanged(nameof(OpenBookingsViewModels));
             RaisePropertyChanged(nameof(SelectedProductViewModels));
             RaisePropertyChanged(nameof(ShowSelectedProducts));
+            RaisePropertyChanged(nameof(BookingsPrice));
         }
 
         public ICommand PayBookingsCommand { get; }
@@ -331,8 +346,6 @@ namespace Buchungssystem.App.ViewModel
         }
 
         public ICommand ToRoomsViewCommand { get; }
-
-        private readonly Action _toRoomsViewAction;
 
         public void ToRoomsView()
         {
