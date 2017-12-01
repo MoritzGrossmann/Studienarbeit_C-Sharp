@@ -8,7 +8,7 @@ using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.TestRepository
 {
-    public class TestPersitence : IPersistBaseData, IPersistBooking
+    public class TestPersitence : IPersistBookingSystemData, IPersistBooking
     {
         private static readonly Repository Repository = new Repository();
         public List<Room> Rooms()

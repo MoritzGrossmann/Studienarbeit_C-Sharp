@@ -6,7 +6,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 {
     internal class BaseDataManagementViewModel : BaseViewModel
     {
-        private readonly IPersistBaseData _baseDataPersistence;
+        private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
 
         #region Contructor
 
@@ -15,10 +15,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             
         }
 
-        public BaseDataManagementViewModel(IPersistBaseData baseDataPersistence)
+        public BaseDataManagementViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
-            _baseDataPersistence = baseDataPersistence;
-            CurrentViewModel = new ChangeRoomsViewModel(_baseDataPersistence.Rooms());
+            _bookingSystemDataPersistence = bookingSystemDataPersistence;
+            CurrentViewModel = new ChangeRoomsViewModel(_bookingSystemDataPersistence.Rooms());
         }
 
         #endregion

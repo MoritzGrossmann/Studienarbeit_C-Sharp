@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Data.Entity;
 using Buchungssystem.Domain.Model;
+using Booking = Buchungssystem.Repository.Model.Booking;
+using Product = Buchungssystem.Repository.Model.Product;
+using Room = Buchungssystem.Repository.Model.Room;
+using Table = Buchungssystem.Repository.Model.Table;
 
 namespace Buchungssystem.Repository
 {

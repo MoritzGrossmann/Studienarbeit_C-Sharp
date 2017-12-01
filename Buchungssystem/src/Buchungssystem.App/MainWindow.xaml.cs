@@ -31,7 +31,7 @@ namespace Buchungssystem.App
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             InitializeComponent();
-            DataContext = new MainViewModel(new BaseDataPersitence(), new BookingPersistence());
+            DataContext = new MainViewModel(new BookingSystemDataPersitence(), new BookingPersistence());
         }
     }
 }

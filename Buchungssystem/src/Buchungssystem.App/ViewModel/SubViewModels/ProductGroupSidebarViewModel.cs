@@ -11,7 +11,7 @@ namespace Buchungssystem.App.ViewModel.SubViewModels
 {
     internal class ProductGroupSidebarViewModel : BaseViewModel
     {
-        private readonly IPersistBaseData _baseDataPersistence;
+        private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
 
         private readonly IPersistBooking _bookingPersistence;
 
@@ -21,19 +21,19 @@ namespace Buchungssystem.App.ViewModel.SubViewModels
 
         public ObservableCollection<ProductGroupViewModel> ProductGroups
         {
-            get => new ObservableCollection<ProductGroupViewModel>(_productGroups.Select(p => new ProductGroupViewModel(_baseDataPersistence, _bookingPersistence, p, _onProductGroupSelect)));
+            get => new ObservableCollection<ProductGroupViewModel>(_productGroups.Select(p => new ProductGroupViewModel(_bookingSystemDataPersistence, _bookingPersistence, p, _onProductGroupSelect)));
         }
 
         #endregion
 
         #region Contructor
 
-        public ProductGroupSidebarViewModel(IPersistBaseData baseDataPerisstence, IPersistBooking bookingPersistence, Action<ProductGroup> onPRoductGroupSelect)
+        public ProductGroupSidebarViewModel(IPersistBookingSystemData bookingSystemDataPerisstence, IPersistBooking bookingPersistence, Action<ProductGroup> onPRoductGroupSelect)
         {
-            _baseDataPersistence = baseDataPerisstence;
+            _bookingSystemDataPersistence = bookingSystemDataPerisstence;
             _bookingPersistence = bookingPersistence;
 
-            _productGroups = baseDataPerisstence.ProductGroups();
+            _productGroups = bookingSystemDataPerisstence.ProductGroups();
             _onProductGroupSelect = onPRoductGroupSelect;
 
             RaisePropertyChanged(nameof(ProductGroups));
@@ -41,10 +41,10 @@ namespace Buchungssystem.App.ViewModel.SubViewModels
 
         public ProductGroupSidebarViewModel()
         {
-            _baseDataPersistence = new TestPersitence();
+            _bookingSystemDataPersistence = new TestPersitence();
             _bookingPersistence = new TestPersitence();
 
-            _productGroups = _baseDataPersistence.ProductGroups();
+            _productGroups = _bookingSystemDataPersistence.ProductGroups();
 
             _onProductGroupSelect = null;
             RaisePropertyChanged(nameof(ProductGroups));

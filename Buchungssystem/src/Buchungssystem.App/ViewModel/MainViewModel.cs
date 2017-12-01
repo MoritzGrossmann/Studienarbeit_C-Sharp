@@ -11,24 +11,24 @@ namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
-        private readonly IPersistBaseData _baseDataPersistence;
+        private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
 
         private readonly IPersistBooking _bookingPersistence;
         public MainViewModel()
         {
-            _baseDataPersistence = new TestPersitence();
+            _bookingSystemDataPersistence = new TestPersitence();
             _bookingPersistence = new TestPersitence();
 
-            _currentViewModel = new RoomListViewModel(_baseDataPersistence.Rooms());
+            _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
         }
 
 
-        public MainViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence)
+        public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence, IPersistBooking bookingPersistence)
         {
-            _baseDataPersistence = baseDataPersistence;
+            _bookingSystemDataPersistence = bookingSystemDataPersistence;
             _bookingPersistence = bookingPersistence;
 
-            _currentViewModel = new RoomListViewModel(_baseDataPersistence.Rooms());
+            _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
 
             ToBaseDataCommand = new RelayCommand(ToBaseData);
         }
@@ -60,7 +60,7 @@ namespace Buchungssystem.App.ViewModel
 
         private void ToBaseData()
         {
-            CurrentViewModel = new BaseDataManagementViewModel(_baseDataPersistence);
+            CurrentViewModel = new BaseDataManagementViewModel(_bookingSystemDataPersistence);
         }
 
         #endregion

@@ -13,7 +13,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 {
     internal class TableViewModel : BaseViewModel
     {
-        private readonly IPersistBaseData _baseDataPersistence;
+        private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
 
         private readonly IPersistBooking _bookingPersistence;
 
@@ -105,10 +105,10 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Contructor
 
-        public TableViewModel(IPersistBaseData baseDataPersistence, IPersistBooking bookingPersistence, Table table,
+        public TableViewModel(IPersistBookingSystemData bookingSystemDataPersistence, IPersistBooking bookingPersistence, Table table,
             Action<Table> onTableSelected)
         {
-            _baseDataPersistence = baseDataPersistence;
+            _bookingSystemDataPersistence = bookingSystemDataPersistence;
             _bookingPersistence = bookingPersistence;
 
             _onTableSelected = onTableSelected;
@@ -123,9 +123,9 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         }
 
-        public TableViewModel(IPersistBaseData baseDataPersistence, Table table, Action<Table> onSelect)
+        public TableViewModel(IPersistBookingSystemData bookingSystemDataPersistence, Table table, Action<Table> onSelect)
         {
-            _baseDataPersistence = baseDataPersistence;
+            _bookingSystemDataPersistence = bookingSystemDataPersistence;
             _onTableSelected = onSelect;
             _table = table;
 

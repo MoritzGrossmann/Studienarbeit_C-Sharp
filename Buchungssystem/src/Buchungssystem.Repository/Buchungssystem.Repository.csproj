@@ -54,10 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BookingPersistence.cs" />
-    <Compile Include="BookingsystemEntities.cs" />
+    <Compile Include="Database\BookingsystemEntities.cs" />
+    <Compile Include="Model\Booking.cs" />
+    <Compile Include="Model\BookingStatus.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\ProductGroup.cs" />
+    <Compile Include="Model\Room.cs" />
+    <Compile Include="Model\Table.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BaseDataPersitence.cs" />
+    <Compile Include="Database\BookingSystemDataPersitence.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Buchungssystem.Domain\Buchungssystem.Domain.csproj">
