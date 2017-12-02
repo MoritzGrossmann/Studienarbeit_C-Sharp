@@ -109,17 +109,17 @@
     <Compile Include="UI\Pages\BaseDataManagement\ChangeRoomsView.xaml.cs">
       <DependentUpon>ChangeRoomsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\RoomsView.xaml.cs">
-      <DependentUpon>RoomsView.xaml</DependentUpon>
+    <Compile Include="UI\Pages\Booking\BookingListView.xaml.cs">
+      <DependentUpon>BookingListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\SubPages\ProductGroupSidebar.xaml.cs">
-      <DependentUpon>ProductGroupSidebar.xaml</DependentUpon>
+    <Compile Include="UI\Pages\Booking\RoomListView.xaml.cs">
+      <DependentUpon>RoomListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\SubPages\ProductSidebar.xaml.cs">
-      <DependentUpon>ProductSidebar.xaml</DependentUpon>
+    <Compile Include="UI\Pages\Booking\TableBookView.xaml.cs">
+      <DependentUpon>TableBookView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\TableView.xaml.cs">
-      <DependentUpon>TableView.xaml</DependentUpon>
+    <Compile Include="UI\Pages\Booking\TableListView.xaml.cs">
+      <DependentUpon>TableListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\TableView\BookingViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -155,19 +155,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\RoomsView.xaml">
+    <Page Include="UI\Pages\Booking\BookingListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\SubPages\ProductGroupSidebar.xaml">
+    <Page Include="UI\Pages\Booking\RoomListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\SubPages\ProductSidebar.xaml">
+    <Page Include="UI\Pages\Booking\TableBookView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\TableView.xaml">
+    <Page Include="UI\Pages\Booking\TableListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

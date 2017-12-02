@@ -18,7 +18,13 @@ namespace Buchungssystem.Domain.Model
 
         public int Id { get; set; }
 
-        public string Name { get; set; }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set { _name = value; RaisePropertyChanged(nameof(Name)); }
+        }
 
         public ICollection<Table> Tables { get; set; }
 

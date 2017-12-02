@@ -23,11 +23,16 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
 
         private ObservableCollection<RoomViewModel> _roomViewModels;
-        public ObservableCollection<RoomViewModel> RoomViewModels { get; }
+        public ObservableCollection<RoomViewModel> RoomViewModels { get => _roomViewModels; set => _roomViewModels = value; }
 
         public RoomListViewModel(ICollection<Room> rooms) 
         {
            RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r, SelectRoom)));
+        }
+
+        public RoomListViewModel() : this(new TestPersitence().Rooms())
+        {
+            
         }
 
         private void SelectRoom(RoomViewModel roomViewModel)

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Buchungssystem.App.UI.Pages.SubPages
+namespace Buchungssystem.App.UI.Pages.Booking
 {
     /// <summary>
-    /// Interaktionslogik für ProductSidebar.xaml
+    /// Interaktionslogik für TableBookView.xaml
     /// </summary>
-    public partial class ProductSidebar : UserControl
+    public partial class TableBookView : UserControl
     {
-        public ProductSidebar()
+        public TableBookView()
         {
             InitializeComponent();
         }

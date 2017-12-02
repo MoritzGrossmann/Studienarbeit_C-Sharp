@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="Buchungssystem.App.UI.Pages.Booking.RoomListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:booking="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="clr-namespace:Buchungssystem.App.UI.Pages"
+    xmlns:roomView="clr-namespace:Buchungssystem.App.ViewModel.RoomView"
+    xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type tableView:TableBookViewModel}">
+            <booking:TableBookView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type roomView:TableListViewModel}">
+            <booking:TableListView />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <TabControl ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}">
+            <TabControl.ItemTemplate>
+                <DataTemplate DataType="roomView:RoomViewModel">
+                    <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate DataType="roomView:RoomViewModel">
+                    <ContentControl Content="{Binding Path=CurrentViewModel}" />
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
+</UserControl>
+
+
+

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Buchungssystem.App.UI.Pages
+namespace Buchungssystem.App.UI.Pages.Booking
 {
     /// <summary>
-    /// Interaktionslogik für TableView.xaml
+    /// Interaktionslogik für TableListView.xaml
     /// </summary>
-    public partial class TableView : UserControl
+    public partial class TableListView : UserControl
     {
-        public TableView()
+        public TableListView()
         {
             InitializeComponent();
         }

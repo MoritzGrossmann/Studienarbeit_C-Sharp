@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
 
@@ -40,9 +41,11 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public TableBookViewModel(Table table, Action onReturn)
         {
-            _table = table;
-            _openBookings = new BookingListViewModel(table.Bookings, SelectBooking);
-            _selectedBookings = new BookingListViewModel(new List<Booking>(), SelectBooking);
+            Table = table;
+            OpenBookings = new BookingListViewModel(table.Bookings, SelectBooking);
+            SelectedBookings = new BookingListViewModel(new List<Booking>(), SelectBooking);
+            _onReturn = onReturn;
+            ToTableListCommand = new RelayCommand(ReturnAction);
         }
 
         #endregion
@@ -57,6 +60,19 @@ namespace Buchungssystem.App.ViewModel.TableView
         private void DeSelectBooking(BookingViewModel bookingViewModel)
         {
             OpenBookings.AddBookingViewModel(bookingViewModel, SelectBooking);
+        }
+
+        private readonly Action _onReturn;
+
+        #endregion
+
+        #region Commands
+
+        public ICommand ToTableListCommand { get; }
+
+        private void ReturnAction()
+        {
+            _onReturn.Invoke();
         }
 
         #endregion

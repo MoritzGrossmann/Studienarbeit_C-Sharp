@@ -15,6 +15,11 @@ namespace Buchungssystem.TestRepository
             {
                 Name = "Saal",
                 Id = 1
+            },
+            new Room()
+            {
+                Name = "Terrasse",
+                Id =2
             }
         };
 
