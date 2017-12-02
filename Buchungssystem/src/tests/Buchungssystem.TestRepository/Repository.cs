@@ -9,91 +9,88 @@ namespace Buchungssystem.TestRepository
 {
     internal class Repository
     {
-        public List<Room> Rooms { get; } = new List<Room>()
+        public static List<Room> Rooms { get; } = new List<Room>()
         {
             new Room()
             {
                 Name = "Saal",
-                RoomId = 1
+                Id = 1
             }
         };
 
-        public List<Table> Tables { get; } = new List<Table>()
+        public static List<Table> Tables { get; } = new List<Table>()
         {
             new Table()
             {
-                TableId = 1,
+                Id = 1,
                 Name = "Tisch 1",
                 Places = 4,
-                RoomId = 1
+                Room = Rooms.FirstOrDefault()
             }, 
             new Table()
             {
-                TableId = 2,
+                Id = 2,
                 Name = "Tisch 2",
                 Places = 8,
-                RoomId = 1
+                Room = Rooms.FirstOrDefault()
             },
             new Table()
             {
-                TableId = 3,
+                Id = 3,
                 Name = "Tisch 3",
                 Places = 6,
-                RoomId = 1
+                Room = Rooms.FirstOrDefault()
             }
         };
 
-        public  List<Product> Products { get; } = new List<Product>()
+        public static List<Product> Products { get; } = new List<Product>()
         {
             new Product()
             {
                 Name = "Gin Tonic",
                 Price = (decimal)5.5,
-                ProductGroupId = 1,
-                ProductId = 1
+                ProductGroup = ProductGroups.FirstOrDefault(),
+                Id = 1
             }, new Product()
                 {
                 Name = "Whiskey Cola",
                 Price = (decimal)6,
-                ProductGroupId = 2
-                    ,
-                    ProductId = 1
+                ProductGroup = ProductGroups.FirstOrDefault(),
+                Id = 1
             }, new Product()
             {
                 Name = "Wodka Lemon",
                 Price = (decimal)5.5,
-                ProductGroupId = 1
-                ,
-                ProductId = 3
+                ProductGroup = ProductGroups.FirstOrDefault(),
+                Id = 3
             },
             new Product()
             {
                 Name = "Wodka Orange",
                 Price = (decimal)5.5,
-                ProductGroupId = 1
-                ,
-                ProductId = 4
+                ProductGroup = ProductGroups.FirstOrDefault(),
+                Id = 4
             },
                 new Product()
             {
                 Name = "Campari Orange",
                 Price = (decimal)5.5,
-                ProductGroupId = 1,
-                ProductId = 1
+                ProductGroup = ProductGroups.FirstOrDefault(),
+                Id = 5
             }, new Product()
             {
                 Name = "Gin Lemon",
                 Price = (decimal)5.5,
-                ProductGroupId = 1,
-                ProductId = 5
+                ProductGroup = ProductGroups.FirstOrDefault(),
+                Id = 6
             }
         };
 
-        public List<ProductGroup> ProductGroups { get; } = new List<ProductGroup>()
+        public static List<ProductGroup> ProductGroups { get; } = new List<ProductGroup>()
         {
             new ProductGroup()
             {
-                ProductGroupId = 1,
+                Id = 1,
                 Name = "Longdrinks"
             }
         };
@@ -102,24 +99,21 @@ namespace Buchungssystem.TestRepository
         {
             new Booking()
             {
-                BookingId = 1,
-                ProductId = 1,
-                TableId = 1,
-                Timestamp = DateTime.Now
+                Id = 1,
+                Product = Products.FirstOrDefault(),
+                Table = Tables.FirstOrDefault()
             },
             new Booking()
             {
-                BookingId = 2,
-                ProductId = 5,
-                TableId = 1,
-                Timestamp = DateTime.Now
+                Id = 2,
+                Product = Products.FirstOrDefault(),
+                Table = Tables.FirstOrDefault()
             },
             new Booking()
             {
-                BookingId = 2,
-                ProductId = 3,
-                TableId = 1,
-                Timestamp = DateTime.Now
+                Id = 2,
+                Product = Products.FirstOrDefault(),
+                Table = Tables.FirstOrDefault()
             }
         };
     }

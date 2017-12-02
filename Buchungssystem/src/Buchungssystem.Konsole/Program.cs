@@ -15,13 +15,6 @@ namespace Buchungssystem.Konsole
             using (var context = new BookingsystemEntities())
             {
 
-                var raeume = new BookingSystemDataPersitence().Rooms();
-                foreach (var raum in raeume)
-                {
-                    Console.WriteLine($"{raum.RoomId} {raum.Name}");
- 
-                        new BookingSystemDataPersitence().Tables(raum).ForEach(t => Console.WriteLine($"\t{t.TableId} {t.Name}"));
-                }
             }
             Console.ReadKey();
         }

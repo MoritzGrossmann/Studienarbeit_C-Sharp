@@ -8,20 +8,15 @@ namespace Buchungssystem.App.ViewModel
 {
     internal class ProductGroupViewModel : BaseViewModel
     {
-        private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
-
-        private readonly IPersistBooking _bookingPersistence;
 
         #region Constructor
 
-        public ProductGroupViewModel(IPersistBookingSystemData bookingSystemDataPersistence, IPersistBooking bookingPersistence, ProductGroup productGroup, Action<ProductGroup> onProductGroupSelect)
+        public ProductGroupViewModel(ProductGroup productGroup, Action<ProductGroup> onProductGroupSelect)
         {
-            _bookingSystemDataPersistence = bookingSystemDataPersistence;
-            _bookingPersistence = bookingPersistence;
             _productGroup = productGroup;
             _onProductGroupSelect = onProductGroupSelect;
 
-            _productCount = _bookingSystemDataPersistence.Products(_productGroup).Count;
+            _productCount = _productGroup.Products.Count;
 
             SelectCommand = new RelayCommand(Select);
         }
@@ -32,17 +27,10 @@ namespace Buchungssystem.App.ViewModel
 
         private ProductGroup _productGroup;
 
-        public string Name => _productGroup.Name;
-
         public ProductGroup ProductGroup
         {
             get => _productGroup;
-            set
-            {
-                if (_productGroup.Equals(value)) return;
-                _productGroup = value;
-                RaisePropertyChanged(nameof(ProductGroup));
-            }
+            set { _productGroup = value; }
         }
 
         #endregion

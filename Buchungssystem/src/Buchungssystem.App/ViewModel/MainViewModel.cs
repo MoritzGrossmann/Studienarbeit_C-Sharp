@@ -13,20 +13,17 @@ namespace Buchungssystem.App.ViewModel
     {
         private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
 
-        private readonly IPersistBooking _bookingPersistence;
         public MainViewModel()
         {
             _bookingSystemDataPersistence = new TestPersitence();
-            _bookingPersistence = new TestPersitence();
 
             _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
         }
 
 
-        public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence, IPersistBooking bookingPersistence)
+        public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
-            _bookingPersistence = bookingPersistence;
 
             _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
 

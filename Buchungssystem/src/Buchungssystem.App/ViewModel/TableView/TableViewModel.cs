@@ -13,10 +13,6 @@ namespace Buchungssystem.App.ViewModel.TableView
 {
     internal class TableViewModel : BaseViewModel
     {
-        private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
-
-        private readonly IPersistBooking _bookingPersistence;
-
         #region Properties
 
         private Table _table;
@@ -68,19 +64,6 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
         }
 
-        public string LastBooking
-        {
-            get
-            {
-                if (_openBookings.Any())
-                {
-                    return
-                        $"Letzte Buchung {_openBookings.Last().Booking.Timestamp.ToString(CultureInfo.CurrentCulture)}";
-                }
-                return "Keine Buchungen";
-            }
-        }
-
         public bool InUse => _table.Occupied;
 
         public Brush Color => 
@@ -105,31 +88,20 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Contructor
 
-        public TableViewModel(IPersistBookingSystemData bookingSystemDataPersistence, IPersistBooking bookingPersistence, Table table,
-            Action<Table> onTableSelected)
+        public TableViewModel(Table table, Action<Table> onTableSelected)
         {
-            _bookingSystemDataPersistence = bookingSystemDataPersistence;
-            _bookingPersistence = bookingPersistence;
-
             _onTableSelected = onTableSelected;
             _table = table;
 
             _openBookings = new ObservableCollection<BookingViewModel>(
-                _bookingPersistence.Bookings(_table, BookingStatus.Open)
-                    .Select(booking => new BookingViewModel(booking)));
+                table
+                .Bookings
+                .Where(b => b.Status == BookingStatus.Open)
+                .Select(booking => new BookingViewModel(booking)));
 
             SelectCommand = new RelayCommand(Select);
             ChangeStatusCommand = new RelayCommand(ChangeStatus);
 
-        }
-
-        public TableViewModel(IPersistBookingSystemData bookingSystemDataPersistence, Table table, Action<Table> onSelect)
-        {
-            _bookingSystemDataPersistence = bookingSystemDataPersistence;
-            _onTableSelected = onSelect;
-            _table = table;
-
-            SelectCommand = new RelayCommand(Select);
         }
 
         private readonly Action<Table> _onTableSelected;
@@ -154,17 +126,12 @@ namespace Buchungssystem.App.ViewModel.TableView
 
             if (Table.Occupied)
             {
-                _bookingPersistence.Clear(Table);
+                Table.Clear();
             }
             else
             {
-                _bookingPersistence.Occupy(Table);
+                Table.Occupy();
             }
-
-            Table.Occupied = !Table.Occupied;
-            RaisePropertyChanged(nameof(InUse));
-            RaisePropertyChanged(nameof(ChangeStatusTest));
-            RaisePropertyChanged(nameof(Color));
         }
     }
 }

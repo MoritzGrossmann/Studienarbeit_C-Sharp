@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
-using Booking = Buchungssystem.Repository.Model.Booking;
-using Product = Buchungssystem.Repository.Model.Product;
-using Room = Buchungssystem.Repository.Model.Room;
-using Table = Buchungssystem.Repository.Model.Table;
+using Buchungssystem.Repository.Model;
+using static Buchungssystem.Domain.Model.BookingStatus;
 
-namespace Buchungssystem.Repository
+namespace Buchungssystem.Repository.Database
 {
     public class BookingSystemDataPersitence : IPersistBookingSystemData
     {
@@ -19,8 +17,10 @@ namespace Buchungssystem.Repository
         { 
             using (var context = new BookingsystemEntities())
             {
-                context.ProductGroups.Add(productGroup);
+                var dbProductsGroup = FromProductGroup(productGroup);
+                context.ProductGroups.Add(dbProductsGroup);
                 context.SaveChanges();
+                productGroup.Id = dbProductsGroup.DbProductGroupId;
                 return productGroup;
             }
         }
@@ -29,9 +29,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var productGroups = context.ProductGroups.ToList();
-                productGroups.ForEach(p => p.Products = Products(p));
-                return productGroups;
+                return context.ProductGroups.Select(FromDbProductGroup).ToList();
             }
         }
 
@@ -43,8 +41,10 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Products.Add(product);
+                var dbProduct = FromProduct(product);
+                context.Products.Add(dbProduct);
                 context.SaveChanges();
+                product.Id = dbProduct.DbProductId;
                 return product;
             }
         }
@@ -53,7 +53,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Products.Where(w => !w.Deleted).ToList();
+                return context.Products.Where(w => !w.Deleted).AsEnumerable()?.Select(FromDbProduct).ToList();
             }
         }
 
@@ -61,15 +61,23 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Products.Where(w => w.ProductGroupId == productGroup.ProductGroupId && !w.Deleted).ToList();
+                return context.Products.Where(w => w.DbProductGroupId == productGroup.Id && !w.Deleted).AsEnumerable()?.Select(FromDbProduct).ToList();
             }
         }
 
-        public void ChangePrice(Product product, decimal price)
+        public Product Product(int id)
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Products.FirstOrDefault(w => w.ProductId == product.ProductId).Price = price;
+                return FromDbProduct(context.Products.FirstOrDefault(p => p.DbProductId == id));
+            }
+        }
+
+        public void ChangePrice(Product product)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.Products.FirstOrDefault(p => p.DbProductId == product.Id).Price = product.Price;
                 context.SaveChanges();
             }
         }
@@ -78,7 +86,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Products.FirstOrDefault(w => w.ProductId == product.ProductId).Deleted = true;
+                context.Products.FirstOrDefault(w => w.DbProductId == product.Id).Deleted = true;
                 context.SaveChanges();
             }
         }
@@ -91,36 +99,19 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var rooms = context.Rooms.ToList();
-                rooms.ForEach(r => r.Tables = Tables(r));
-                return rooms;
+                return context.Rooms.Select(FromDbRoom).ToList();
             }
         }
 
         public Room PersistRoom(Room room)
         {
             using (var context = new BookingsystemEntities())
-            { 
-                context.Rooms.Add(room);
+            {
+                var dbRoom = FromRoom(room);
+                context.Rooms.Add(dbRoom);
                 context.SaveChanges();
+                room.Id = dbRoom.DbRoomId;
                 return room;
-            }
-        }
-
-        public Room Room(Table table)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                return context.Rooms.FirstOrDefault(r => r.RoomId == table.RoomId);
-            }
-        }
-
-        public void DeleteRoom(Room room)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                context.Rooms.Remove(room);
-                context.SaveChanges();
             }
         }
 
@@ -132,19 +123,11 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
+                var dbTable = FromTable(table);
                 table.Occupied = false;
-                context.Tables.Add(table);
+                context.Tables.Add(dbTable);
                 context.SaveChanges();
                 return table;
-            }
-        }
-
-        public void DeleteTable(Table table)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                context.Tables.Remove(table);
-                context.SaveChanges();
             }
         }
 
@@ -152,9 +135,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var tables = context.Tables.ToList();
-                tables.ForEach(t => t.Bookings = _bookingPersistence.Bookings(t));
-                return tables;
+                return context.Tables.Select(FromDbTable).ToList();
             }
         }
 
@@ -162,30 +143,20 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                return Tables().Where(table => table.RoomId == room.RoomId).ToList();
+                return context.Tables.Where(t => t.DbRoomId == room.Id).AsEnumerable().Select(FromDbTable).ToList();
             }
         }
 
         #endregion
 
         public Booking Book(Booking booking)
-        {
-            if (booking.Product != null)
-            {
-                booking.ProductId = booking.Product.ProductId;
-                booking.Product = null;
-            }
-
-            if (booking.Table != null)
-            {
-                booking.TableId = booking.Table.TableId;
-                booking.Table = null;
-            }
-
+        { 
             using (var context = new BookingsystemEntities())
             {
-                context.Bookings.Add(booking);
+                var dbBooking = FromBooking(booking);
+                context.Bookings.Add(dbBooking);
                 context.SaveChanges();
+                booking.Id = dbBooking.DbBookingId;
                 return booking;
             }
         }
@@ -194,8 +165,8 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Bookings.FirstOrDefault(b => b.BookingId == booking.BookingId).Status =
-                    (int)BookingStatus.Cancled;
+                context.Bookings.FirstOrDefault(b => b.DbBookingId == booking.Id).Status =
+                    (int)Cancled;
                 context.SaveChanges();
             }
         }
@@ -204,8 +175,8 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Bookings.FirstOrDefault(b => b.BookingId == booking.BookingId).Status =
-                    (int)BookingStatus.Paid;
+                context.Bookings.FirstOrDefault(b => b.DbBookingId == booking.Id).Status =
+                    (int)Paid;
                 context.SaveChanges();
             }
         }
@@ -214,41 +185,9 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                var bookings = context.Bookings.Where(b => b.TableId == table.TableId).ToList();
-                bookings.ForEach(b => b.Product = Product(b));
+                var bookings = context.Bookings.Where(b => b.DbTableId == table.Id).AsEnumerable().Select(FromDbBooking).ToList();
+                bookings.ForEach(b => b.Table = table);
                 return bookings;
-            }
-        }
-
-        public List<Booking> Bookings(DateTime dateTime)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                return context.Bookings.Where(b => b.Timestamp.Date == dateTime.Date).ToList();
-            }
-        }
-
-        public List<Booking> Bookings(Table table, BookingStatus status)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                return context.Bookings.Where(b => b.TableId == table.TableId && b.Status == (int)status).ToList();
-            }
-        }
-
-        public Product Product(Booking booking)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                return context.Products.FirstOrDefault(p => p.ProductId == booking.ProductId);
-            }
-        }
-
-        public Table Table(Booking booking)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                return context.Tables.FirstOrDefault(t => t.TableId == booking.TableId);
             }
         }
 
@@ -256,7 +195,7 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Tables.FirstOrDefault(t => t.TableId == table.TableId).Occupied = true;
+                context.Tables.FirstOrDefault(t => t.DbTableId == table.Id).Occupied = true;
                 context.SaveChanges();
             }
         }
@@ -265,9 +204,71 @@ namespace Buchungssystem.Repository
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Tables.FirstOrDefault(t => t.TableId == table.TableId).Occupied = false;
+                context.Tables.FirstOrDefault(t => t.DbTableId == table.Id).Occupied = false;
                 context.SaveChanges();
             }
+        }
+
+        private DbRoom FromRoom(Room room)
+        {
+            return new DbRoom(){ DbRoomId = room.Id, Name = room.Name};
+        }
+
+        private Room FromDbRoom(DbRoom dbRoom)
+        {
+            var room = new Room() {Id = dbRoom.DbRoomId, Name = dbRoom.Name};
+            room.Tables = Tables(room);
+            room.Tables.ToList().ForEach(t => t.Room = room);
+            return room;
+        }
+
+
+        private DbProduct FromProduct(Product product)
+        {
+            return new DbProduct() {DbProductGroupId = product.ProductGroup.Id, Deleted = false, Name = product.Name, Price = product.Price};
+        }
+
+        private Product FromDbProduct(DbProduct dbProduct)
+        {
+            return new Product() {Id = dbProduct.DbProductId, Name = dbProduct.Name, Price = dbProduct.Price};
+        }
+
+        private DbProductGroup FromProductGroup(ProductGroup productGroup)
+        {
+            return new DbProductGroup() {Name = productGroup.Name, DbProductGroupId = productGroup.Id};
+        }
+
+        private ProductGroup FromDbProductGroup(DbProductGroup dbProductGroup)
+        {
+            var productsGroup = new ProductGroup() {Id = dbProductGroup.DbProductGroupId, Name = dbProductGroup.Name };
+            productsGroup.Products = Products(productsGroup);
+            productsGroup.Products.ToList().ForEach(p => p.ProductGroup = productsGroup);
+            return productsGroup;
+        }
+
+        private DbTable FromTable(Table table)
+        {
+            return new DbTable() {Name = table.Name, Occupied = table.Occupied, DbRoomId = table.Room.Id};
+        }
+
+        private Table FromDbTable(DbTable dbTable)
+        {
+            var table = new Table() {Name = dbTable.Name, Occupied = dbTable.Occupied, Id = dbTable.DbTableId, Places = dbTable.Places};
+            table.Bookings = Bookings(table);
+            table.Bookings.ToList().ForEach(b => b.Table = table);
+            return table;
+        }
+
+        private DbBooking FromBooking(Booking booking)
+        {
+            return new DbBooking(){DbBookingId = booking.Id, DbTableId = booking.Table.Id, DbProductId = booking.Product.Id, Status = (int)booking.Status};
+        }
+
+        private Booking FromDbBooking(DbBooking dbBooking)
+        {
+            var booking = new Booking() { Id = dbBooking.DbBookingId};
+            booking.Product = Product(dbBooking.DbProductId);
+            return booking;
         }
     }
 }

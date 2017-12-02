@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Buchungssystem.App.ViewModel;
 using Buchungssystem.Repository;
+using Buchungssystem.Repository.Database;
 using MahApps.Metro.Controls;
 
 namespace Buchungssystem.App
@@ -31,7 +32,7 @@ namespace Buchungssystem.App
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             InitializeComponent();
-            DataContext = new MainViewModel(new BookingSystemDataPersitence(), new BookingPersistence());
+            DataContext = new MainViewModel(new BookingSystemDataPersitence());
         }
     }
 }

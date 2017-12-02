@@ -14,7 +14,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 {
     internal class BookingListViewModel : BaseViewModel
     {
-        public BookingListViewModel(List<Booking> bookings, Action<BookingViewModel> onBookingSelect)
+        public BookingListViewModel(ICollection<Booking> bookings, Action<BookingViewModel> onBookingSelect)
         {
             _bookingViewModels = new ObservableCollection<BookingViewModel>(bookings.Select(b => new BookingViewModel(b, onBookingSelect)));
             _selectBooking = SelectBooking;

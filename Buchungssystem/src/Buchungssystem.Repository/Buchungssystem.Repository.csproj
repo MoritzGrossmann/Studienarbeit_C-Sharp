@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="Database\BookingsystemEntities.cs" />
     <Compile Include="Model\Booking.cs" />
-    <Compile Include="Model\BookingStatus.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\ProductGroup.cs" />
     <Compile Include="Model\Room.cs" />

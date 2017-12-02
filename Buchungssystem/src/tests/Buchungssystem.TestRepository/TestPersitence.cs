@@ -8,7 +8,7 @@ using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.TestRepository
 {
-    public class TestPersitence : IPersistBookingSystemData, IPersistBooking
+    public class TestPersitence : IPersistBookingSystemData
     {
         private static readonly Repository Repository = new Repository();
         public List<Room> Rooms()
@@ -18,14 +18,14 @@ namespace Buchungssystem.TestRepository
 
         public Room PersistRoom(Room room)
         {
-            room.RoomId = Repository.Rooms.Count + 1;
+            room.Id = Repository.Rooms.Count + 1;
             Repository.Rooms.Add(room);
             return room;
         }
 
         public Room Room(Table table)
         {
-            return Repository.Rooms.FirstOrDefault(r => r.RoomId == table.RoomId);
+            return Repository.Rooms.FirstOrDefault(r => r.Id == table.Room.Id);
         }
 
         public List<Table> Tables()
@@ -35,19 +35,14 @@ namespace Buchungssystem.TestRepository
 
         public List<Table> Tables(Room room)
         {
-            return Repository.Tables.Where(t => t.RoomId == room.RoomId).ToList();
+            return Repository.Tables.Where(t => t.Room.Id== room.Id).ToList();
         }
 
         public Table PersistTable(Table table)
         {
-            table.TableId = Repository.Tables.Count + 1;
+            table.Id = Repository.Tables.Count + 1;
             Repository.Tables.Add(table);
             return table;
-        }
-
-        public void DeleteTable(Table table)
-        {
-            throw new NotImplementedException();
         }
 
         public List<ProductGroup> ProductGroups()
@@ -57,14 +52,14 @@ namespace Buchungssystem.TestRepository
 
         public ProductGroup PersistProductGroup(ProductGroup productGroup)
         {
-            productGroup.ProductGroupId = Repository.ProductGroups.Count + 1;
+            productGroup.Id = Repository.ProductGroups.Count + 1;
             Repository.ProductGroups.Add(productGroup);
             return productGroup;
         }
 
         public List<Product> Products(ProductGroup productGroup)
         {
-            return Repository.Products.Where(p => p.ProductGroupId == productGroup.ProductGroupId).ToList();
+            return Repository.Products.Where(p => p.ProductGroup.Id == productGroup.Id).ToList();
         }
 
         public Product PersistProduct(Product product)
@@ -99,27 +94,17 @@ namespace Buchungssystem.TestRepository
 
         public List<Booking> Bookings(Table table)
         {
-            return Repository.Bookings.Where(b => b.TableId == table.TableId).ToList();
-        }
-
-        public List<Booking> Bookings(DateTime dateTime)
-        {
-            return Repository.Bookings.Where(b => b.Timestamp.Date == dateTime.Date).ToList();
-        }
-
-        public List<Booking> Bookings(Table table, BookingStatus status)
-        {
-            return Repository.Bookings.Where(b => b.TableId == table.TableId && b.Status == (int)status).ToList();
+            return Repository.Bookings.Where(b => b.Table.Id == table.Id).ToList();
         }
 
         public Product Product(Booking booking)
         {
-            return Repository.Products.FirstOrDefault(p => p.ProductId == booking.ProductId);
+            return Repository.Products.FirstOrDefault(p => p.Id == booking.Product.Id);
         }
 
         public Table Table(Booking booking)
         {
-            return Repository.Tables.FirstOrDefault(t => t.TableId == booking.ProductId);
+            return Repository.Tables.FirstOrDefault(t => t.Id == booking.Table.Id);
         }
 
         public void Occupy(Table table)

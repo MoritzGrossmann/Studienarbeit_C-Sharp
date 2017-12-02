@@ -36,9 +36,27 @@ namespace Buchungssystem.Domain.Model
 
         public ICollection<Booking> Bookings { get; set; }
 
+        public Room Room { get; set; }
+
+        public bool Occupied { get; set; }
+
+        public int Places { get; set; }
+
         public override void Persist()
         {
             Persistence?.PersistTable(this);
+        }
+
+        public void Occupy()
+        {
+            Occupied = true;
+            Persistence?.Occupy(this);
+        }
+
+        public void Clear()
+        {
+            Occupied = false;
+            Persistence?.Clear(this);
         }
     }
 
@@ -63,6 +81,8 @@ namespace Buchungssystem.Domain.Model
         public string Name { get; set; }
 
         public decimal Price { get; set; }
+
+        public ProductGroup ProductGroup { get; set; }
         public override void Persist()
         {
             Persistence.PersistProduct(this);
@@ -78,6 +98,8 @@ namespace Buchungssystem.Domain.Model
         public Product Product { get; set; }
 
         public Table Table { get; set; }
+
+        public BookingStatus Status { get; set; }
         public override void Persist()
         {
             Persistence.Book(this);

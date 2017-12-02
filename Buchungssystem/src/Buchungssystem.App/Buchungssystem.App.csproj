@@ -129,11 +129,9 @@
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\BaseDataManagementViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\ChangeRoomsViewModel.cs" />
-    <Compile Include="ViewModel\SubViewModels\ProductGroupSidebarViewModel.cs" />
     <Compile Include="ViewModel\ProductGroupViewModel.cs" />
     <Compile Include="ViewModel\RoomView\RoomListViewModel.cs" />
     <Compile Include="ViewModel\RoomView\RoomViewModel.cs" />
-    <Compile Include="ViewModel\SubViewModels\ProductSidebarViewModel.cs" />
     <Compile Include="ViewModel\TableView\TableBookViewModel.cs" />
     <Compile Include="ViewModel\TableView\TableViewModel.cs" />
     <Compile Include="ViewModel\TableView\BookingListViewModel.cs" />
@@ -217,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UI\Ressources\Icons\" />
+    <Folder Include="ViewModel\SubViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
