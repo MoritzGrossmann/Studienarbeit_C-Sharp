@@ -31,7 +31,9 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="roomView:RoomViewModel">
-                    <ContentControl Content="{Binding Path=CurrentViewModel}" />
+                    <Border BorderThickness="10px">
+                        <ContentControl Content="{Binding Path=CurrentViewModel}" />
+                    </Border>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
