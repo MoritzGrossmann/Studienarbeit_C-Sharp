@@ -38,6 +38,16 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
         }
 
+        public decimal Price
+        {
+            get
+            {
+                decimal sum = 0;
+                Table.Bookings.Where(b => b.Status == BookingStatus.Open).ForEach(b => sum += b.Product.Price);
+                return sum;
+            }
+        }
+
         #endregion
 
         #region Contructor
@@ -49,7 +59,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
             SelectCommand = new RelayCommand(Select);
             ChangeStatusCommand = new RelayCommand(ChangeStatus);
-
+            RaisePropertyChanged(nameof(Price));
         }
 
         private readonly Action<Table> _onTableSelected;

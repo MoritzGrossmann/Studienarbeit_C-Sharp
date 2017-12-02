@@ -1,5 +1,5 @@
 ﻿<Controls:MetroWindow
-    x:Class="Buchungssystem.App.MainWindow"
+    x:Class="Buchungssystem.App.UI.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
@@ -14,7 +14,7 @@
     Title="MainWindow"
     Width="525"
     Height="350"
-    Icon="UI/Ressources/icon.png"
+    Icon="../Ressources/icon.png"
     WindowState="Maximized"
     mc:Ignorable="d">
 

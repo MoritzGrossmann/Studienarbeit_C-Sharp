@@ -266,7 +266,7 @@ namespace Buchungssystem.Repository.Database
 
         private Booking FromDbBooking(DbBooking dbBooking)
         {
-            var booking = new Booking() { Id = dbBooking.DbBookingId};
+            var booking = new Booking() { Id = dbBooking.DbBookingId, Status = (BookingStatus)dbBooking.Status};
             booking.Product = Product(dbBooking.DbProductId);
             return booking;
         }

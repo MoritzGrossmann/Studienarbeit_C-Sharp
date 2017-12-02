@@ -48,15 +48,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private void SelectBooking(BookingViewModel bookingViewModel)
         {
-            BookingViewModels.Remove(bookingViewModel);
-            RaisePropertyChanged(nameof(Price));
             _selectBooking?.Invoke(bookingViewModel);
-        }
-
-        public void AddBookingViewModel(BookingViewModel bookingViewModel, Action<BookingViewModel> newSelectAction)
-        {
-            bookingViewModel.OnSelect = newSelectAction;
-            BookingViewModels.Add(bookingViewModel);
             RaisePropertyChanged(nameof(Price));
         }
 

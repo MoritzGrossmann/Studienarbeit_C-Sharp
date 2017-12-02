@@ -6,22 +6,39 @@
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
     <Grid>
-        <ListView ItemsSource="{Binding Path=TableViewModels, Mode=OneWay}">
+        <ListView ItemsSource="{Binding Path=TableViewModels, Mode=OneWay}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="tableView:TableViewModel">
                     <Grid>
                         <Grid.InputBindings>
                             <MouseBinding Command="{Binding Path=SelectCommand}" MouseAction="LeftClick" />
                         </Grid.InputBindings>
-                        <TextBlock Text="{Binding Path=Name}" />
+                        <Border Padding="30,10,30,10" BorderThickness="0 0 0 1" BorderBrush="LightSlateGray" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Path=Table.Name, Mode=OneWay}" FontSize="18pt"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Letzte Buchung" FontStyle="Italic" Foreground="#FF686868" />
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" FontSize="18pt" HorizontalAlignment="Right"></TextBlock>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-
         </ListView>
     </Grid>
 </UserControl>

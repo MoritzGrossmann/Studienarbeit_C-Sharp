@@ -13,6 +13,8 @@ namespace Buchungssystem.App.ViewModel.RoomView
 {
     internal class TableListViewModel : BaseViewModel
     {
+        #region Properties
+
         private ObservableCollection<TableViewModel> _tableViewModels;
 
         public ObservableCollection<TableViewModel> TableViewModels
@@ -21,14 +23,21 @@ namespace Buchungssystem.App.ViewModel.RoomView
             set { _tableViewModels = value; }
         }
 
-        public TableListViewModel(ICollection<Table> tables)
+        #endregion
+
+        #region Contructor
+
+        public TableListViewModel(ICollection<Table> tables, Action<Table> onTableSelected)
         {
-            TableViewModels = new ObservableCollection<TableViewModel>(tables.Select(t => new TableViewModel(t)));
+            TableViewModels = new ObservableCollection<TableViewModel>(tables.Select(t => new TableViewModel(t, onTableSelected)));
         }
 
-        public TableListViewModel()
-        {
-            TableViewModels = new ObservableCollection<TableViewModel>(new TestPersitence().Tables().Select(t => new TableViewModel(t)));
-        }
+        #endregion
+
+        #region Actions
+
+
+
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
@@ -43,7 +44,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             Table = table;
             OpenBookings = new BookingListViewModel(table.Bookings, SelectBooking);
-            SelectedBookings = new BookingListViewModel(new List<Booking>(), SelectBooking);
+            SelectedBookings = new BookingListViewModel(new List<Booking>(), DeSelectBooking);
             _onReturn = onReturn;
             ToTableListCommand = new RelayCommand(ReturnAction);
         }
@@ -54,12 +55,20 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private void SelectBooking(BookingViewModel bookingViewModel)
         {
-            SelectedBookings.AddBookingViewModel(bookingViewModel, DeSelectBooking);
+            OpenBookings.BookingViewModels.Remove(OpenBookings.BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
+            bookingViewModel.OnSelect = DeSelectBooking;
+            SelectedBookings.BookingViewModels.Add(bookingViewModel);
+            RaisePropertyChanged(nameof(OpenBookings.Price));
+            RaisePropertyChanged(nameof(SelectedBookings.Price));
         }
 
         private void DeSelectBooking(BookingViewModel bookingViewModel)
         {
-            OpenBookings.AddBookingViewModel(bookingViewModel, SelectBooking);
+            SelectedBookings.BookingViewModels.Remove(SelectedBookings.BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
+            bookingViewModel.OnSelect = SelectBooking;
+            OpenBookings.BookingViewModels.Add(bookingViewModel);
+            RaisePropertyChanged(nameof(OpenBookings.Price));
+            RaisePropertyChanged(nameof(SelectedBookings.Price));
         }
 
         private readonly Action _onReturn;

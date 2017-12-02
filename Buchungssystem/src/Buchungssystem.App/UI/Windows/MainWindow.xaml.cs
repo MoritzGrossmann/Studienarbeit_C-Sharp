@@ -15,11 +15,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Buchungssystem.App.ViewModel;
+using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository;
 using Buchungssystem.Repository.Database;
 using MahApps.Metro.Controls;
 
-namespace Buchungssystem.App
+namespace Buchungssystem.App.UI.Windows
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml

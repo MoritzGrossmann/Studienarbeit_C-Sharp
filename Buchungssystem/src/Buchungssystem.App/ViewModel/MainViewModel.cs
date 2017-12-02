@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement;
 using Buchungssystem.App.ViewModel.RoomView;
