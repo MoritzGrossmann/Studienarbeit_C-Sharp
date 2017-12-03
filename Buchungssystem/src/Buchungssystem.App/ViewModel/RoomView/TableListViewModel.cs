@@ -33,14 +33,18 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         public TableListViewModel(ICollection<Table> tables, Action<Table> onTableSelected)
         {
-            TableViewModels = new ObservableCollection<TableViewModel>(tables.Select(t => new TableViewModel(t, onTableSelected)));
+            TableViewModels = new ObservableCollection<TableViewModel>(tables.Select(t => new TableViewModel(t, onTableSelected, TableStatusChanged)));
         }
 
         #endregion
 
         #region Actions
 
-
+        private void TableStatusChanged(object sender, EventArgs e)
+        {
+            RaisePropertyChanged(nameof(FreeTables));
+            RaisePropertyChanged(nameof(FreePlaces));
+        }
 
         #endregion
     }

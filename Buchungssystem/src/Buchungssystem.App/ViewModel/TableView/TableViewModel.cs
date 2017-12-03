@@ -57,10 +57,12 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Contructor
 
-        public TableViewModel(Table table, Action<Table> onTableSelected)
+        public TableViewModel(Table table, Action<Table> onTableSelected, EventHandler<EventArgs> onStatusChanged)
         {
             _onTableSelected = onTableSelected;
+            _onStatusChanged = onStatusChanged;
             _table = table;
+
 
             SelectCommand = new RelayCommand(Select);
             ChangeStatusCommand = new RelayCommand(ChangeStatus);
@@ -68,6 +70,8 @@ namespace Buchungssystem.App.ViewModel.TableView
         }
 
         private readonly Action<Table> _onTableSelected;
+
+        private readonly EventHandler<EventArgs> _onStatusChanged;
 
         #endregion
 
@@ -91,6 +95,7 @@ namespace Buchungssystem.App.ViewModel.TableView
                 Table.Occupy();
             }
             RaisePropertyChanged(nameof(Color));
+            _onStatusChanged.Invoke(this,null);
         }
     }
 }
