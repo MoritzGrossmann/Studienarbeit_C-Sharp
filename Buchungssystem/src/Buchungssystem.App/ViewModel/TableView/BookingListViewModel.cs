@@ -49,6 +49,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         private void SelectBooking(BookingViewModel bookingViewModel)
         {
             _selectBooking?.Invoke(bookingViewModel);
+            RaisePropertyChanged(nameof(BookingViewModels));
             RaisePropertyChanged(nameof(Price));
         }
 

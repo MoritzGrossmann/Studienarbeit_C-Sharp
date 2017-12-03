@@ -48,6 +48,11 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
         }
 
+        public Brush Color
+        {
+            get => (Brush) new BrushConverter().ConvertFrom(Table.Occupied ? "#f44242" : "#000000");
+        }
+
         #endregion
 
         #region Contructor
@@ -85,6 +90,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             {
                 Table.Occupy();
             }
+            RaisePropertyChanged(nameof(Color));
         }
     }
 }

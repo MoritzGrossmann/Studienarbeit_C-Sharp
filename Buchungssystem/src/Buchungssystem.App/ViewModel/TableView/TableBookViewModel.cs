@@ -58,8 +58,8 @@ namespace Buchungssystem.App.ViewModel.TableView
             OpenBookings.BookingViewModels.Remove(OpenBookings.BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
             bookingViewModel.OnSelect = DeSelectBooking;
             SelectedBookings.BookingViewModels.Add(bookingViewModel);
-            RaisePropertyChanged(nameof(OpenBookings.Price));
-            RaisePropertyChanged(nameof(SelectedBookings.Price));
+            RaisePropertyChanged(nameof(OpenBookings));
+            RaisePropertyChanged(nameof(SelectedBookings));
         }
 
         private void DeSelectBooking(BookingViewModel bookingViewModel)
@@ -67,8 +67,8 @@ namespace Buchungssystem.App.ViewModel.TableView
             SelectedBookings.BookingViewModels.Remove(SelectedBookings.BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
             bookingViewModel.OnSelect = SelectBooking;
             OpenBookings.BookingViewModels.Add(bookingViewModel);
-            RaisePropertyChanged(nameof(OpenBookings.Price));
-            RaisePropertyChanged(nameof(SelectedBookings.Price));
+            RaisePropertyChanged(nameof(OpenBookings));
+            RaisePropertyChanged(nameof(SelectedBookings));
         }
 
         private readonly Action _onReturn;

@@ -219,6 +219,7 @@ namespace Buchungssystem.Repository.Database
             var room = new Room() {Id = dbRoom.DbRoomId, Name = dbRoom.Name};
             room.Tables = Tables(room);
             room.Tables.ToList().ForEach(t => t.Room = room);
+            room.Persistence = this;
             return room;
         }
 
@@ -243,6 +244,7 @@ namespace Buchungssystem.Repository.Database
             var productsGroup = new ProductGroup() {Id = dbProductGroup.DbProductGroupId, Name = dbProductGroup.Name };
             productsGroup.Products = Products(productsGroup);
             productsGroup.Products.ToList().ForEach(p => p.ProductGroup = productsGroup);
+            productsGroup.Persistence = this;
             return productsGroup;
         }
 
@@ -256,6 +258,7 @@ namespace Buchungssystem.Repository.Database
             var table = new Table() {Name = dbTable.Name, Occupied = dbTable.Occupied, Id = dbTable.DbTableId, Places = dbTable.Places};
             table.Bookings = Bookings(table);
             table.Bookings.ToList().ForEach(b => b.Table = table);
+            table.Persistence = this;
             return table;
         }
 
@@ -268,6 +271,7 @@ namespace Buchungssystem.Repository.Database
         {
             var booking = new Booking() { Id = dbBooking.DbBookingId, Status = (BookingStatus)dbBooking.Status};
             booking.Product = Product(dbBooking.DbProductId);
+            booking.Persistence = this;
             return booking;
         }
     }

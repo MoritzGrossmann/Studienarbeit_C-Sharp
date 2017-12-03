@@ -23,6 +23,10 @@ namespace Buchungssystem.App.ViewModel.RoomView
             set { _tableViewModels = value; }
         }
 
+        public int FreeTables => TableViewModels.Count(t => !t.Table.Occupied);
+
+        public int FreePlaces => TableViewModels.Where(t => !t.Table.Occupied).Sum(t => t.Table.Places);
+
         #endregion
 
         #region Contructor
