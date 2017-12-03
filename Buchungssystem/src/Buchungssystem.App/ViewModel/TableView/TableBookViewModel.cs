@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
+using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
 {
@@ -43,10 +44,12 @@ namespace Buchungssystem.App.ViewModel.TableView
         public TableBookViewModel(Table table, Action onReturn)
         {
             Table = table;
-            OpenBookings = new BookingListViewModel(table.Bookings, SelectBooking);
+            OpenBookings = new BookingListViewModel(table.Bookings.Where(b => b.Status == BookingStatus.Open).ToList(), SelectBooking);
             SelectedBookings = new BookingListViewModel(new List<Booking>(), DeSelectBooking);
             _onReturn = onReturn;
             ToTableListCommand = new RelayCommand(ReturnAction);
+            PayCommand = new RelayCommand(PayBookings);
+            CancelCommand = new RelayCommand(CancelBookings);
         }
 
         #endregion
@@ -55,11 +58,23 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private void SelectBooking(BookingViewModel bookingViewModel)
         {
-            OpenBookings.BookingViewModels.Remove(OpenBookings.BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
-            bookingViewModel.OnSelect = DeSelectBooking;
-            SelectedBookings.BookingViewModels.Add(bookingViewModel);
-            RaisePropertyChanged(nameof(OpenBookings));
-            RaisePropertyChanged(nameof(SelectedBookings));
+            if (OpenBookings.BookingViewModels.Contains(bookingViewModel))
+            {
+                OpenBookings.Remove(bookingViewModel);
+                SelectedBookings.Add(bookingViewModel);
+                RaisePropertyChanged(nameof(OpenBookings));
+                RaisePropertyChanged(nameof(SelectedBookings));
+            }
+            else
+            {
+                SelectedBookings.Remove(bookingViewModel);
+                OpenBookings.Add(bookingViewModel);
+                RaisePropertyChanged(nameof(OpenBookings));
+                RaisePropertyChanged(nameof(SelectedBookings));
+            }
+            
+            
+            
         }
 
         private void DeSelectBooking(BookingViewModel bookingViewModel)
@@ -69,6 +84,19 @@ namespace Buchungssystem.App.ViewModel.TableView
             OpenBookings.BookingViewModels.Add(bookingViewModel);
             RaisePropertyChanged(nameof(OpenBookings));
             RaisePropertyChanged(nameof(SelectedBookings));
+            RaisePropertyChanged(nameof(OpenBookings.Price));
+        }
+
+        private void PayBookings()
+        {
+            SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Pay());
+            SelectedBookings.BookingViewModels.Clear();
+        }
+
+        private void CancelBookings()
+        {
+            SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Cancel());
+            SelectedBookings.BookingViewModels.Clear();
         }
 
         private readonly Action _onReturn;
@@ -83,6 +111,10 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             _onReturn.Invoke();
         }
+
+        public ICommand PayCommand { get; }
+
+        public ICommand CancelCommand { get; }
 
         #endregion
     }

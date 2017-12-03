@@ -16,8 +16,8 @@ namespace Buchungssystem.App.ViewModel.TableView
     {
         public BookingListViewModel(ICollection<Booking> bookings, Action<BookingViewModel> onBookingSelect)
         {
-            _bookingViewModels = new ObservableCollection<BookingViewModel>(bookings.Select(b => new BookingViewModel(b, onBookingSelect)));
-            _selectBooking = SelectBooking;
+            _bookingViewModels = new ObservableCollection<BookingViewModel>(bookings.Select(b => new BookingViewModel(b, SelectBooking)));
+            _selectBooking = onBookingSelect;
         }
 
         #region Properties
@@ -50,6 +50,19 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             _selectBooking?.Invoke(bookingViewModel);
             RaisePropertyChanged(nameof(BookingViewModels));
+            RaisePropertyChanged(nameof(Price));
+        }
+
+        public void Add(BookingViewModel bookingViewModel)
+        {
+            BookingViewModels.Add(bookingViewModel);
+            RaisePropertyChanged(nameof(Price));
+        }
+
+        public void Remove(BookingViewModel bookingViewModel)
+        {
+            BookingViewModels.Remove(
+                BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
             RaisePropertyChanged(nameof(Price));
         }
 

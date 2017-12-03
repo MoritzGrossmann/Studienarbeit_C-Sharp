@@ -110,6 +110,18 @@ namespace Buchungssystem.Domain.Model
         {
             Persistence.Book(this);
         }
+
+        public void Pay()
+        {
+            Persistence.Pay(this);
+            Status = BookingStatus.Paid;
+        }
+
+        public void Cancel()
+        {
+            Persistence.Cancel(this);
+            Status = BookingStatus.Cancled;
+        }
     }
 
     public abstract class BookingSystemModel : INotifyPropertyChanged

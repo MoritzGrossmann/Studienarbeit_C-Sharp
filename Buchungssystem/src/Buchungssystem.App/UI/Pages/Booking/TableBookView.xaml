@@ -19,25 +19,30 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Button
-                    Width="40px"
-                    Height="40px"
-                    Margin="0,0,40,0"
-                    Command="{Binding Path=ToTableListCommand}"
-                    Content="{iconPacks:PackIconFontAwesome ArrowLeft}"
-                    Style="{DynamicResource MetroCircleButtonStyle}" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="18pt"
-                    Text="{Binding Path=Table.Name, Mode=OneWay}" />
+            <Button
+                Width="40px"
+                Height="40px"
+                Margin="0,0,40,0"
+                Command="{Binding Path=ToTableListCommand}"
+                Content="{iconPacks:PackIconFontAwesome ArrowLeft}"
+                Style="{DynamicResource MetroCircleButtonStyle}" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="18pt"
+                Text="{Binding Path=Table.Name, Mode=OneWay}" />
         </StackPanel>
 
-        <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="LightSlateGray" Margin="0,10,0,0" Padding="0,10,0,0" >
+        <Border
+            Grid.Row="1"
+            Margin="0,10,0,0"
+            Padding="0,10,0,0"
+            BorderBrush="LightSlateGray"
+            BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
@@ -52,26 +57,43 @@
 
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" FontSize="16pt" Text="Buchungen" FontWeight="Bold"/>
-                        <ContentControl Grid.Row="1" Content="{Binding Path=OpenBookings, Mode=OneWay}" />
-                    </Grid>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        FontSize="16pt"
+                        FontWeight="Bold"
+                        Text="Buchungen" />
+                    <ContentControl Grid.Row="1" Content="{Binding Path=OpenBookings, Mode=OneWay}" />
+                </Grid>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" FontSize="16pt" Text="Ausgewählte Buchungen" FontWeight="Bold"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        FontSize="16pt"
+                        FontWeight="Bold"
+                        Text="Ausgewählte Buchungen" />
                     <ContentControl Grid.Row="1" Content="{Binding Path=SelectedBookings, Mode=OneWay}" />
                 </Grid>
                 <Grid Grid.Column="3">
-                    <Border Padding="10, 0, 10, 0">
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
-                        <Button Style="{StaticResource AccentedSquareButtonStyle}" Content="Bezahlen" Height="40px" Margin="0 0 0 10"></Button>
-                        <Button Style="{StaticResource SquareButtonStyle}" Content="Stornieren" Height="40px"></Button>
-                    </StackPanel>
+                    <Border Padding="10,0,10,0">
+                        <StackPanel VerticalAlignment="Bottom" Orientation="Vertical">
+                            <Button
+                                Height="40px"
+                                Margin="0,0,0,10"
+                                Command="{Binding Path=PayCommand, Mode=OneWay}"
+                                Content="Bezahlen"
+                                Style="{StaticResource AccentedSquareButtonStyle}" />
+                            <Button
+                                Height="40px"
+                                Command="{Binding Path=CancelCommand, Mode=OneWay}"
+                                Content="Stornieren"
+                                Style="{StaticResource SquareButtonStyle}" />
+                        </StackPanel>
                     </Border>
                 </Grid>
             </Grid>
