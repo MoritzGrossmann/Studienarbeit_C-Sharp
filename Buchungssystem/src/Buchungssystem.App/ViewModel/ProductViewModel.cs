@@ -14,31 +14,23 @@ namespace Buchungssystem.App.ViewModel
     {
         #region Contructor
 
-        public ProductViewModel(Product product, Action<Product> onProductSelect)
+        public ProductViewModel(Product product, EventHandler<Product> onProductSelect)
         {
             _product = product;
-            _onProductSelect = onProductSelect;
-            SelectCommand = new RelayCommand(Select);
-        }
-
-        public ProductViewModel(Product product, Action<Product> onProductSelect, Action<Product> onProductBook)
-        {
-            _product = product;
-            _onProductSelect = onProductSelect;
-            _onProductBook = onProductBook;
-            SelectCommand = new RelayCommand(Select);
-            BookCommand = new RelayCommand(Book);
+            SelectCommand = new RelayCommand(() => onProductSelect?.Invoke(this,_product));
         }
 
         #endregion
 
         #region Properties
 
-        private readonly Product _product;
+        private Product _product;
 
-        public string Name => _product.Name;
-
-        public string Price => $"{decimal.Round(_product.Price, CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)} {CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol}";
+        public Product Product
+        {
+            get => _product;
+            set => _product = value;
+        }
 
         #endregion
 
@@ -46,26 +38,7 @@ namespace Buchungssystem.App.ViewModel
 
         public ICommand SelectCommand { get; }
 
-        private void Select()
-        {
-            _onProductSelect?.Invoke(_product);
-        }
-
-        public ICommand BookCommand { get; }
-
-        private void Book()
-        {
-            _onProductBook?.Invoke(_product);
-        }
-
         #endregion
 
-        #region Actions
-
-        private readonly Action<Product> _onProductSelect;
-
-        private readonly Action<Product> _onProductBook;
-
-        #endregion
     }
 }

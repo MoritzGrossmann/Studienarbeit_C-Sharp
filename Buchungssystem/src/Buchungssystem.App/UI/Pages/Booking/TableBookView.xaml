@@ -7,6 +7,8 @@
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -14,6 +16,14 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type tableView:BookingListViewModel}">
             <local:BookingListView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type tableView:ProductGroupListViewModel}">
+            <local:ProductGroupListView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type tableView:ProductListViewModel}">
+            <local:ProductListView />
         </DataTemplate>
     </UserControl.Resources>
 
@@ -45,6 +55,7 @@
             BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="2*" />
@@ -52,10 +63,39 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
-                    <!--  Productchoice!  -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Path=SidebarHeaderText, Mode=OneWay}" FontSize="16pt" FontWeight="Bold"  Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"></TextBlock>
+                    <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding Path=SidebarViewModel, Mode=OneWay}"  Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"></ContentControl>
+                    <StackPanel Grid.Row="0" Grid.Column="1"  Orientation="Horizontal" VerticalAlignment="Top">
+                        <Button
+                            Width="40px"
+                            Height="40px"
+                            Command="{Binding Path=ToogleSidebarCommand, Mode=OneWay}"
+                            Content="{iconPacks:PackIconFontAwesome ArrowRight}"
+                            Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Right"
+                            Visibility="{Binding Path=SidebarIsntShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"/>
+                        <Button
+                            Width="40px"
+                            Height="40px"
+                            Command="{Binding Path=ToogleSidebarCommand, Mode=OneWay}"
+                            Content="{iconPacks:PackIconFontAwesome ArrowLeft}"
+                            Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Right"
+                            Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"/>
+                    </StackPanel>
+                </Grid>
+                
+                <Grid Grid.Column="1">
+                    <ContentControl Content="{Binding Path=SelectedProducts, Mode=OneWay}" />
                 </Grid>
 
-                <Grid Grid.Column="1">
+                <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -67,7 +107,7 @@
                         Text="Buchungen" />
                     <ContentControl Grid.Row="1" Content="{Binding Path=OpenBookings, Mode=OneWay}" />
                 </Grid>
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -79,7 +119,7 @@
                         Text="Ausgewählte Buchungen" />
                     <ContentControl Grid.Row="1" Content="{Binding Path=SelectedBookings, Mode=OneWay}" />
                 </Grid>
-                <Grid Grid.Column="3">
+                <Grid Grid.Column="4">
                     <Border Padding="10,0,10,0">
                         <StackPanel VerticalAlignment="Bottom" Orientation="Vertical">
                             <Button

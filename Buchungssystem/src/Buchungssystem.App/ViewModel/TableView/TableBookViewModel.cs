@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
+using Buchungssystem.Repository.Database;
 using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
@@ -19,6 +22,41 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             get => _table;
             set => _table = value;
+        }
+
+        private BaseViewModel _sidebarViewModel;
+
+        public BaseViewModel SidebarViewModel
+        {
+            get => _sidebarViewModel;
+            set
+            {
+                _sidebarViewModel = value;
+                RaisePropertyChanged(nameof(SidebarViewModel));
+            } 
+        }
+
+        private bool _showSidebar;
+
+        public bool SidebarIsShown
+        {
+            get { return _showSidebar; }
+            set
+            {
+                _showSidebar = value;
+                RaisePropertyChanged(nameof(SidebarIsShown));
+                RaisePropertyChanged(nameof(SidebarIsntShown));
+            }
+        }
+
+        public bool SidebarIsntShown => !_showSidebar;
+
+        private string _sidebarHeaderText;
+
+        public string SidebarHeaderText
+        {
+            get { return _sidebarHeaderText; }
+            set { _sidebarHeaderText = value; RaisePropertyChanged(nameof(SidebarHeaderText));}
         }
 
         private BookingListViewModel _openBookings;
@@ -37,19 +75,35 @@ namespace Buchungssystem.App.ViewModel.TableView
             set => _selectedBookings = value;
         }
 
+        private ProductListViewModel _selectedProducts;
+
+        public ProductListViewModel SelectedProducts
+        {
+            get => _selectedProducts;
+            set => _selectedProducts = value;
+        }
+
+
+        private ICollection<ProductGroup> _productGroups;
+
         #endregion
 
         #region Contructor
 
-        public TableBookViewModel(Table table, Action onReturn)
+        public TableBookViewModel(Table table, ICollection<ProductGroup> productGroups, Action onReturn)
         {
             Table = table;
+            _productGroups = productGroups.OrderBy(p => p.Name).ToList();
             OpenBookings = new BookingListViewModel(table.Bookings.Where(b => b.Status == BookingStatus.Open).ToList(), SelectBooking);
             SelectedBookings = new BookingListViewModel(new List<Booking>(), DeSelectBooking);
-            _onReturn = onReturn;
-            ToTableListCommand = new RelayCommand(ReturnAction);
+            SelectedProducts = new ProductListViewModel(new List<Product>(), OnProductSelect, ShowProductGroups);
+            SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect);
+            _sidebarHeaderText = "Warengruppen";
+
+            ToTableListCommand = new RelayCommand(() => onReturn?.Invoke());
             PayCommand = new RelayCommand(PayBookings);
             CancelCommand = new RelayCommand(CancelBookings);
+            ToogleSidebarCommand = new RelayCommand(() => SidebarIsShown = !SidebarIsShown);
         }
 
         #endregion
@@ -72,9 +126,6 @@ namespace Buchungssystem.App.ViewModel.TableView
                 RaisePropertyChanged(nameof(OpenBookings));
                 RaisePropertyChanged(nameof(SelectedBookings));
             }
-            
-            
-            
         }
 
         private void DeSelectBooking(BookingViewModel bookingViewModel)
@@ -99,7 +150,11 @@ namespace Buchungssystem.App.ViewModel.TableView
             SelectedBookings.BookingViewModels.Clear();
         }
 
-        private readonly Action _onReturn;
+        private void ShowProductGroups()
+        {
+            SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect);
+            SidebarHeaderText = "Warengruppen";
+        }
 
         #endregion
 
@@ -107,14 +162,31 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public ICommand ToTableListCommand { get; }
 
-        private void ReturnAction()
-        {
-            _onReturn.Invoke();
-        }
-
         public ICommand PayCommand { get; }
 
         public ICommand CancelCommand { get; }
+
+        public ICommand ToogleSidebarCommand { get; }
+
+        #endregion
+
+        #region EventHandler
+
+        private void OnProductGroupSelect(object sender, ProductGroup p)
+        {
+            SidebarViewModel = new ProductListViewModel(p.Products.OrderBy(pr => pr.Name).ToList(), OnProductSelect, ShowProductGroups);
+            SidebarHeaderText = p.Name;
+        }
+
+        private void OnProductDeSelect(object sender, Product p)
+        {
+            SelectedProducts.ProductViewModels.Remove((ProductViewModel) sender);
+        }
+
+        private void OnProductSelect(object sender, Product p)
+        {
+            SelectedProducts.ProductViewModels.Add(new ProductViewModel(p, OnProductDeSelect));
+        }
 
         #endregion
     }

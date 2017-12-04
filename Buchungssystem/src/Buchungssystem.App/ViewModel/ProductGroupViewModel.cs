@@ -11,14 +11,10 @@ namespace Buchungssystem.App.ViewModel
 
         #region Constructor
 
-        public ProductGroupViewModel(ProductGroup productGroup, Action<ProductGroup> onProductGroupSelect)
+        public ProductGroupViewModel(ProductGroup productGroup, EventHandler<ProductGroup> onProductGroupSelect)
         {
             _productGroup = productGroup;
-            _onProductGroupSelect = onProductGroupSelect;
-
-            _productCount = _productGroup.Products.Count;
-
-            SelectCommand = new RelayCommand(Select);
+            SelectCommand = new RelayCommand(() => onProductGroupSelect?.Invoke(this, _productGroup));
         }
 
         #endregion
@@ -39,23 +35,6 @@ namespace Buchungssystem.App.ViewModel
 
         public ICommand SelectCommand { get; }
 
-        private readonly int _productCount;
-
-        public string ProductCount => $"{_productCount} Waren";
-
-        private void Select()
-        {
-            _onProductGroupSelect?.Invoke(_productGroup);
-        }
-
         #endregion
-
-        #region Actions
-
-        private readonly Action<ProductGroup> _onProductGroupSelect;
-
-        #endregion
-
-
     }
 }

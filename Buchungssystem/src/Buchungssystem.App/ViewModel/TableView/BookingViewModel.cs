@@ -16,6 +16,8 @@ namespace Buchungssystem.App.ViewModel.TableView
             _booking = booking;
         }
 
+        public string BookedDate => Booking.Created.ToShortTimeString();
+
         public BookingViewModel(Booking booking, Action<BookingViewModel> onSelect)
         {
             OnSelect = onSelect;
@@ -33,6 +35,8 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             OnSelect?.Invoke(this);
         }
+
+
 
         #endregion
     }

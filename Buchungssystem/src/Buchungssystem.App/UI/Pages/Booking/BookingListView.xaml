@@ -15,8 +15,8 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        
-        <ListView Grid.Row="0" BorderBrush="Transparent" ItemsSource="{Binding Path=BookingViewModels, Mode=OneWay}" VerticalContentAlignment="Stretch">
+
+        <ListView Grid.Row="0" BorderBrush="Transparent" ItemsSource="{Binding Path=BookingViewModels, Mode=OneWay}">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="tableView:BookingViewModel">
                     <Grid>
@@ -37,7 +37,10 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Path=Booking.Product.Name, Mode=OneWay}" FontSize="14pt"/>
-                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Gebucht um: " FontStyle="Italic" Foreground="#FF686868" />
+                                <StackPanel  Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Text="Gebucht um: " FontStyle="Italic" Foreground="#FF686868" />
+                                    <TextBlock Text="{Binding Path=BookedDate, Mode=OneWay}" FontStyle="Italic" Foreground="#FF686868" />
+                                </StackPanel>
                                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=Booking.Product.Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" FontSize="14pt" HorizontalAlignment="Right"></TextBlock>
                             </Grid>
                         </Border>

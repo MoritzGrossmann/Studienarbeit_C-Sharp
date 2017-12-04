@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.TableView;
 using Buchungssystem.Domain.Model;
+using Buchungssystem.Repository.Database;
 
 namespace Buchungssystem.App.ViewModel.RoomView
 {
@@ -30,6 +32,8 @@ namespace Buchungssystem.App.ViewModel.RoomView
         }
 
         private BaseViewModel _currentViewModel;
+
+        private readonly ICollection<ProductGroup> _productGroups = new BookingSystemDataPersitence().ProductGroups();
     
         #endregion
 
@@ -60,7 +64,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         private void SelectTable(Table table)
         {
-            CurrentViewModel = new TableBookViewModel(table, ShowTables);
+            CurrentViewModel = new TableBookViewModel(table, _productGroups, ShowTables);
             RaisePropertyChanged(nameof(CurrentViewModel));
         }
 

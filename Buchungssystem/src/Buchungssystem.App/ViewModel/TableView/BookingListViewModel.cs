@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
@@ -37,6 +38,18 @@ namespace Buchungssystem.App.ViewModel.TableView
                 decimal sum = 0;
                 _bookingViewModels.ForEach(bvm => sum += bvm.Booking.Product.Price);
                 return sum;
+            }
+        }
+
+        private int _selectedIndex;
+
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                if (value == -1) return;
+                _selectedIndex = value; 
             }
         }
 

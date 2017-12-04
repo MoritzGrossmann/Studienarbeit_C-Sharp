@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Buchungssystem.Domain.Annotations;
 
 namespace Buchungssystem.Repository.Model
 {
@@ -20,7 +23,10 @@ namespace Buchungssystem.Repository.Model
 
         public int Status { get; set; }
 
-        [Timestamp]
-        public byte[] Created { get; set; }
+        [CanBeNull]
+        public DateTime? Created { get; set; }
+
+        [CanBeNull]
+        public DateTime? Finished { get; set; }
     }
 }

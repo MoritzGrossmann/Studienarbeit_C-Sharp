@@ -133,7 +133,8 @@ namespace Buchungssystem.Repository
                 {
                     Status = (int)BookingStatus.Open,
                     DbTableId = new Random().Next(1, 10),
-                    DbProductId = new Random().Next(1, 5)
+                    DbProductId = new Random().Next(1, 5),
+                    Created = DateTime.Now
                 });
             }
 

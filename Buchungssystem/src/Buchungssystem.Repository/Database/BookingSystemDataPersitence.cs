@@ -264,12 +264,12 @@ namespace Buchungssystem.Repository.Database
 
         private DbBooking FromBooking(Booking booking)
         {
-            return new DbBooking(){DbBookingId = booking.Id, DbTableId = booking.Table.Id, DbProductId = booking.Product.Id, Status = (int)booking.Status};
+            return new DbBooking(){DbBookingId = booking.Id, DbTableId = booking.Table.Id, DbProductId = booking.Product.Id, Status = (int)booking.Status, Created = booking.Created, Finished = booking.Finished};
         }
 
         private Booking FromDbBooking(DbBooking dbBooking)
         {
-            var booking = new Booking() { Id = dbBooking.DbBookingId, Status = (BookingStatus)dbBooking.Status};
+            var booking = new Booking() { Id = dbBooking.DbBookingId, Status = (BookingStatus)dbBooking.Status, Created = dbBooking.Created ?? DateTime.MinValue, Finished = dbBooking.Finished ?? DateTime.MinValue };
             booking.Product = Product(dbBooking.DbProductId);
             booking.Persistence = this;
             return booking;
