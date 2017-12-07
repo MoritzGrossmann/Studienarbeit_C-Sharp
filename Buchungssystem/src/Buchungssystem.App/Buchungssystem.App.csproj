@@ -137,6 +137,7 @@
     <Compile Include="UI\Windows\LoadingScreen.xaml.cs">
       <DependentUpon>LoadingScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\BaseDataManagement\RoomViewModel.cs" />
     <Compile Include="ViewModel\Loading\LoadingViewModel.cs" />
     <Compile Include="ViewModel\RoomView\TableListViewModel.cs" />
     <Compile Include="ViewModel\TableView\BookingViewModel.cs" />

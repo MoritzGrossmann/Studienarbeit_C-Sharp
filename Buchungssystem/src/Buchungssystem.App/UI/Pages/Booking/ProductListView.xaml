@@ -7,12 +7,30 @@
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
+    xmlns:converter1="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
 
     <Grid>
-        <ListView BorderBrush="Transparent" ItemsSource="{Binding Path=ProductViewModels}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Command="{Binding Path=ReturnToParentCommand, Mode=OneWay}"                 
+                    Width="40px"
+                    Height="40px"
+                    Margin="0,0,40,0"
+                    Content="{iconPacks:PackIconFontAwesome ArrowUp}"
+                    Style="{DynamicResource MetroCircleButtonStyle}" 
+                    Visibility="{Binding Path=ShowReturnButton, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding Path=Name, Mode=OneWay}" FontSize="16pt" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+        </StackPanel>
+
+        <ListView Grid.Row="1" BorderBrush="Transparent" ItemsSource="{Binding Path=ProductViewModels}">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="viewModel:ProductViewModel">
                     <Grid>

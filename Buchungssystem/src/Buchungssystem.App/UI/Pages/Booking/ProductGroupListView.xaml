@@ -16,13 +16,18 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Command="{Binding Path=ReturnToParentCommand, Mode=OneWay}"                 
-                Width="40px"
-                Height="40px"
-                Margin="0,0,40,0"
-                Visibility="{Binding Path=HasParent, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"
-                Content="{iconPacks:PackIconFontAwesome ArrowUp}"
-                Style="{DynamicResource MetroCircleButtonStyle}" />
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Command="{Binding Path=ReturnToParentCommand, Mode=OneWay}"                 
+                    Width="40px"
+                    Height="40px"
+                    Margin="0,0,40,0"
+                    Visibility="{Binding Path=HasParent, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"
+                    Content="{iconPacks:PackIconFontAwesome ArrowUp}"
+                    Style="{DynamicResource MetroCircleButtonStyle}" />
+            <TextBlock Text="{Binding Path=Name, Mode=OneWay}" FontSize="16pt" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+        </StackPanel>
+
         <Grid Grid.Row="1">
             <ListView BorderBrush="Transparent" ItemsSource="{Binding Path=ProductGroupViewModels}">
                 <ListView.ItemTemplate>

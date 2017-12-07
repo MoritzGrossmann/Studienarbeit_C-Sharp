@@ -55,56 +55,16 @@
             BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="16pt"
-                        FontWeight="Bold"
-                        Text="{Binding Path=SidebarHeaderText, Mode=OneWay}"
-                        Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
                     <ContentControl
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Content="{Binding Path=SidebarViewModel, Mode=OneWay}"
-                        Width="200px"
-                        Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        VerticalAlignment="Top"
-                        Orientation="Horizontal">
-                        <Button
-                            Width="40px"
-                            Height="40px"
-                            HorizontalAlignment="Right"
-                            Command="{Binding Path=ToogleSidebarCommand, Mode=OneWay}"
-                            Content="{iconPacks:PackIconFontAwesome ArrowRight}"
-                            Style="{DynamicResource MetroCircleButtonStyle}"
-                            Visibility="{Binding Path=SidebarIsntShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
-                        <Button
-                            Width="40px"
-                            Height="40px"
-                            HorizontalAlignment="Right"
-                            Command="{Binding Path=ToogleSidebarCommand, Mode=OneWay}"
-                            Content="{iconPacks:PackIconFontAwesome ArrowLeft}"
-                            Style="{DynamicResource MetroCircleButtonStyle}"
-                            Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
-                    </StackPanel>
+                        Content="{Binding Path=SidebarViewModel, Mode=OneWay}" />
                 </Grid>
 
                 <Grid Grid.Column="1">

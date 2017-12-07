@@ -30,7 +30,7 @@ namespace Buchungssystem.Repository
 
     }
 
-    class DbInitializer : DropCreateDatabaseAlways<BookingsystemEntities>
+    class DbInitializer : DropCreateDatabaseIfModelChanges<BookingsystemEntities>
     {
         protected override void Seed(BookingsystemEntities context)
         {

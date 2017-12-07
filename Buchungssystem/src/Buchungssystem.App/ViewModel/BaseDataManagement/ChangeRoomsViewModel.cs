@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
-using Buchungssystem.App.ViewModel.RoomView;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement
@@ -10,6 +12,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
     internal class ChangeRoomsViewModel : BaseViewModel
     {
         #region Properties
+
+        private IPersistBookingSystemData _bookingSystemPersistence;
 
         public ObservableCollection<RoomViewModel> RoomViewModels { get; set; }
 
@@ -33,6 +37,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         public ChangeRoomsViewModel(ICollection<Room> rooms)
         {
             RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r, SelectRoom)));
+            AddRoomCommand = new RelayCommand(AddRoom);
             ActualRoomViewModel = RoomViewModels.FirstOrDefault();
         }
 
@@ -40,10 +45,34 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         #region Actions
 
-        private void SelectRoom(RoomViewModel roomViewModel)
+        private void SelectRoom(Room room)
         {
-            ActualRoomViewModel = roomViewModel;
+            ActualRoomViewModel = new RoomViewModel(room, SaveRoom);
         }
+
+        private void SaveRoom(object sender, Room room)
+        {
+            try
+            {
+                var r = room.Persist();
+                RoomViewModels.Add(new RoomViewModel(r, SelectRoom));
+            }
+            catch (ModelExistException modelExistException)
+            {
+                // TODO
+            }
+        }
+
+        private void AddRoom()
+        {
+            ActualRoomViewModel = new RoomViewModel(new Room() {Name = "", Persistence = _bookingSystemPersistence}, SaveRoom);
+        }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand AddRoomCommand { get; }
 
         #endregion
 

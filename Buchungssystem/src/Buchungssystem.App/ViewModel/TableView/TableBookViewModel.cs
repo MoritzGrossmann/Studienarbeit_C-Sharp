@@ -101,8 +101,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             OpenBookings = new BookingListViewModel(table.Bookings.Where(b => b.Status == BookingStatus.Open).ToList(), SelectBooking);
             SelectedBookings = new BookingListViewModel(new List<Booking>(), SelectBooking);
             SelectedProducts = new ProductListViewModel(new List<Product>(), OnProductSelect);
-            SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect, ShowParent);
-            _sidebarHeaderText = "Warengruppen";
+            SidebarViewModel = new ProductGroupListViewModel("Warengruppen", _productGroups, OnProductGroupSelect, ShowParent);
 
             ToTableListCommand = new RelayCommand(() => onReturn?.Invoke());
             PayCommand = new RelayCommand(PayBookings);
@@ -156,6 +155,7 @@ namespace Buchungssystem.App.ViewModel.TableView
                 var parent = (ProductGroup) productGroup.Parent();
 
                 SidebarViewModel = new ProductGroupListViewModel(
+                    parent.Name,
                     parent.ChildNodes()
                         .Where(c => c.GetType() == typeof(ProductGroup))
                         .AsEnumerable()
@@ -165,8 +165,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
             catch (NullReferenceException)
             {
-                SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect, ShowParent);
-                SidebarHeaderText = "Warengruppen";
+                SidebarViewModel = new ProductGroupListViewModel("Warengruppen", _productGroups, OnProductGroupSelect, ShowParent);
             }
         }
 
@@ -212,7 +211,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
             if (productGroups.Any())
             {
-                SidebarViewModel = new ProductGroupListViewModel(productGroups, OnProductGroupSelect, ShowParent);
+                SidebarViewModel = new ProductGroupListViewModel(p.Name, productGroups, OnProductGroupSelect, ShowParent);
             }
             else
             {

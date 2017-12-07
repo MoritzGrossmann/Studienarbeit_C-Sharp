@@ -1,20 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Buchungssystem.Domain.Annotations;
 using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.Domain.Model
 {
     public class Room : BookingSystemModel
     {
-        public Room()
-        {
-        }
-
         public int Id { get; set; }
 
 

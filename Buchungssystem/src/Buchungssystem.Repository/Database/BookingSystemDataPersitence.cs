@@ -127,6 +127,8 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
+                if (context.Rooms.Any(r => r.Name.Equals(room.Name))) throw new ModelExistException($"Der Raum {room.Name} ist bereits Vorhanden");
+
                 var dbRoom = FromRoom(room);
                 context.Rooms.Add(dbRoom);
                 context.SaveChanges();

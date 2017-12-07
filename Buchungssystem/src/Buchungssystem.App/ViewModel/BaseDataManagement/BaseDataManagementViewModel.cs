@@ -30,12 +30,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         public BaseViewModel CurrentViewModel
         {
             get => _currentViewModel;
-            set
-            {
-                if (_currentViewModel == value) return;
-                _currentViewModel = value;
-                RaisePropertyChanged(nameof(CurrentViewModel));
-            }
+            set => SetProperty(ref _currentViewModel, value, nameof(CurrentViewModel));
         }
 
         #endregion

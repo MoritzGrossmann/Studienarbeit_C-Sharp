@@ -24,23 +24,19 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public bool HasParent => _hasParent;
 
+        private readonly string _name;
+        public string Name => _name;
+
         #endregion
 
         #region Contructor
 
-        //public ProductGroupListViewModel(ProductGroup productGroup,
-        //    EventHandler<ProductGroup> onProductGroupSelect, Action<ProductGroup> onReturnToParent)
-        //{
-        //    _productGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroup.ChildNodes().Where(c => c.GetType() == typeof(ProductGroup)).Select(p => new ProductGroupViewModel((ProductGroup)p, onProductGroupSelect)));
-        //    _hasParent = true;
-        //    ReturnToParentCommand = new RelayCommand(() => onReturnToParent?.Invoke(productGroup));
-        //}
-
-        public ProductGroupListViewModel(ICollection<ProductGroup> productGroups,
+        public ProductGroupListViewModel(string name, ICollection<ProductGroup> productGroups,
             EventHandler<ProductGroup> onProductGroupSelect, Action<ProductGroup> returnToParent)
         {
             _productGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.Select(p => new ProductGroupViewModel(p, onProductGroupSelect)));
             _hasParent = productGroups.Any(p => p.Parent() != null);
+            _name =  name;
             ReturnToParentCommand = new RelayCommand(() => returnToParent?.Invoke((ProductGroup)productGroups.FirstOrDefault().Parent()));
         }
 
