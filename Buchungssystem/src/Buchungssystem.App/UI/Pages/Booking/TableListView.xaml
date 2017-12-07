@@ -38,8 +38,9 @@
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid.RowDefinitions>
@@ -54,18 +55,46 @@
                                     FontSize="18pt"
                                     Foreground="{Binding Path=Color, Mode=OneWay}"
                                     Text="{Binding Path=Table.Name, Mode=OneWay}" />
-                                <TextBlock
+                                <StackPanel
                                     Grid.Row="1"
                                     Grid.Column="0"
-                                    FontStyle="Italic"
-                                    Foreground="#FF686868"
-                                    Text="Letzte Buchung" />
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding Path=Table.Occupied, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}">
+                                    <TextBlock
+                                        FontStyle="Italic"
+                                        Foreground="#FF686868"
+                                        Text="Letzte Buchung vor " />
+                                    <TextBlock
+                                        FontStyle="Italic"
+                                        Foreground="#FF686868"
+                                        Text="{Binding Path=LastBookingTime, Mode=OneWay}" />
+                                    <TextBlock
+                                        FontStyle="Italic"
+                                        Foreground="#FF686868"
+                                        Text=" Minuten" />
+                                </StackPanel>
                                 <TextBlock
                                     Grid.Row="0"
-                                    Grid.Column="1"
+                                    Grid.Column="2"
                                     HorizontalAlignment="Right"
                                     FontSize="18pt"
                                     Text="{Binding Path=Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" />
+
+                                <StackPanel
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        HorizontalAlignment="Left"
+                                        FontSize="18pt"
+                                        Foreground="{Binding Path=Color, Mode=OneWay}"
+                                        Text="{Binding Path=Table.Places, Mode=OneWay}" />
+                                    <TextBlock
+                                        HorizontalAlignment="Left"
+                                        FontSize="18pt"
+                                        Foreground="{Binding Path=Color, Mode=OneWay}"
+                                        Text=" Plätze" />
+                                </StackPanel>
                             </Grid>
                         </Border>
                     </Grid>
@@ -73,10 +102,13 @@
             </ListView.ItemTemplate>
         </ListView>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBlock Text="Freie Tische: " />
-            <TextBlock Margin="0,0,10,0" Text="{Binding Path=FreeTables, Mode=OneWay}" />
-            <TextBlock Text="Freie Plätze: " />
-            <TextBlock Text="{Binding Path=FreePlaces, Mode=OneWay}" />
+            <TextBlock FontSize="16pt" Text="Freie Tische: " />
+            <TextBlock
+                Margin="0,0,10,0"
+                FontSize="16pt"
+                Text="{Binding Path=FreeTables, Mode=OneWay}" />
+            <TextBlock FontSize="16pt" Text="Freie Plätze: " />
+            <TextBlock FontSize="16pt" Text="{Binding Path=FreePlaces, Mode=OneWay}" />
         </StackPanel>
     </Grid>
 </UserControl>

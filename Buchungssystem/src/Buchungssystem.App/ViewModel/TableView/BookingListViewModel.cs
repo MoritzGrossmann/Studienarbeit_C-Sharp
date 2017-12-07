@@ -36,7 +36,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             get
             {
                 decimal sum = 0;
-                _bookingViewModels.ForEach(bvm => sum += bvm.Booking.Product.Price);
+                _bookingViewModels.ForEach(bvm => sum += bvm.Booking.Price);
                 return sum;
             }
         }
@@ -75,7 +75,15 @@ namespace Buchungssystem.App.ViewModel.TableView
         public void Remove(BookingViewModel bookingViewModel)
         {
             BookingViewModels.Remove(
-                BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
+            BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
+            RaisePropertyChanged(nameof(Price));
+        }
+
+        public bool Any() => BookingViewModels.Any();
+
+        public void Clear()
+        {
+            BookingViewModels.Clear();
             RaisePropertyChanged(nameof(Price));
         }
 

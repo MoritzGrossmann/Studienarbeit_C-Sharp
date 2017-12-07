@@ -43,7 +43,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             get
             {
                 decimal sum = 0;
-                Table.Bookings.Where(b => b.Status == BookingStatus.Open).ForEach(b => sum += b.Product.Price);
+                Table.Bookings.Where(b => b.Status == BookingStatus.Open).ForEach(b => sum += b.Price);
                 return sum;
             }
         }
@@ -53,11 +53,13 @@ namespace Buchungssystem.App.ViewModel.TableView
             get => (Brush) new BrushConverter().ConvertFrom(Table.Occupied ? "#f44242" : "#000000");
         }
 
+        public string LastBookingTime => Table.Bookings.Any() ? ((int) (DateTime.Now.Subtract(Table.Bookings.LastOrDefault().Created).TotalMinutes)).ToString() : "";
+
         #endregion
 
         #region Contructor
 
-        public TableViewModel(Table table, Action<Table> onTableSelected, EventHandler<EventArgs> onStatusChanged)
+        public TableViewModel(Table table, EventHandler<Table> onTableSelected, EventHandler<Table> onStatusChanged)
         {
             _onTableSelected = onTableSelected;
             _onStatusChanged = onStatusChanged;
@@ -69,9 +71,9 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(Price));
         }
 
-        private readonly Action<Table> _onTableSelected;
+        private readonly EventHandler<Table> _onTableSelected;
 
-        private readonly EventHandler<EventArgs> _onStatusChanged;
+        private readonly EventHandler<Table> _onStatusChanged;
 
         #endregion
 
@@ -79,7 +81,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public void Select()
         {
-            _onTableSelected?.Invoke(_table);
+            _onTableSelected?.Invoke(this,_table);
         }
 
         public ICommand ChangeStatusCommand { get; }
@@ -95,7 +97,8 @@ namespace Buchungssystem.App.ViewModel.TableView
                 Table.Occupy();
             }
             RaisePropertyChanged(nameof(Color));
-            _onStatusChanged.Invoke(this,null);
+            RaisePropertyChanged(nameof(Table.Occupied));
+            _onStatusChanged.Invoke(this,Table);
         }
     }
 }

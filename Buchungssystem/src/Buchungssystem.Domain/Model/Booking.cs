@@ -13,11 +13,16 @@ namespace Buchungssystem.Domain.Model
 
         public Table Table { get; set; }
 
+        public decimal Price { get;  set; }
+
         public BookingStatus Status { get; set; }
-        public override void Persist()
+        public Booking Persist()
         {
+            Status = BookingStatus.Open;
+            Price = Product.Price;
             Created = DateTime.Now;
-            Persistence?.Book(this);
+            Finished = DateTime.Now;
+            return Persistence?.Book(this);
         }
 
         public void Pay()

@@ -20,7 +20,7 @@ namespace Buchungssystem.Repository.Database
                 var dbProductsGroup = FromProductGroup(productGroup);
                 context.ProductGroups.Add(dbProductsGroup);
                 context.SaveChanges();
-                productGroup.Id = dbProductsGroup.DbProductGroupId;
+                productGroup.Id = dbProductsGroup.Id;
                 return productGroup;
             }
         }
@@ -143,7 +143,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Tables.Where(t => t.DbRoomId == room.Id).AsEnumerable().Select(FromDbTable).ToList();
+                return context.Tables.Where(t => t.RoomId == room.Id).AsEnumerable().Select(FromDbTable).ToList();
             }
         }
 
@@ -156,7 +156,7 @@ namespace Buchungssystem.Repository.Database
                 var dbBooking = FromBooking(booking);
                 context.Bookings.Add(dbBooking);
                 context.SaveChanges();
-                booking.Id = dbBooking.DbBookingId;
+                booking.Id = dbBooking.Id;
                 return booking;
             }
         }
@@ -165,7 +165,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Bookings.FirstOrDefault(b => b.DbBookingId == booking.Id).Status =
+                context.Bookings.FirstOrDefault(b => b.Id == booking.Id).Status =
                     (int)Cancled;
                 context.SaveChanges();
             }
@@ -175,7 +175,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Bookings.FirstOrDefault(b => b.DbBookingId == booking.Id).Status =
+                context.Bookings.FirstOrDefault(b => b.Id == booking.Id).Status =
                     (int)Paid;
                 context.SaveChanges();
             }
@@ -185,7 +185,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                var bookings = context.Bookings.Where(b => b.DbTableId == table.Id).AsEnumerable().Select(FromDbBooking).ToList();
+                var bookings = context.Bookings.Where(b => b.TableId == table.Id).AsEnumerable().Select(FromDbBooking).ToList();
                 bookings.ForEach(b => b.Table = table);
                 return bookings;
             }
@@ -195,7 +195,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Tables.FirstOrDefault(t => t.DbTableId == table.Id).Occupied = true;
+                context.Tables.FirstOrDefault(t => t.Id == table.Id).Occupied = true;
                 context.SaveChanges();
             }
         }
@@ -204,7 +204,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                context.Tables.FirstOrDefault(t => t.DbTableId == table.Id).Occupied = false;
+                context.Tables.FirstOrDefault(t => t.Id == table.Id).Occupied = false;
                 context.SaveChanges();
             }
         }
@@ -236,12 +236,12 @@ namespace Buchungssystem.Repository.Database
 
         private DbProductGroup FromProductGroup(ProductGroup productGroup)
         {
-            return new DbProductGroup() {Name = productGroup.Name, DbProductGroupId = productGroup.Id};
+            return new DbProductGroup() {Name = productGroup.Name, Id = productGroup.Id};
         }
 
         private ProductGroup FromDbProductGroup(DbProductGroup dbProductGroup)
         {
-            var productsGroup = new ProductGroup() {Id = dbProductGroup.DbProductGroupId, Name = dbProductGroup.Name };
+            var productsGroup = new ProductGroup() {Id = dbProductGroup.Id, Name = dbProductGroup.Name };
             productsGroup.Products = Products(productsGroup);
             productsGroup.Products.ToList().ForEach(p => p.ProductGroup = productsGroup);
             productsGroup.Persistence = this;
@@ -250,12 +250,12 @@ namespace Buchungssystem.Repository.Database
 
         private DbTable FromTable(Table table)
         {
-            return new DbTable() {Name = table.Name, Occupied = table.Occupied, DbRoomId = table.Room.Id};
+            return new DbTable() {Name = table.Name, Occupied = table.Occupied, RoomId = table.Room.Id};
         }
 
         private Table FromDbTable(DbTable dbTable)
         {
-            var table = new Table() {Name = dbTable.Name, Occupied = dbTable.Occupied, Id = dbTable.DbTableId, Places = dbTable.Places};
+            var table = new Table() {Name = dbTable.Name, Occupied = dbTable.Occupied, Id = dbTable.Id, Places = dbTable.Places};
             table.Bookings = Bookings(table);
             table.Bookings.ToList().ForEach(b => b.Table = table);
             table.Persistence = this;
@@ -264,13 +264,13 @@ namespace Buchungssystem.Repository.Database
 
         private DbBooking FromBooking(Booking booking)
         {
-            return new DbBooking(){DbBookingId = booking.Id, DbTableId = booking.Table.Id, DbProductId = booking.Product.Id, Status = (int)booking.Status, Created = booking.Created, Finished = booking.Finished};
+            return new DbBooking(){Id = booking.Id, TableId = booking.Table.Id, ProductId = booking.Product.Id, Status = (int)booking.Status, Created = booking.Created, Finished = booking.Finished, Price = booking.Price};
         }
 
         private Booking FromDbBooking(DbBooking dbBooking)
         {
-            var booking = new Booking() { Id = dbBooking.DbBookingId, Status = (BookingStatus)dbBooking.Status, Created = dbBooking.Created ?? DateTime.MinValue, Finished = dbBooking.Finished ?? DateTime.MinValue };
-            booking.Product = Product(dbBooking.DbProductId);
+            var booking = new Booking() { Id = dbBooking.Id, Status = (BookingStatus)dbBooking.Status, Created = dbBooking.Created ?? DateTime.MinValue, Finished = dbBooking.Finished ?? DateTime.MinValue, Price = dbBooking.Price};
+            booking.Product = Product(dbBooking.ProductId);
             booking.Persistence = this;
             return booking;
         }

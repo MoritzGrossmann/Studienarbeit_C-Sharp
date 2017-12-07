@@ -2,13 +2,13 @@
     x:Class="Buchungssystem.App.UI.Pages.Booking.TableBookView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
-    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -55,7 +55,7 @@
             BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="2*" />
@@ -64,35 +64,63 @@
 
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Path=SidebarHeaderText, Mode=OneWay}" FontSize="16pt" FontWeight="Bold"  Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"></TextBlock>
-                    <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding Path=SidebarViewModel, Mode=OneWay}"  Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"></ContentControl>
-                    <StackPanel Grid.Row="0" Grid.Column="1"  Orientation="Horizontal" VerticalAlignment="Top">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="16pt"
+                        FontWeight="Bold"
+                        Text="{Binding Path=SidebarHeaderText, Mode=OneWay}"
+                        Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                    <ContentControl
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Content="{Binding Path=SidebarViewModel, Mode=OneWay}"
+                        Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
                         <Button
                             Width="40px"
                             Height="40px"
+                            HorizontalAlignment="Right"
                             Command="{Binding Path=ToogleSidebarCommand, Mode=OneWay}"
                             Content="{iconPacks:PackIconFontAwesome ArrowRight}"
-                            Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Right"
-                            Visibility="{Binding Path=SidebarIsntShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"/>
+                            Style="{DynamicResource MetroCircleButtonStyle}"
+                            Visibility="{Binding Path=SidebarIsntShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
                         <Button
                             Width="40px"
                             Height="40px"
+                            HorizontalAlignment="Right"
                             Command="{Binding Path=ToogleSidebarCommand, Mode=OneWay}"
                             Content="{iconPacks:PackIconFontAwesome ArrowLeft}"
-                            Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Right"
-                            Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"/>
+                            Style="{DynamicResource MetroCircleButtonStyle}"
+                            Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
                     </StackPanel>
                 </Grid>
-                
+
                 <Grid Grid.Column="1">
-                    <ContentControl Content="{Binding Path=SelectedProducts, Mode=OneWay}" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ContentControl Grid.Row="0" Content="{Binding Path=SelectedProducts, Mode=OneWay}" />
+                    <Button
+                        Grid.Row="1"
+                        Width="{Binding ActualWidth, ElementName=ButttonPay}"
+                        Height="40px"
+                        HorizontalAlignment="Center"
+                        Command="{Binding Path=BookProductsCommand, Mode=OneWay}"
+                        Content="Buchen"
+                        IsEnabled="{Binding Path=CanBookProducts, Mode=OneWay}"
+                        Style="{StaticResource AccentedSquareButtonStyle}" />
                 </Grid>
 
                 <Grid Grid.Column="2">
@@ -123,15 +151,18 @@
                     <Border Padding="10,0,10,0">
                         <StackPanel VerticalAlignment="Bottom" Orientation="Vertical">
                             <Button
+                                x:Name="ButttonPay"
                                 Height="40px"
                                 Margin="0,0,0,10"
                                 Command="{Binding Path=PayCommand, Mode=OneWay}"
                                 Content="Bezahlen"
+                                IsEnabled="{Binding Path=CanFinishBookings, Mode=OneWay}"
                                 Style="{StaticResource AccentedSquareButtonStyle}" />
                             <Button
                                 Height="40px"
                                 Command="{Binding Path=CancelCommand, Mode=OneWay}"
                                 Content="Stornieren"
+                                IsEnabled="{Binding Path=CanFinishBookings, Mode=OneWay}"
                                 Style="{StaticResource SquareButtonStyle}" />
                         </StackPanel>
                     </Border>

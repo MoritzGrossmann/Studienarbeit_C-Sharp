@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Buchungssystem.Repository.Model
 {
@@ -11,10 +12,16 @@ namespace Buchungssystem.Repository.Model
         }
 
         [Key]
-        public int DbProductGroupId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public ICollection<DbProduct> DbProducts { get; set; }
+        public ICollection<DbProduct> Products { get; set; }
+
+        public ICollection<DbProductGroup> ProductGroups { get; set; }
+
+        public int ProductGroupId { get; set; }
+
+        public DbProductGroup ProductGroup { get; set; }
     }
 }

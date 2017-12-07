@@ -12,17 +12,17 @@ namespace Buchungssystem.Repository.Model
         }
 
         [Key]
-        public int DbTableId { get; set; }
+        public int Id { get; set; }
 
         public int Places { get; set; }
 
         public string Name { get; set; }
 
-        public int DbRoomId { get; set; }
+        public int RoomId { get; set; }
 
-        public DbRoom DbRoom { get; set; }
+        public DbRoom Room { get; set; }
 
-        public ICollection<DbBooking> DbBookings { get; set; }
+        public ICollection<DbBooking> Bookings { get; set; }
 
         public bool Occupied { get; set; }
     }

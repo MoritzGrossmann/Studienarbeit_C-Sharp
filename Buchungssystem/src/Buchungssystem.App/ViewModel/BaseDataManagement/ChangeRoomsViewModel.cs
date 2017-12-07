@@ -28,7 +28,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         #endregion
 
-        #region Contructor
+        #region Constructor
 
         public ChangeRoomsViewModel(ICollection<Room> rooms)
         {

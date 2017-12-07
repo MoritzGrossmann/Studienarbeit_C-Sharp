@@ -27,15 +27,15 @@ namespace Buchungssystem.Domain.Model
 
         public ICollection<Table> Tables { get; set; }
 
-        public override void Persist()
+        public Room Persist()
         {
-            Persistence?.PersistRoom(this);
+            return Persistence?.PersistRoom(this);
         }
     }
 
     public abstract class BookingSystemModel : INotifyPropertyChanged
     {
-        public IPersistBookingSystemData Persistence;
+        public IPersistBookingSystemData Persistence { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
@@ -52,8 +52,6 @@ namespace Buchungssystem.Domain.Model
                 RaisePropertyChanged(name);
             }
         }
-
-        public abstract void Persist();
     }
 }
  

@@ -75,6 +75,8 @@ namespace Buchungssystem.App.ViewModel.TableView
             set => _selectedBookings = value;
         }
 
+        public bool CanFinishBookings => SelectedBookings.Any();
+
         private ProductListViewModel _selectedProducts;
 
         public ProductListViewModel SelectedProducts
@@ -83,19 +85,21 @@ namespace Buchungssystem.App.ViewModel.TableView
             set => _selectedProducts = value;
         }
 
+        public bool CanBookProducts => SelectedProducts.Any();
+
 
         private ICollection<ProductGroup> _productGroups;
 
         #endregion
 
-        #region Contructor
+        #region Constructor
 
         public TableBookViewModel(Table table, ICollection<ProductGroup> productGroups, Action onReturn)
         {
             Table = table;
             _productGroups = productGroups.OrderBy(p => p.Name).ToList();
             OpenBookings = new BookingListViewModel(table.Bookings.Where(b => b.Status == BookingStatus.Open).ToList(), SelectBooking);
-            SelectedBookings = new BookingListViewModel(new List<Booking>(), DeSelectBooking);
+            SelectedBookings = new BookingListViewModel(new List<Booking>(), SelectBooking);
             SelectedProducts = new ProductListViewModel(new List<Product>(), OnProductSelect, ShowProductGroups);
             SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect);
             _sidebarHeaderText = "Warengruppen";
@@ -104,6 +108,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             PayCommand = new RelayCommand(PayBookings);
             CancelCommand = new RelayCommand(CancelBookings);
             ToogleSidebarCommand = new RelayCommand(() => SidebarIsShown = !SidebarIsShown);
+            BookProductsCommand =  new RelayCommand(BookProducts);
         }
 
         #endregion
@@ -126,6 +131,8 @@ namespace Buchungssystem.App.ViewModel.TableView
                 RaisePropertyChanged(nameof(OpenBookings));
                 RaisePropertyChanged(nameof(SelectedBookings));
             }
+
+            RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
         private void DeSelectBooking(BookingViewModel bookingViewModel)
@@ -141,19 +148,39 @@ namespace Buchungssystem.App.ViewModel.TableView
         private void PayBookings()
         {
             SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Pay());
-            SelectedBookings.BookingViewModels.Clear();
+            SelectedBookings.Clear();
+            RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
         private void CancelBookings()
         {
             SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Cancel());
-            SelectedBookings.BookingViewModels.Clear();
+            SelectedBookings.Clear();
+            RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
         private void ShowProductGroups()
         {
             SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect);
             SidebarHeaderText = "Warengruppen";
+        }
+
+        private void BookProducts()
+        {
+            foreach (var productViewModel in SelectedProducts.ProductViewModels)
+            {
+                var booking = new Booking()
+                {
+                    Persistence = Table.Persistence,
+                    Product = productViewModel.Product,
+                    Table = Table
+                }.Persist();
+                OpenBookings.Add(new BookingViewModel(booking, SelectBooking));
+                Table.Bookings.Add(booking);
+            }
+            SelectedProducts.ProductViewModels.Clear();
+
+            RaisePropertyChanged(nameof(CanBookProducts));
         }
 
         #endregion
@@ -168,6 +195,8 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public ICommand ToogleSidebarCommand { get; }
 
+        public ICommand BookProductsCommand { get; set; }
+
         #endregion
 
         #region EventHandler
@@ -181,11 +210,13 @@ namespace Buchungssystem.App.ViewModel.TableView
         private void OnProductDeSelect(object sender, Product p)
         {
             SelectedProducts.ProductViewModels.Remove((ProductViewModel) sender);
+            RaisePropertyChanged(nameof(CanBookProducts));
         }
 
         private void OnProductSelect(object sender, Product p)
         {
             SelectedProducts.ProductViewModels.Add(new ProductViewModel(p, OnProductDeSelect));
+            RaisePropertyChanged(nameof(CanBookProducts));
         }
 
         #endregion

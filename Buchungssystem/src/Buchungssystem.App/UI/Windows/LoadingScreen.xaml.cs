@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Buchungssystem.App.ViewModel.Loading;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository.Database;
 using MahApps.Metro.Controls;
@@ -25,11 +26,13 @@ namespace Buchungssystem.App.UI.Windows
         public LoadingScreen()
         {
             InitializeComponent();
+            DataContext = new LoadingViewModel(new BookingSystemDataPersitence(), OnDataLoaded);
         }
 
-        public async Task<ICollection<Room>> GetRoomsAsync()
+        private void OnDataLoaded(object sender, ICollection<Room> rooms)
         {
-            return await Task.Run(() => new BookingSystemDataPersitence().Rooms());
+            new MainWindow().Show();
+            Close();
         }
     }
 }

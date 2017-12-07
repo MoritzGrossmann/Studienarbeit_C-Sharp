@@ -16,9 +16,9 @@ namespace Buchungssystem.Domain.Model
 
         public int Places { get; set; }
 
-        public override void Persist()
+        public Table Persist()
         {
-            Persistence?.PersistTable(this);
+            return Persistence?.PersistTable(this);
         }
 
         public void Occupy()

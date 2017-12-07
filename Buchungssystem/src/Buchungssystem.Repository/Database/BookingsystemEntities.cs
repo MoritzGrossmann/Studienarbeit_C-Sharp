@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository.Model;
 
@@ -112,14 +113,14 @@ namespace Buchungssystem.Repository
                 context.Tables.Add(new DbTable()
                 {
                     Places = new Random().Next(2,4),
-                    DbRoomId = 1,
+                    RoomId = 1,
                     Name = $"Terrasse {i}"
                 });
 
                 context.Tables.Add(new DbTable()
                 {
                     Places = new Random().Next(2, 8),
-                    DbRoomId = 2,
+                    RoomId = 2,
                     Name = $"Tisch {i}"
 
                 });
@@ -129,11 +130,14 @@ namespace Buchungssystem.Repository
 
             for (int i = 0; i < 20; i++)
             {
+                DbProduct product = context.Products.ToList().ElementAt(new Random().Next(1, 5));
                 context.Bookings.Add(new DbBooking()
                 {
+
                     Status = (int)BookingStatus.Open,
-                    DbTableId = new Random().Next(1, 10),
-                    DbProductId = new Random().Next(1, 5),
+                    TableId = new Random().Next(1, 10),
+                    ProductId = product.DbProductId,
+                    Price = product.Price,
                     Created = DateTime.Now
                 });
             }

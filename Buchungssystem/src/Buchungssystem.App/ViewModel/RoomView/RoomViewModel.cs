@@ -37,23 +37,14 @@ namespace Buchungssystem.App.ViewModel.RoomView
     
         #endregion
 
-        #region Contructor
+        #region Constructor
 
         public RoomViewModel(Room room, Action<RoomViewModel> onSelect)
         {
             Room = room;
-            CurrentViewModel = new TableListViewModel(room.Tables, SelectTable);
+            CurrentViewModel = new TableListViewModel(room.Tables, OnTableSelect);
             RaisePropertyChanged(nameof(Room));
             _select = onSelect;
-        }
-
-        #endregion
-
-        #region Commands
-
-        public void ChooseTable()
-        {
-            
         }
 
         #endregion
@@ -62,7 +53,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         private readonly Action<RoomViewModel> _select;
 
-        private void SelectTable(Table table)
+        private void OnTableSelect(object sender, Table table)
         {
             CurrentViewModel = new TableBookViewModel(table, _productGroups, ShowTables);
             RaisePropertyChanged(nameof(CurrentViewModel));
@@ -70,7 +61,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         private void ShowTables()
         {
-            CurrentViewModel = new TableListViewModel(Room.Tables, SelectTable);
+            CurrentViewModel = new TableListViewModel(Room.Tables, OnTableSelect);
             RaisePropertyChanged(nameof(CurrentViewModel));
         }
 

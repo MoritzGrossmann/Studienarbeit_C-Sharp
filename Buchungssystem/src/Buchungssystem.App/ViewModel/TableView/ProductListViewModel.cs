@@ -22,6 +22,8 @@ namespace Buchungssystem.App.ViewModel.TableView
             set => _productViewModels = value;
         }
 
+        public bool Any() => _productViewModels.Any();
+
         #endregion
 
         #region Contructor

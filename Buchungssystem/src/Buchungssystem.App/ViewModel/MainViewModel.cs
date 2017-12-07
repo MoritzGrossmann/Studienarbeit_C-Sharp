@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement;
@@ -6,6 +10,7 @@ using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.TestRepository;
+using MahApps.Metro.Controls.Dialogs;
 using Unity.Injection;
 
 namespace Buchungssystem.App.ViewModel
@@ -13,6 +18,11 @@ namespace Buchungssystem.App.ViewModel
     internal class MainViewModel : BaseViewModel
     {
         private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
+
+        private readonly IDialogCoordinator _dialogCoordinator;
+
+        #region Constructor
+
 
         public MainViewModel()
         {
@@ -22,8 +32,10 @@ namespace Buchungssystem.App.ViewModel
         }
 
 
-        public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
+        public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence, IDialogCoordinator instance)
         {
+            _dialogCoordinator = instance;
+
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
 
             _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
@@ -31,7 +43,9 @@ namespace Buchungssystem.App.ViewModel
             ToBaseDataCommand = new RelayCommand(ToBaseData);
         }
 
-        #region Propertys
+        #endregion
+
+        #region Properties
 
         private BaseViewModel _currentViewModel;
 
@@ -58,6 +72,7 @@ namespace Buchungssystem.App.ViewModel
 
         private void ToBaseData()
         {
+            //_dialogCoordinator.ShowMessageAsync(this, "fjrebhf", "gehe zu basedata");
             CurrentViewModel = new BaseDataManagementViewModel(_bookingSystemDataPersistence);
         }
 
