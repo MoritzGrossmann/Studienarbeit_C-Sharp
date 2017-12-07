@@ -12,9 +12,8 @@ namespace Buchungssystem.Domain.Model
 
         private ICollection<IProductNode> _childs;
 
-        public ProductGroup ParentProductGroup { get; set; }
+        private IProductNode _parent { get; set; }
 
-        public ICollection<Product> Products { get; set; }
 
         public ProductGroup Persist()
         {
@@ -28,11 +27,14 @@ namespace Buchungssystem.Domain.Model
 
         public ICollection<IProductNode> ChildNodes()
         {
-            return _childs;
+            return _childs ?? new List<IProductNode>();
         }
 
         public void AddNode(IProductNode node)
         {
+            if (_childs == null)
+                _childs = new List<IProductNode>();
+            node.SetParent(this);
             _childs.Add(node);
         }
 
@@ -43,12 +45,23 @@ namespace Buchungssystem.Domain.Model
 
         public IProductNode Parent()
         {
-            return ParentProductGroup;
+            return _parent;
+        }
+
+        public void SetParent(IProductNode node)
+        {
+            _parent = node;
         }
 
         public bool IsLeaf()
         {
             return !_childs.Any();
         }
+
+        public bool IsRoot()
+        {
+            return Parent() == null;
+        }
+        
     }
 }

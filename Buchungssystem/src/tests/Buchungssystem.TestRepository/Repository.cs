@@ -54,39 +54,33 @@ namespace Buchungssystem.TestRepository
             {
                 Name = "Gin Tonic",
                 Price = (decimal)5.5,
-                ProductGroup = ProductGroups.FirstOrDefault(),
                 Id = 1
             }, new Product()
                 {
                 Name = "Whiskey Cola",
                 Price = (decimal)6,
-                ProductGroup = ProductGroups.FirstOrDefault(),
                 Id = 1
             }, new Product()
             {
                 Name = "Wodka Lemon",
                 Price = (decimal)5.5,
-                ProductGroup = ProductGroups.FirstOrDefault(),
                 Id = 3
             },
             new Product()
             {
                 Name = "Wodka Orange",
                 Price = (decimal)5.5,
-                ProductGroup = ProductGroups.FirstOrDefault(),
                 Id = 4
             },
                 new Product()
             {
                 Name = "Campari Orange",
                 Price = (decimal)5.5,
-                ProductGroup = ProductGroups.FirstOrDefault(),
                 Id = 5
             }, new Product()
             {
                 Name = "Gin Lemon",
                 Price = (decimal)5.5,
-                ProductGroup = ProductGroups.FirstOrDefault(),
                 Id = 6
             }
         };
@@ -96,7 +90,7 @@ namespace Buchungssystem.TestRepository
             new ProductGroup()
             {
                 Id = 1,
-                Name = "Longdrinks"
+                Name = "Longdrinks",
             }
         };
 

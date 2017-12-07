@@ -28,11 +28,16 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Contructor
 
-        public ProductListViewModel(ICollection<Product> products, EventHandler<Product> onProductSelect,
-            Action returnToProductGroups)
+        public ProductListViewModel(ProductGroup productGroup, ICollection<Product> products, EventHandler<Product> onProductSelect,
+            EventHandler<ProductGroup> returnToProductGroup)
         {
             _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
-            ReturnCommand = new RelayCommand(() => returnToProductGroups?.Invoke());
+            ReturnCommand = new RelayCommand(() => returnToProductGroup?.Invoke(this, productGroup));
+        }
+
+        public ProductListViewModel(ICollection<Product> products, EventHandler<Product> onProductSelect)
+        {
+            _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
         }
 
         #endregion

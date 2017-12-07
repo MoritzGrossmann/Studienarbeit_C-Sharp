@@ -59,10 +59,15 @@ namespace Buchungssystem.TestRepository
 
         public List<Product> Products(ProductGroup productGroup)
         {
-            return Repository.Products.Where(p => p.ProductGroup.Id == productGroup.Id).ToList();
+            return Repository.Products.Where(p =>  ((ProductGroup)p.Parent()).Id == productGroup.Id).ToList();
         }
 
         public Product PersistProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProductGroup> ProductGroups(ProductGroup productGroup)
         {
             throw new NotImplementedException();
         }

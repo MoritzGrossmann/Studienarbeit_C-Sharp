@@ -81,6 +81,7 @@
                         Grid.Row="1"
                         Grid.Column="0"
                         Content="{Binding Path=SidebarViewModel, Mode=OneWay}"
+                        Width="200px"
                         Visibility="{Binding Path=SidebarIsShown, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
                     <StackPanel
                         Grid.Row="0"

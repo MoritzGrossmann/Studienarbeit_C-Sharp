@@ -18,7 +18,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         public BaseDataManagementViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
-            //CurrentViewModel = new ChangeRoomsViewModel(_bookingSystemDataPersistence.Rooms());
+            CurrentViewModel = new ChangeRoomsViewModel(_bookingSystemDataPersistence.Rooms());
         }
 
         #endregion

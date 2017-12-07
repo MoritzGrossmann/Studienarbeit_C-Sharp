@@ -100,8 +100,8 @@ namespace Buchungssystem.App.ViewModel.TableView
             _productGroups = productGroups.OrderBy(p => p.Name).ToList();
             OpenBookings = new BookingListViewModel(table.Bookings.Where(b => b.Status == BookingStatus.Open).ToList(), SelectBooking);
             SelectedBookings = new BookingListViewModel(new List<Booking>(), SelectBooking);
-            SelectedProducts = new ProductListViewModel(new List<Product>(), OnProductSelect, ShowProductGroups);
-            SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect);
+            SelectedProducts = new ProductListViewModel(new List<Product>(), OnProductSelect);
+            SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect, ShowParent);
             _sidebarHeaderText = "Warengruppen";
 
             ToTableListCommand = new RelayCommand(() => onReturn?.Invoke());
@@ -135,16 +135,6 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
-        private void DeSelectBooking(BookingViewModel bookingViewModel)
-        {
-            SelectedBookings.BookingViewModels.Remove(SelectedBookings.BookingViewModels.FirstOrDefault(b => b.Booking.Id == bookingViewModel.Booking.Id));
-            bookingViewModel.OnSelect = SelectBooking;
-            OpenBookings.BookingViewModels.Add(bookingViewModel);
-            RaisePropertyChanged(nameof(OpenBookings));
-            RaisePropertyChanged(nameof(SelectedBookings));
-            RaisePropertyChanged(nameof(OpenBookings.Price));
-        }
-
         private void PayBookings()
         {
             SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Pay());
@@ -159,10 +149,25 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
-        private void ShowProductGroups()
+        private void ShowParent(ProductGroup productGroup)
         {
-            SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect);
-            SidebarHeaderText = "Warengruppen";
+            try
+            {
+                var parent = (ProductGroup) productGroup.Parent();
+
+                SidebarViewModel = new ProductGroupListViewModel(
+                    parent.ChildNodes()
+                        .Where(c => c.GetType() == typeof(ProductGroup))
+                        .AsEnumerable()
+                        .Select(c => (ProductGroup) c)
+                        .ToList(), OnProductGroupSelect, ShowParent);
+                SidebarHeaderText = parent.Name;
+            }
+            catch (NullReferenceException)
+            {
+                SidebarViewModel = new ProductGroupListViewModel(_productGroups, OnProductGroupSelect, ShowParent);
+                SidebarHeaderText = "Warengruppen";
+            }
         }
 
         private void BookProducts()
@@ -203,7 +208,19 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private void OnProductGroupSelect(object sender, ProductGroup p)
         {
-            SidebarViewModel = new ProductListViewModel(p.Products.OrderBy(pr => pr.Name).ToList(), OnProductSelect, ShowProductGroups);
+            var productGroups = p.ChildNodes().Where(c => c.GetType() == typeof(ProductGroup)).AsEnumerable().Select(pg => (ProductGroup)pg).ToList();
+
+            if (productGroups.Any())
+            {
+                SidebarViewModel = new ProductGroupListViewModel(productGroups, OnProductGroupSelect, ShowParent);
+            }
+            else
+            {
+                SidebarViewModel = new ProductListViewModel(p,
+                    p.ChildNodes().Where(c => c.GetType() == typeof(Product)).AsEnumerable().Select(c => (Product) c)
+                        .ToList(), OnProductSelect, OnProductGroupSelect);
+            }
+
             SidebarHeaderText = p.Name;
         }
 

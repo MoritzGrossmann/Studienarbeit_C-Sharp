@@ -29,7 +29,27 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.ProductGroups.Select(FromDbProductGroup).ToList();
+                var roots =  context.ProductGroups.Where(p => p.ParentId == p.Id).AsEnumerable().Select(FromDbProductGroup).ToList();
+                roots.ForEach(p => LoadChilds(p, context));
+                return roots;
+            }
+        }
+
+        private void LoadChilds(ProductGroup productGroup, BookingsystemEntities context)
+        {
+            var childnodes = context.ProductGroups.Where(p => p.ParentId == productGroup.Id && p.ParentId != p.Id).AsEnumerable().Select(FromDbProductGroup).ToList();
+            context.Products.Where(p => p.DbProductGroupId == productGroup.Id).AsEnumerable()
+                .Select(FromDbProduct).ToList().ForEach(productGroup.AddNode);
+
+
+            if (childnodes.Any(c => c.Id != productGroup.Id))
+            {
+                childnodes.ForEach(productGroup.AddNode);
+
+                foreach (var c in childnodes)
+                {
+                    LoadChilds(c, context);
+                }
             }
         }
 
@@ -226,7 +246,8 @@ namespace Buchungssystem.Repository.Database
 
         private DbProduct FromProduct(Product product)
         {
-            return new DbProduct() {DbProductGroupId = product.ProductGroup.Id, Deleted = false, Name = product.Name, Price = product.Price};
+            var productGroup = (ProductGroup) product.Parent();
+            return new DbProduct() {DbProductGroupId = productGroup.Id, Deleted = false, Name = product.Name, Price = product.Price};
         }
 
         private Product FromDbProduct(DbProduct dbProduct)
@@ -242,8 +263,10 @@ namespace Buchungssystem.Repository.Database
         private ProductGroup FromDbProductGroup(DbProductGroup dbProductGroup)
         {
             var productsGroup = new ProductGroup() {Id = dbProductGroup.Id, Name = dbProductGroup.Name };
-            productsGroup.Products = Products(productsGroup);
-            productsGroup.Products.ToList().ForEach(p => p.ProductGroup = productsGroup);
+
+            //ProductGroups(productsGroup).ForEach(pg => productsGroup.AddNode(pg));
+            //Products(productsGroup).ForEach(p => productsGroup.AddNode(p));
+
             productsGroup.Persistence = this;
             return productsGroup;
         }

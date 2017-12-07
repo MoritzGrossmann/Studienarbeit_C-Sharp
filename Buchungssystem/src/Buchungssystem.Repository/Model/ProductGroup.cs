@@ -20,7 +20,7 @@ namespace Buchungssystem.Repository.Model
 
         public ICollection<DbProductGroup> ProductGroups { get; set; }
 
-        public int ProductGroupId { get; set; }
+        public int ParentId { get; set; }
 
         public DbProductGroup ProductGroup { get; set; }
     }

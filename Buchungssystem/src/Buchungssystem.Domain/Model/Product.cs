@@ -11,7 +11,7 @@ namespace Buchungssystem.Domain.Model
 
         public decimal Price { get; set; }
 
-        public ProductGroup ProductGroup { get; set; }
+        private IProductNode _parent;
 
         public Product Persist()
         {
@@ -25,7 +25,7 @@ namespace Buchungssystem.Domain.Model
 
         public ICollection<IProductNode> ChildNodes()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Products has no child's");
         }
 
         public void AddNode(IProductNode node)
@@ -40,12 +40,22 @@ namespace Buchungssystem.Domain.Model
 
         public IProductNode Parent()
         {
-            return ProductGroup;
+            return _parent;
+        }
+
+        public void SetParent(IProductNode node)
+        {
+            _parent = node;
         }
 
         public bool IsLeaf()
         {
             return true;
+        }
+
+        public bool IsRoot()
+        {
+            return _parent == null;
         }
     }
 }

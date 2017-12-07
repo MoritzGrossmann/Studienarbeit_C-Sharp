@@ -17,6 +17,10 @@ namespace Buchungssystem.Domain.Model
 
         IProductNode Parent();
 
+        void SetParent(IProductNode node);
+
         bool IsLeaf();
+
+        bool IsRoot();
     }
 }

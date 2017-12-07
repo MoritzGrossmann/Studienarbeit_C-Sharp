@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.TableView;
 using Buchungssystem.Domain.Model;

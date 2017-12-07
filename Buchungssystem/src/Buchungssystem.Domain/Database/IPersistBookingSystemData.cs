@@ -23,8 +23,6 @@ namespace Buchungssystem.Domain.Database
 
         ProductGroup PersistProductGroup(ProductGroup productGroup);
 
-        List<Product> Products(ProductGroup productGroup);
-
         Product PersistProduct(Product product);
 
         Booking Book(Booking booking);

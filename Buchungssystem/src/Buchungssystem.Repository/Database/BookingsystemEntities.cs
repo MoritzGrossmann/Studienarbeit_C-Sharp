@@ -30,33 +30,50 @@ namespace Buchungssystem.Repository
 
     }
 
-    class DbInitializer : DropCreateDatabaseIfModelChanges<BookingsystemEntities>
+    class DbInitializer : DropCreateDatabaseAlways<BookingsystemEntities>
     {
         protected override void Seed(BookingsystemEntities context)
         {
             context.ProductGroups.Add(new DbProductGroup()
             {
-                Name = "Longdrinks"
+                Id = 1,
+                Name = "Getränke",
+                ParentId = 1
             });
 
             context.ProductGroups.Add(new DbProductGroup()
             {
-                Name = "Cocktails"
+                ParentId = 1,
+                Name = "Longdrinks",
+                Id = 6
             });
 
             context.ProductGroups.Add(new DbProductGroup()
             {
-                Name = "Vodka"
+                ParentId = 1,
+                Name = "Cocktails",
+                Id = 2
             });
 
             context.ProductGroups.Add(new DbProductGroup()
             {
-                Name = "Rum"
+                ParentId = 1,
+                Name = "Vodka",
+                Id = 3
             });
 
             context.ProductGroups.Add(new DbProductGroup()
             {
-                Name = "Gin"
+                ParentId = 1,
+                Name = "Rum",
+                Id = 4
+            });
+
+            context.ProductGroups.Add(new DbProductGroup()
+            {
+                ParentId = 1,
+                Name = "Gin",
+                Id = 5
             });
 
             context.SaveChanges();
@@ -65,37 +82,37 @@ namespace Buchungssystem.Repository
             {
                 Name = "Gin Tonic",
                 Price = (decimal)5.5,
-                DbProductGroupId = 1
+                DbProductGroupId = 6
             });
             context.Products.Add(new DbProduct()
             {
                 Name = "Whiskey Cola",
                 Price = (decimal)6,
-                DbProductGroupId = 1
+                DbProductGroupId = 6
             });
             context.Products.Add(new DbProduct()
             {
                 Name = "Wodka Lemon",
                 Price = (decimal)5.5,
-                DbProductGroupId = 1
+                DbProductGroupId = 6
             });
             context.Products.Add(new DbProduct()
             {
                 Name = "Wodka Orange",
                 Price = (decimal)5.5,
-                DbProductGroupId = 1
+                DbProductGroupId = 6
             });
             context.Products.Add(new DbProduct()
             {
                 Name = "Campari Orange",
                 Price = (decimal)5.5,
-                DbProductGroupId = 1
+                DbProductGroupId = 6
             });
             context.Products.Add(new DbProduct()
             {
                 Name = "Gin Lemon",
                 Price = (decimal)5.5,
-                DbProductGroupId = 1
+                DbProductGroupId = 6
             });
 
             context.Rooms.Add(new DbRoom()

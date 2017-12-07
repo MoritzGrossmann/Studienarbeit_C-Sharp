@@ -6,11 +6,24 @@
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Buchungssystem.App.ViewModel"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
     <Grid>
-        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Command="{Binding Path=ReturnToParentCommand, Mode=OneWay}"                 
+                Width="40px"
+                Height="40px"
+                Margin="0,0,40,0"
+                Visibility="{Binding Path=HasParent, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}"
+                Content="{iconPacks:PackIconFontAwesome ArrowUp}"
+                Style="{DynamicResource MetroCircleButtonStyle}" />
+        <Grid Grid.Row="1">
             <ListView BorderBrush="Transparent" ItemsSource="{Binding Path=ProductGroupViewModels}">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="viewModel:ProductGroupViewModel">
