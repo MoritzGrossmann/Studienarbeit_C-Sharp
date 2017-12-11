@@ -19,18 +19,14 @@ namespace Buchungssystem.App.ViewModel.TableView
         public ObservableCollection<ProductViewModel> ProductViewModels
         {
             get => _productViewModels;
-            set => _productViewModels = value;
+            set => SetProperty(ref _productViewModels, value, nameof(ProductViewModels));
         }
 
         public bool Any() => _productViewModels.Any();
 
+        public string Name { get; }
 
-        private readonly string _name;
-        public string Name => _name;
-
-        private readonly bool _showReturnButton;
-
-        public bool ShowReturnButton => _showReturnButton;
+        public bool ShowReturnButton { get; }
 
         #endregion
 
@@ -39,16 +35,16 @@ namespace Buchungssystem.App.ViewModel.TableView
         public ProductListViewModel(ProductGroup productGroup, ICollection<Product> products, EventHandler<Product> onProductSelect,
             EventHandler<ProductGroup> returnToProductGroup)
         {
-            _name = productGroup.Name;
+            Name = productGroup.Name;
             _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
-            _showReturnButton = true;
+            ShowReturnButton = true;
             ReturnToParentCommand = new RelayCommand(() => returnToProductGroup?.Invoke(this,(ProductGroup)productGroup.Parent()));
         }
 
         public ProductListViewModel(ICollection<Product> products, EventHandler<Product> onProductSelect)
         {
             _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
-            _showReturnButton = false;
+            ShowReturnButton = false;
         }
 
         #endregion

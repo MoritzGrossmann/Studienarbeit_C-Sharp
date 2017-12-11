@@ -21,22 +21,13 @@ namespace Buchungssystem.App.ViewModel.TableView
             get => _table;
             set
             {
-                if (_table.Equals(value)) return;
-                _table = value;
-                RaisePropertyChanged(nameof(Table));
+                SetProperty(ref _table, value, nameof(Table));
+                RaisePropertyChanged(nameof(Name));
+                RaisePropertyChanged(nameof(Price));
             }
         }
 
-        public string Name
-        {
-            get => _table.Name;
-            set
-            {
-                if (_table.Name.Equals(value)) return;
-                _table.Name = value;
-                RaisePropertyChanged(nameof(Name));
-            }
-        }
+        public string Name => _table.Name;
 
         public decimal Price
         {
@@ -48,16 +39,13 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
         }
 
-        public Brush Color
-        {
-            get => (Brush) new BrushConverter().ConvertFrom(Table.Occupied ? "#f44242" : "#000000");
-        }
+        public Brush Color => (Brush) new BrushConverter().ConvertFrom(Table.Occupied ? "#f44242" : "#000000");
 
         public string LastBookingTime => Table.Bookings.Any() ? ((int) (DateTime.Now.Subtract(Table.Bookings.LastOrDefault().Created).TotalMinutes)).ToString() : "";
 
         #endregion
 
-        #region Contructor
+        #region Constructor
 
         public TableViewModel(Table table, EventHandler<Table> onTableSelected, EventHandler<Table> onStatusChanged)
         {
@@ -68,7 +56,6 @@ namespace Buchungssystem.App.ViewModel.TableView
 
             SelectCommand = new RelayCommand(Select);
             ChangeStatusCommand = new RelayCommand(ChangeStatus);
-            RaisePropertyChanged(nameof(Price));
         }
 
         private readonly EventHandler<Table> _onTableSelected;
@@ -79,7 +66,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public ICommand SelectCommand { get; }
 
-        public void Select()
+        private void Select()
         {
             _onTableSelected?.Invoke(this,_table);
         }

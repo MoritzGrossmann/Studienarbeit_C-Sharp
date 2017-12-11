@@ -21,15 +21,15 @@ namespace Buchungssystem.App.ViewModel.RoomView
         public Room Room
         {
             get => _room;
-            set => _room = value;
+            set => SetProperty(ref _room, value, nameof(Room));
         }
 
         public string Name => Room.Name;
 
         public BaseViewModel CurrentViewModel
         {
-            get { return _currentViewModel; }
-            set { _currentViewModel = value; }
+            get => _currentViewModel;
+            set => SetProperty(ref _currentViewModel, value, nameof(CurrentViewModel));
         }
 
         private BaseViewModel _currentViewModel;
@@ -40,30 +40,24 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         #region Constructor
 
-        public RoomViewModel(Room room, Action<RoomViewModel> onSelect)
+        public RoomViewModel(Room room)
         {
             Room = room;
             CurrentViewModel = new TableListViewModel(room.Tables, OnTableSelect);
-            RaisePropertyChanged(nameof(Room));
-            _select = onSelect;
         }
 
         #endregion
 
         #region Actions
 
-        private readonly Action<RoomViewModel> _select;
-
         private void OnTableSelect(object sender, Table table)
         {
             CurrentViewModel = new TableBookViewModel(table, _productGroups, ShowTables);
-            RaisePropertyChanged(nameof(CurrentViewModel));
         }
 
         private void ShowTables()
         {
             CurrentViewModel = new TableListViewModel(Room.Tables, OnTableSelect);
-            RaisePropertyChanged(nameof(CurrentViewModel));
         }
 
         #endregion

@@ -16,27 +16,29 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels
         {
-            get { return _productGroupViewModels; }
-            set { _productGroupViewModels = value; }
+            get => _productGroupViewModels;
+            set => SetProperty(ref _productGroupViewModels, value, nameof(ProductGroupViewModels));
         }
 
-        private readonly bool _hasParent;
+        public bool HasParent { get; }
 
-        public bool HasParent => _hasParent;
-
-        private readonly string _name;
-        public string Name => _name;
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value, nameof(Name));
+        }
 
         #endregion
 
-        #region Contructor
+        #region Constructor
 
         public ProductGroupListViewModel(string name, ICollection<ProductGroup> productGroups,
             EventHandler<ProductGroup> onProductGroupSelect, Action<ProductGroup> returnToParent)
         {
             _productGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.Select(p => new ProductGroupViewModel(p, onProductGroupSelect)));
-            _hasParent = productGroups.Any(p => p.Parent() != null);
-            _name =  name;
+            HasParent = productGroups.Any(p => p.Parent() != null);
+            _name = name;
             ReturnToParentCommand = new RelayCommand(() => returnToParent?.Invoke((ProductGroup)productGroups.FirstOrDefault().Parent()));
         }
 

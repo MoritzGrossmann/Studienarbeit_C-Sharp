@@ -19,17 +19,37 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             set => SetProperty(ref _room, value, nameof(Room));
         }
 
+        private bool _edit;
+
+        public bool Edit
+        {
+            get => _edit;
+            set => SetProperty(ref _edit, value, nameof(Edit));
+        }
+
+        public bool NoEdit => !Edit;
+
         public RoomViewModel(Room room, Action<Room> onSelect)
         {
             _room = room;
-            SelectCommand = new RelayCommand(() => onSelect?.Invoke(_room));
+            _selectRoom = onSelect;
+            SelectCommand = new RelayCommand(Select);
         }
 
         public RoomViewModel(Room room, EventHandler<Room> onSave)
         {
             _room = room;
             SaveCommand = new RelayCommand(() => onSave(this, _room));
+            EditCommand = new RelayCommand(ToogleEdit);
         }
+
+        private void ToogleEdit()
+        {
+            Edit = !Edit;
+            RaisePropertyChanged(nameof(NoEdit));
+        }
+
+
 
         #region Commands
 
@@ -37,6 +57,14 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         public ICommand SelectCommand { get; }
 
+        public ICommand EditCommand { get; }
         #endregion
+
+        private void Select()
+        {
+            _selectRoom?.Invoke(_room);
+        }
+
+        private Action<Room> _selectRoom;
     }
 }

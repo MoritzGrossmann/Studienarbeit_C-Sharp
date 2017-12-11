@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository.Model;
@@ -127,6 +128,8 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
+                if (context.Rooms.Any(r => r.DbRoomId == room.Id)) return UpdateRoom(room, context);
+
                 if (context.Rooms.Any(r => r.Name.Equals(room.Name))) throw new ModelExistException($"Der Raum {room.Name} ist bereits Vorhanden");
 
                 var dbRoom = FromRoom(room);
@@ -135,6 +138,15 @@ namespace Buchungssystem.Repository.Database
                 room.Id = dbRoom.DbRoomId;
                 return room;
             }
+        }
+
+        private Room UpdateRoom(Room room, BookingsystemEntities context)
+        {
+            var dbroom = context.Rooms.FirstOrDefault(r => r.DbRoomId == room.Id);
+            if (dbroom == null) throw new ModelNotExistException($"Der Raum mit der Id {room.Id} ist nicht vorhanden");
+            dbroom.Name = room.Name;
+            context.SaveChanges();
+            return room;
         }
 
         #endregion

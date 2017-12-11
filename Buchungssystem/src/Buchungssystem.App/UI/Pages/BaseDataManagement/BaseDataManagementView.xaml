@@ -2,7 +2,11 @@
     x:Class="Buchungssystem.App.UI.Pages.BaseDataManagement.BaseDataManagementView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement"
+    xmlns:baseDataManagement1="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="300"
     d:DesignWidth="300"
@@ -10,7 +14,74 @@
 
     <Grid>
         <TabControl>
-            <TabItem Header="Räume" />
+            <TabItem Header="Räume">
+                <TabItem.Content>
+                    <DockPanel>
+                        <ListView DockPanel.Dock="Left" ItemsSource="{Binding Path=ChangeRoomsViewModel.RoomViewModels}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate DataType="baseDataManagement:RoomViewModel">
+                                    <Grid>
+                                        <Grid.InputBindings>
+                                            <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
+                                        </Grid.InputBindings>
+                                        <Border
+                                            Padding="30,10,30,10"
+                                            BorderBrush="LightSlateGray"
+                                            BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Column="0"
+                                                    FontSize="14pt"
+                                                    Text="{Binding Path=Room.Name, Mode=OneWay}" />
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Grid DockPanel.Dock="Bottom">
+                            <Border BorderThickness="10px">
+                                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                                    <TextBlock
+                                        Width="200px"
+                                        Height="25px"
+                                        FontSize="18px"
+                                        Text="{Binding Path=ChangeRoomsViewModel.ActualRoomViewModel.Product.Name, Mode=OneWay}"
+                                        Visibility="{Binding Path=ChangeRoomsViewModel.ActualRoomViewModel.NoEdit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                                    <TextBox
+                                        Width="200px"
+                                        Height="25px"
+                                        FontSize="18px"
+                                        Text="{Binding Path=ChangeRoomsViewModel.ActualRoomViewModel.Product.Name, Mode=TwoWay}"
+                                        Visibility="{Binding Path=ChangeRoomsViewModel.ActualRoomViewModel.Edit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                                    <Button
+                                        Height="25px"
+                                        Command="{Binding Path=ActualRoomViewModel.EditCommand}"
+                                        Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}" />
+                                    <StackPanel />
+
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </DockPanel>
+                </TabItem.Content>
+            </TabItem>
             <TabItem Header="Tische" />
             <TabItem Header="Warengruppen" />
             <TabItem Header="Waren" />

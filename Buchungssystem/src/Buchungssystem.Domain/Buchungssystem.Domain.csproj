@@ -43,8 +43,10 @@
   <ItemGroup>
     <Compile Include="Database\IPersistBookingSystemData.cs" />
     <Compile Include="Database\ModelExistException.cs" />
+    <Compile Include="Database\ModelNotExistException.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="Model\BookingStatus.cs" />
+    <Compile Include="Model\BookingSystemModel.cs" />
     <Compile Include="Model\IProductNode.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\ProductGroup.cs" />

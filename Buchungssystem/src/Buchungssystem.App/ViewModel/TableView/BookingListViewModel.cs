@@ -28,7 +28,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         public ObservableCollection<BookingViewModel> BookingViewModels
         {
             get => _bookingViewModels;
-            set => _bookingViewModels = value;
+            set => SetProperty(ref _bookingViewModels, value, nameof(BookingViewModels));
         }
 
         public decimal Price

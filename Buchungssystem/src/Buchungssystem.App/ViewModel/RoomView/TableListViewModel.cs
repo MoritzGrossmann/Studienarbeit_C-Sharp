@@ -19,8 +19,8 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         public ObservableCollection<TableViewModel> TableViewModels
         {
-            get { return _tableViewModels; }
-            set { _tableViewModels = value; }
+            get => _tableViewModels;
+            set => SetProperty(ref _tableViewModels, value, nameof(TableViewModels));
         }
 
         public int FreeTables => TableViewModels.Count(t => !t.Table.Occupied);

@@ -22,20 +22,16 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         public RoomViewModel ActualRoomViewModel
         {
             get => _actualRoomViewModel;
-            set
-            {
-                if (_actualRoomViewModel == value) return;
-                _actualRoomViewModel = value;
-                RaisePropertyChanged(nameof(ActualRoomViewModel));
-            }
+            set => SetProperty(ref _actualRoomViewModel, value, nameof(ActualRoomViewModel));
         }
 
         #endregion
 
         #region Constructor
 
-        public ChangeRoomsViewModel(ICollection<Room> rooms)
+        public ChangeRoomsViewModel(ICollection<Room> rooms, IPersistBookingSystemData bookingSystemPersistence)
         {
+            _bookingSystemPersistence = bookingSystemPersistence;
             RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r, SelectRoom)));
             AddRoomCommand = new RelayCommand(AddRoom);
             ActualRoomViewModel = RoomViewModels.FirstOrDefault();
@@ -48,6 +44,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         private void SelectRoom(Room room)
         {
             ActualRoomViewModel = new RoomViewModel(room, SaveRoom);
+            RaisePropertyChanged(nameof(ActualRoomViewModel));
         }
 
         private void SaveRoom(object sender, Room room)

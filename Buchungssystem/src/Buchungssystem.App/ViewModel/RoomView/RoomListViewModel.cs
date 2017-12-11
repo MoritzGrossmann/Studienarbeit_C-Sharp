@@ -18,26 +18,25 @@ namespace Buchungssystem.App.ViewModel.RoomView
         public RoomViewModel SelectedRoom
         {
             get => _selectedRoom;
-            set => _selectedRoom = value;
+            set => SetProperty(ref _selectedRoom, value, nameof(SelectedRoom));
         }
 
-
         private ObservableCollection<RoomViewModel> _roomViewModels;
-        public ObservableCollection<RoomViewModel> RoomViewModels { get => _roomViewModels; set => _roomViewModels = value; }
+
+        public ObservableCollection<RoomViewModel> RoomViewModels
+        {
+            get => _roomViewModels;
+            set => SetProperty(ref _roomViewModels, value, nameof(RoomViewModels));
+        }
 
         public RoomListViewModel(ICollection<Room> rooms) 
         {
-           RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r, SelectRoom)));
+           RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r)));
         }
 
         public RoomListViewModel() : this(new TestPersitence().Rooms())
         {
             
-        }
-
-        private void SelectRoom(RoomViewModel roomViewModel)
-        {
-            SelectedRoom = roomViewModel;
         }
     }
 }
