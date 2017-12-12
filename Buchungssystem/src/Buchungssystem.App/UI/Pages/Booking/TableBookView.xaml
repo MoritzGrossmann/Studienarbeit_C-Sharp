@@ -63,8 +63,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
-                    <ContentControl
-                        Content="{Binding Path=SidebarViewModel, Mode=OneWay}" />
+                    <ContentControl Content="{Binding Path=SidebarViewModel, Mode=OneWay}" />
                 </Grid>
 
                 <Grid Grid.Column="1">

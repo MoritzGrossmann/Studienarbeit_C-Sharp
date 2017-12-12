@@ -12,67 +12,118 @@
     mc:Ignorable="d">
 
     <DockPanel>
-        <ListView DockPanel.Dock="Left" ItemsSource="{Binding Path=RoomViewModels}">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="Padding" Value="0" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="baseDataManagement:RoomViewModel">
-                    <Grid>
-                        <Grid.InputBindings>
-                            <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
-                        </Grid.InputBindings>
-                        <Border
-                            Padding="30,10,30,10"
-                            BorderBrush="LightSlateGray"
-                            BorderThickness="0,0,0,1">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
+        <Grid DockPanel.Dock="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Button
+                    Width="40px"
+                    Height="40px"
+                    Command="{Binding Path=AddRoomCommand, Mode=OneWay}"
+                    Content="{iconPacks:PackIconFontAwesome Plus}"
+                    Style="{DynamicResource MetroCircleButtonStyle}" />
+            </StackPanel>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+            <ListView Grid.Row="1" ItemsSource="{Binding Path=RoomViewModels}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="baseDataManagement:RoomViewModel">
+                        <Grid>
+                            <Grid.InputBindings>
+                                <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
+                            </Grid.InputBindings>
+                            <Border
+                                Padding="30,10,30,10"
+                                BorderBrush="LightSlateGray"
+                                BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
 
-                                <TextBlock
-                                    Grid.Column="0"
-                                    FontSize="14pt"
-                                    Text="{Binding Path=Room.Name, Mode=OneWay}" />
-                            </Grid>
-                        </Border>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
 
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        FontSize="14pt"
+                                        Text="{Binding Path=Room.Name, Mode=OneWay}" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
         <Grid DockPanel.Dock="Bottom">
-            <Border BorderThickness="10px">
-                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <TextBlock
-                        Width="200px"
-                        Height="25px"
-                        FontSize="18px"
-                        Text="{Binding Path=ActualRoomViewModel.Product.Name, Mode=OneWay}"
-                        Visibility="{Binding Path=ActualRoomViewModel.NoEdit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
-                    <TextBox
-                        Width="200px"
-                        Height="25px"
-                        FontSize="18px"
-                        Text="{Binding Path=ActualRoomViewModel.Product.Name, Mode=TwoWay}"
-                        Visibility="{Binding Path=ActualRoomViewModel.Edit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
-                    <Button
-                        Height="25px"
-                        Command="{Binding Path=ActualRoomViewModel.EditCommand}"
-                        Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}" />
-                    <StackPanel />
+            <Border BorderThickness="20px">
+                <Grid>
 
-                </StackPanel>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel
+                        Grid.Row="0"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Width="200px"
+                            VerticalAlignment="Center"
+                            FontSize="18pt"
+                            Text="{Binding Path=ActualRoomViewModel.Room.Name, Mode=OneWay}"
+                            Visibility="{Binding Path=ActualRoomViewModel.NoEdit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                        <TextBox
+                            Width="200px"
+                            VerticalAlignment="Center"
+                            FontSize="16pt"
+                            Text="{Binding Path=ActualRoomViewModel.Room.Name, Mode=TwoWay}"
+                            Visibility="{Binding Path=ActualRoomViewModel.Edit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Return" Command="{Binding Path=ActualRoomViewModel.SaveCommand}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button
+                            Width="40px"
+                            Height="40px"
+                            VerticalAlignment="Center"
+                            Command="{Binding Path=ActualRoomViewModel.EditCommand}"
+                            Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
+                            Visibility="{Binding Path=ActualRoomViewModel.NoEdit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                        <Button
+                            Width="40px"
+                            Height="40px"
+                            VerticalAlignment="Center"
+                            Command="{Binding Path=ActualRoomViewModel.SaveCommand}"
+                            Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
+                            Visibility="{Binding Path=ActualRoomViewModel.Edit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                        <StackPanel />
+                    </StackPanel>
+                    <ListView Grid.Row="1" ItemsSource="{Binding Path=TableViewModels}">
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="baseDataManagement:TableViewModel">
+                                <Grid>
+                                    <TextBlock Text="{Binding Path=Table.Name}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </Border>
         </Grid>
     </DockPanel>

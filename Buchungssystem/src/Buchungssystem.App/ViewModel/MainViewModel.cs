@@ -41,6 +41,8 @@ namespace Buchungssystem.App.ViewModel
             _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
 
             ToBaseDataCommand = new RelayCommand(ToBaseData);
+
+            ToBookingCommand = new RelayCommand(ToBooking);
         }
 
         #endregion
@@ -66,6 +68,8 @@ namespace Buchungssystem.App.ViewModel
    
         public ICommand ToBaseDataCommand {get;}
 
+        public ICommand ToBookingCommand { get; }
+
         #endregion
 
         #region Actions
@@ -74,6 +78,11 @@ namespace Buchungssystem.App.ViewModel
         {
             //_dialogCoordinator.ShowMessageAsync(this, "fjrebhf", "gehe zu basedata");
             CurrentViewModel = new BaseDataManagementViewModel(_bookingSystemDataPersistence);
+        }
+
+        private void ToBooking()
+        {
+            CurrentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
         }
 
         #endregion
