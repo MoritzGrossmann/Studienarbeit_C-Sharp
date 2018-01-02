@@ -130,7 +130,7 @@ namespace Buchungssystem.Repository.Database
             {
                 if (context.Rooms.Any(r => r.DbRoomId == room.Id)) return UpdateRoom(room, context);
 
-                if (context.Rooms.Any(r => r.Name.Equals(room.Name))) throw new ModelExistException($"Der Raum {room.Name} ist bereits Vorhanden");
+                if (context.Rooms.Any(r => r.Name.Equals(room.Name))) throw new ModelExistException($"Ein Raum mit dem Name {room.Name} exisitert bereits!");
 
                 var dbRoom = FromRoom(room);
                 context.Rooms.Add(dbRoom);

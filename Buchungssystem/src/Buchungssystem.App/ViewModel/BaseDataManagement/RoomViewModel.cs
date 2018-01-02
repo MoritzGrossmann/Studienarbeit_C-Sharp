@@ -72,7 +72,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             _room = room;
             _onSave = onSave;
 
-            SaveCommand = new RelayCommand(SaveRoom);
+            SaveCommand = new RelayCommand(Save);
             EditCommand = new RelayCommand(ToogleEdit);
             TableViewModels = new ObservableCollection<TableViewModel>(room.Tables.Select(t => new TableViewModel(t, DeleteTable)));
         }
@@ -83,12 +83,14 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             RaisePropertyChanged(nameof(NoEdit));
         }
 
+        private readonly EventHandler<Room> _onSave;
+
         /// <summary>
         /// Lößt den Eventhandler _onSave aus
         /// Speichert den Raum in der Datenbank
         /// Ändert die Editieransicht auf "Nicht editieren"
         /// </summary>
-        private void SaveRoom()
+        private void Save()
         {
             _onSave?.Invoke(this,_room);
             ToogleEdit();
@@ -112,14 +114,16 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         /// </summary>
         public ICommand SelectCommand { get; }
 
-
+        /// <summary>
+        /// erlaubt das Editieren des Raumes
+        /// </summary>
         public ICommand EditCommand { get; }
         #endregion
 
         /// <summary>
         /// Event wenn Raum änderungen am Raum gespeichert wird
         /// </summary>
-        private readonly EventHandler<Room> _onSave;
+
 
         private void Select()
         {

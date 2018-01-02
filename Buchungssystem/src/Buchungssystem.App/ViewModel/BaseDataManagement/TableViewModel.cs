@@ -22,10 +22,16 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         public TableViewModel(Table table, EventHandler<Table> onDelete)
         {
             Table = table;
-            DeleteCommand = new RelayCommand(() => onDelete.Invoke(this, _table));
+            _onDelete = onDelete;
+            DeleteCommand = new RelayCommand(Delete);
         }
 
-        private EventHandler<Table> _onDelete;
+        private readonly EventHandler<Table> _onDelete;
+
+        private void Delete()
+        {
+            _onDelete?.Invoke(this, _table);
+        }
 
         public ICommand DeleteCommand { get; }
 

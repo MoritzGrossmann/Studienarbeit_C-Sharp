@@ -17,9 +17,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         public ObservableCollection<RoomViewModel> RoomViewModels { get; set; }
 
-        private RoomViewModel _actualRoomViewModel;
+        private BaseViewModel _actualRoomViewModel;
 
-        public RoomViewModel ActualRoomViewModel
+        public BaseViewModel ActualRoomViewModel
         {
             get => _actualRoomViewModel;
             set => SetProperty(ref _actualRoomViewModel, value, nameof(ActualRoomViewModel));
@@ -34,6 +34,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             _bookingSystemPersistence = bookingSystemPersistence;
             RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r, SelectRoom)));
             AddRoomCommand = new RelayCommand(AddRoom);
+            //ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, _bookingSystemPersistence);
             ActualRoomViewModel = new RoomViewModel(RoomViewModels.FirstOrDefault().Room, SaveRoom);
         }
 
@@ -44,36 +45,30 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         private void SelectRoom(Room room)
         {
             ActualRoomViewModel = new RoomViewModel(room, SaveRoom);
-            RaisePropertyChanged(nameof(ActualRoomViewModel));
-            RaisePropertyChanged(nameof(ActualRoomViewModel.Room.Name));
+            //RaisePropertyChanged(nameof(ActualRoomViewModel));
         }
 
         private void SaveRoom(object sender, Room room)
         {
-            try
-            {
-                int oldId = room.Id;
 
-                var r = room.Persist();
-                if (r.Id != oldId)
-                {
-                    RoomViewModels.Add(new RoomViewModel(r, SelectRoom));
-                }
-                else
-                {
-                    RoomViewModels.FirstOrDefault(rvm => rvm.Room.Id == room.Id).Room = r;
-                }
-                
-            }
-            catch (ModelExistException modelExistException)
+            int oldId = room.Id;
+
+            var r = room.Persist();
+            if (r.Id != oldId)
             {
-                // TODO
+                RoomViewModels.Add(new RoomViewModel(r, SelectRoom));
+                ActualRoomViewModel = new RoomViewModel(r, SaveRoom);
+                Console.WriteLine($"INFO:\tRaum {room.Name} angelegt");
+            }
+            else
+            {
+                RoomViewModels.FirstOrDefault(rvm => rvm.Room.Id == room.Id).Room = r;
             }
         }
 
         private void AddRoom()
         {
-            ActualRoomViewModel = new RoomViewModel(new Room() {Name = "Neuer Raum", Persistence = _bookingSystemPersistence, Tables = new List<Table>()}, SaveRoom);
+            ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, _bookingSystemPersistence);
         }
 
         #endregion
