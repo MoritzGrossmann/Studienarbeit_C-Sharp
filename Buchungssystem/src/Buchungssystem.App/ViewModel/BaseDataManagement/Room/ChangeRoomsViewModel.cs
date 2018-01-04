@@ -5,15 +5,14 @@ using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
-using Buchungssystem.Domain.Model;
 
-namespace Buchungssystem.App.ViewModel.BaseDataManagement
+namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 {
     internal class ChangeRoomsViewModel : BaseViewModel
     {
         #region Properties
 
-        private IPersistBookingSystemData _bookingSystemPersistence;
+        private readonly IPersistBookingSystemData _bookingSystemPersistence;
 
         public ObservableCollection<RoomViewModel> RoomViewModels { get; set; }
 
@@ -29,12 +28,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         #region Constructor
 
-        public ChangeRoomsViewModel(ICollection<Room> rooms, IPersistBookingSystemData bookingSystemPersistence)
+        public ChangeRoomsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
-            RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r, SelectRoom)));
+            RoomViewModels = new ObservableCollection<RoomViewModel>(_bookingSystemPersistence.Rooms().Select(r => new RoomViewModel(r, SelectRoom)));
             AddRoomCommand = new RelayCommand(AddRoom);
-            //ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, _bookingSystemPersistence);
             ActualRoomViewModel = new RoomViewModel(RoomViewModels.FirstOrDefault().Room, SaveRoom);
         }
 
@@ -42,16 +40,18 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         #region Actions
 
-        private void SelectRoom(Room room)
+        private void SelectRoom(Domain.Model.Room room)
         {
             ActualRoomViewModel = new RoomViewModel(room, SaveRoom);
-            //RaisePropertyChanged(nameof(ActualRoomViewModel));
         }
 
-        private void SaveRoom(object sender, Room room)
+        private void SaveRoom(object sender, Domain.Model.Room room)
         {
 
-            int oldId = room.Id;
+            try
+            {
+
+                int oldId = room.Id;
 
             var r = room.Persist();
             if (r.Id != oldId)
@@ -63,6 +63,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             else
             {
                 RoomViewModels.FirstOrDefault(rvm => rvm.Room.Id == room.Id).Room = r;
+            }
+            }
+            catch (ModelExistException ex)
+            {
+                throw ex;
             }
         }
 

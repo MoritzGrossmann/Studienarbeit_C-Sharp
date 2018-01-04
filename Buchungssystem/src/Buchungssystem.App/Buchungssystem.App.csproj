@@ -113,13 +113,22 @@
     <Compile Include="UI\Pages\BaseDataManagement\BaseDataManagementView.xaml.cs">
       <DependentUpon>BaseDataManagementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\BaseDataManagement\ChangeRoomsView.xaml.cs">
+    <Compile Include="UI\Pages\BaseDataManagement\Product\ChangeProductsView.xaml.cs">
+      <DependentUpon>ChangeProductsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\BaseDataManagement\Product\ChangeProductView.xaml.cs">
+      <DependentUpon>ChangeProductView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\BaseDataManagement\Product\CreateProductView.xaml.cs">
+      <DependentUpon>CreateProductView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\BaseDataManagement\Room\ChangeRoomsView.xaml.cs">
       <DependentUpon>ChangeRoomsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\BaseDataManagement\ChangeRoomView.xaml.cs">
+    <Compile Include="UI\Pages\BaseDataManagement\Room\ChangeRoomView.xaml.cs">
       <DependentUpon>ChangeRoomView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\BaseDataManagement\CreateRoomView.xaml.cs">
+    <Compile Include="UI\Pages\BaseDataManagement\Room\CreateRoomView.xaml.cs">
       <DependentUpon>CreateRoomView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Booking\BookingListView.xaml.cs">
@@ -143,8 +152,11 @@
     <Compile Include="UI\Windows\LoadingScreen.xaml.cs">
       <DependentUpon>LoadingScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\BaseDataManagement\CreateRoomViewModel.cs" />
-    <Compile Include="ViewModel\BaseDataManagement\RoomViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Product\ChangeProductsViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Product\CreateProductViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Room\CreateRoomViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Product\ProductViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Room\RoomViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\TableViewModel.cs" />
     <Compile Include="ViewModel\Loading\LoadingViewModel.cs" />
     <Compile Include="ViewModel\RoomView\TableListViewModel.cs" />
@@ -155,7 +167,7 @@
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\BaseDataManagementViewModel.cs" />
-    <Compile Include="ViewModel\BaseDataManagement\ChangeRoomsViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Room\ChangeRoomsViewModel.cs" />
     <Compile Include="ViewModel\ProductGroupViewModel.cs" />
     <Compile Include="ViewModel\RoomView\RoomListViewModel.cs" />
     <Compile Include="ViewModel\RoomView\RoomViewModel.cs" />
@@ -164,11 +176,23 @@
     <Compile Include="ViewModel\TableView\TableBookViewModel.cs" />
     <Compile Include="ViewModel\TableView\TableViewModel.cs" />
     <Compile Include="ViewModel\TableView\BookingListViewModel.cs" />
-    <Page Include="UI\Pages\BaseDataManagement\ChangeRoomView.xaml">
+    <Page Include="UI\Pages\BaseDataManagement\Product\ChangeProductsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\BaseDataManagement\CreateRoomView.xaml">
+    <Page Include="UI\Pages\BaseDataManagement\Product\ChangeProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\BaseDataManagement\Product\CreateProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\BaseDataManagement\Room\ChangeRoomView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\BaseDataManagement\Room\CreateRoomView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,7 +224,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\BaseDataManagement\ChangeRoomsView.xaml">
+    <Page Include="UI\Pages\BaseDataManagement\Room\ChangeRoomsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

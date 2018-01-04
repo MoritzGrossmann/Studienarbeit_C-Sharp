@@ -1,5 +1,7 @@
 ﻿using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.App.ViewModel.BaseDataManagement.Product;
+using Buchungssystem.App.ViewModel.BaseDataManagement.Room;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.TestRepository;
 
@@ -19,20 +21,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         public BaseDataManagementViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
-            RoomsViewModel = new ChangeRoomsViewModel(_bookingSystemDataPersistence.Rooms(), _bookingSystemDataPersistence);
+            RoomsViewModel = new ChangeRoomsViewModel(_bookingSystemDataPersistence);
+            ProductsViewModel = new ChangeProductsViewModel(_bookingSystemDataPersistence);
         }
 
         #endregion
 
         #region Properties
 
-        private BaseViewModel _roomsViewModel;
+        public BaseViewModel RoomsViewModel { get; set; }
 
-        public BaseViewModel RoomsViewModel
-        {
-            get => _roomsViewModel;
-            set => SetProperty(ref _roomsViewModel, value, nameof(RoomsViewModel));
-        }
+        public BaseViewModel ProductsViewModel { get; set; }
 
         #endregion
     }

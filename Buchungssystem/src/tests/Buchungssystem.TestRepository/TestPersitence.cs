@@ -50,11 +50,21 @@ namespace Buchungssystem.TestRepository
             return Repository.ProductGroups;
         }
 
+        public List<ProductGroup> LeafProductGroups()
+        {
+            throw new NotImplementedException();
+        }
+
         public ProductGroup PersistProductGroup(ProductGroup productGroup)
         {
             productGroup.Id = Repository.ProductGroups.Count + 1;
             Repository.ProductGroups.Add(productGroup);
             return productGroup;
+        }
+
+        public List<Product> Products()
+        {
+            throw new NotImplementedException();
         }
 
         public List<Product> Products(ProductGroup productGroup)

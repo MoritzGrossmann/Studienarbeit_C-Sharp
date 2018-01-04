@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 
-namespace Buchungssystem.App.ViewModel.BaseDataManagement
+namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 {
     internal class CreateRoomViewModel : BaseViewModel
     {
@@ -38,7 +35,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             set => SetProperty(ref _hasErrors, value, nameof(Name));
         }
 
-        public CreateRoomViewModel(EventHandler<Room> onSave, IPersistBookingSystemData bookingSystemPerstence)
+        public CreateRoomViewModel(EventHandler<Domain.Model.Room> onSave, IPersistBookingSystemData bookingSystemPerstence)
         {
             Name = "";
             _bookingSystemPerstence = bookingSystemPerstence;
@@ -59,7 +56,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             try
             {
                 _onSave?.Invoke(this,
-                    new Room() {Name = _name, Persistence = _bookingSystemPerstence, Tables = new List<Table>()});
+                    new Domain.Model.Room() {Name = _name, Persistence = _bookingSystemPerstence, Tables = new List<Table>()});
             }
             catch (ModelExistException modelExistException)
             {
@@ -68,6 +65,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             }
         }
 
-        private readonly EventHandler<Room> _onSave;
+        private readonly EventHandler<Domain.Model.Room> _onSave;
     }
 }

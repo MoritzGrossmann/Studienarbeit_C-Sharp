@@ -36,6 +36,14 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
+        public List<ProductGroup> LeafProductGroups()
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                return context.ProductGroups.Where(p => !context.ProductGroups.Any(c => c.ParentId == p.Id)).AsEnumerable().Select(FromDbProductGroup).ToList();
+            }
+        }
+
         private void LoadChilds(ProductGroup productGroup, BookingsystemEntities context)
         {
             var childnodes = context.ProductGroups.Where(p => p.ParentId == productGroup.Id && p.ParentId != p.Id).AsEnumerable().Select(FromDbProductGroup).ToList();

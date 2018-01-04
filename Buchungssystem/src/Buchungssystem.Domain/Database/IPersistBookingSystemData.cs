@@ -17,7 +17,11 @@ namespace Buchungssystem.Domain.Database
 
         List<ProductGroup> ProductGroups();
 
+        List<ProductGroup> LeafProductGroups();
+        
         ProductGroup PersistProductGroup(ProductGroup productGroup);
+
+        List<Product> Products();
 
         Product PersistProduct(Product product);
 

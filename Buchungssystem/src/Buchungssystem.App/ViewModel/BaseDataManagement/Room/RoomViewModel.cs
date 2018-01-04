@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
 
-namespace Buchungssystem.App.ViewModel.BaseDataManagement
+namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 {
     internal class RoomViewModel : BaseViewModel
     {
-        private Room _room;
+        private Domain.Model.Room _room;
 
         /// <summary>
         /// Raum der im Raumviewmodel ist
         /// </summary>
-        public Room Room
+        public Domain.Model.Room Room
         {
             get => _room;
             set => SetProperty(ref _room, value, nameof(Room));
@@ -55,7 +52,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         /// </summary>
         /// <param name="room"></param>
         /// <param name="onSelect"></param>
-        public RoomViewModel(Room room, Action<Room> onSelect)
+        public RoomViewModel(Domain.Model.Room room, Action<Domain.Model.Room> onSelect)
         {
             _room = room;
             _selectRoom = onSelect;
@@ -67,7 +64,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         /// </summary>
         /// <param name="room"></param>
         /// <param name="onSave"></param>
-        public RoomViewModel(Room room, EventHandler<Room> onSave)
+        public RoomViewModel(Domain.Model.Room room, EventHandler<Domain.Model.Room> onSave)
         {
             _room = room;
             _onSave = onSave;
@@ -83,7 +80,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             RaisePropertyChanged(nameof(NoEdit));
         }
 
-        private readonly EventHandler<Room> _onSave;
+        private readonly EventHandler<Domain.Model.Room> _onSave;
 
         /// <summary>
         /// Lößt den Eventhandler _onSave aus
@@ -130,6 +127,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             _selectRoom?.Invoke(_room);
         }
 
-        private readonly Action<Room> _selectRoom;
+        private readonly Action<Domain.Model.Room> _selectRoom;
     }
 }
