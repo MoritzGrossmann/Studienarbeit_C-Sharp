@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Product"
-             xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
+             xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:converter1="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <StackPanel
             Grid.Row="0"
             VerticalAlignment="Top"
@@ -22,13 +23,13 @@
                 VerticalAlignment="Center"
                 FontSize="18pt"
                 Text="{Binding Path=Product.Name, Mode=OneWay}"
-                Visibility="{Binding Path=NoEdit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                Visibility="{Binding Path=Êdit, Mode=OneWay, Converter={converter:InvertBoolConverter}}" />
             <TextBox
                 Width="200px"
                 VerticalAlignment="Center"
                 FontSize="16pt"
                 Text="{Binding Path=Product.Name, Mode=TwoWay}"
-                Visibility="{Binding Path=Edit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}">
+                Visibility="{Binding Path=Edit, Mode=OneWay, Converter={converter1:BoolToVisibleConverter}}">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding Path=SaveCommand}" />
                 </TextBox.InputBindings>
@@ -39,14 +40,14 @@
                 VerticalAlignment="Center"
                 Command="{Binding Path=EditCommand}"
                 Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
-                Visibility="{Binding Path=NoEdit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                Visibility="{Binding Path=Edit, Mode=OneWay, Converter={converter:InvertBoolConverter}}" />
             <Button
                 Width="40px"
                 Height="40px"
                 VerticalAlignment="Center"
                 Command="{Binding Path=SaveCommand}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
-                Visibility="{Binding Path=Edit, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
+                Visibility="{Binding Path=Edit, Mode=OneWay, Converter={converter1:BoolToVisibleConverter}}" />
             <StackPanel />
         </StackPanel>
     </Grid>

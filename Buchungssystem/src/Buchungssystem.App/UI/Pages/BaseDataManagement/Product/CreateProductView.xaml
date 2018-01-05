@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Product"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
+             xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -33,12 +33,14 @@
         <TextBox Grid.Row="1" Grid.Column="1" controls:TextBoxHelper.ClearTextButton="True" 
                 Width="200px"
                 FontSize="18pt"
-                Text="{Binding Path=Name, Mode=TwoWay}" Margin="5" />
+                IsEnabled="{Binding Path=Edit, Mode=OneWay}"
+                Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True}" Margin="5" />
         <TextBox Grid.Row="2" Grid.Column="1" controls:TextBoxHelper.ClearTextButton="True" 
                 Width="200px"
                 FontSize="18pt"
-                Text="{Binding Path=Price, Mode=TwoWay}" Margin="5" 
-                 TextAlignment="Right"/>
+                IsEnabled="{Binding Path=Edit, Mode=OneWay}"
+                Text="{Binding Path=Price, Mode=TwoWay, NotifyOnValidationError=True}" Margin="5" 
+                TextAlignment="Right"/>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
             <controls:SplitButton 
                 Margin="5"
@@ -47,23 +49,25 @@
                 Icon="{DynamicResource appbar_alert}"
                 Width="120"
                 SelectedIndex="2"
+                IsEnabled="{Binding Path=Edit, Mode=OneWay}"
                 ItemsSource="{Binding ProductGroupViewModels, Mode=OneWay}"
-                SelectedValue="{Binding ProductGroupViewModel, Mode=OneWayToSource}"
+                SelectedValue="{Binding ProductGroupViewModel, Mode=TwoWay}"
                 DisplayMemberPath="ProductGroup.Name">
             </controls:SplitButton>
         </StackPanel>
-        
-        <TextBlock Grid.Row="4" Grid.Column="0"
-            Foreground="Red"
-            Text="{Binding Path=ErrorText, Mode=OneWay}"
-            Visibility="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:BoolToVisibleConverter}}" />
-        
+       
         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
+            <Button 
+                Width="40px" Height="40px"
+                Command="{Binding Path=EditCommand, Mode=OneWay}"
+                Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
+                Style="{DynamicResource MetroCircleButtonStyle}" />
             <Button 
                 Width="40px" Height="40px"
                 Command="{Binding Path=SaveCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
-                Style="{DynamicResource MetroCircleButtonStyle}" />
+                Style="{DynamicResource MetroCircleButtonStyle}" 
+                IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:InvertBoolConverter}}"/>
             <Button 
                 Width="40px" Height="40px"
                 Content="{iconPacks:PackIconFontAwesome TrashOutline}"

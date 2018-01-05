@@ -37,7 +37,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         public void Select(Domain.Model.Product product)
         {
-            ActualProductViewModel = new ProductViewModel(product, Save, _bookingSystemPersistence.ProductGroups());
+            ActualProductViewModel = new CreateProductViewModel(Save, _bookingSystemPersistence, product);
         }
 
         public void Save(object sender, Domain.Model.Product product)
@@ -50,7 +50,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 if (p.Id != oldId)
                 {
                     ProductViewModels.Add(new ProductViewModel(p, Select));
-                    ActualProductViewModel = new ProductViewModel(p, Save, _bookingSystemPersistence.ProductGroups());
+                    ActualProductViewModel = new CreateProductViewModel(Save, _bookingSystemPersistence, p);
                 }
                 else
                 {

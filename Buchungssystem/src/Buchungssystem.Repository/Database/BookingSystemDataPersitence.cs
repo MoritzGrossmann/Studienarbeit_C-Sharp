@@ -26,6 +26,14 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
+        private ProductGroup ProductGroup(DbProduct product)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                return FromDbProductGroup(context.ProductGroups.FirstOrDefault(p => p.Id == product.DbProductGroupId));
+            }
+        }
+
         public List<ProductGroup> ProductGroups()
         {
             using (var context = new BookingsystemEntities())
@@ -70,6 +78,10 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
+                if (context.Products.Any(p => p.DbProductId == product.Id)) return UpdateProduct(product, context);
+
+                if (context.Products.Any(p => p.Name.Equals(product.Name))) throw new ModelExistException($"Ein Product mit dem Name {product.Name} exisitert bereits!");
+
                 var dbProduct = FromProduct(product);
                 context.Products.Add(dbProduct);
                 context.SaveChanges();
@@ -118,6 +130,17 @@ namespace Buchungssystem.Repository.Database
                 context.Products.FirstOrDefault(w => w.DbProductId == product.Id).Deleted = true;
                 context.SaveChanges();
             }
+        }
+
+        private Product UpdateProduct(Product product, BookingsystemEntities context)
+        {
+            var dbProduct = context.Products.FirstOrDefault(p => p.DbProductId == product.Id);
+            if (dbProduct == null) throw new ModelNotExistException($"Das PRoduct mit der Id {product.Id} ist nicht vorhanden");
+            dbProduct.Name = product.Name;
+            dbProduct.Price = product.Price;
+            dbProduct.DbProductGroupId = ((ProductGroup) product.Parent()).Id;
+            context.SaveChanges();
+            return product;
         }
 
         #endregion
@@ -274,7 +297,10 @@ namespace Buchungssystem.Repository.Database
 
         private Product FromDbProduct(DbProduct dbProduct)
         {
-            return new Product() {Id = dbProduct.DbProductId, Name = dbProduct.Name, Price = dbProduct.Price};
+            var product = new Product() {Id = dbProduct.DbProductId, Name = dbProduct.Name, Price = dbProduct.Price};
+            product.SetParent(ProductGroup(dbProduct));
+            product.Persistence = this;
+            return product;
         }
 
         private DbProductGroup FromProductGroup(ProductGroup productGroup)

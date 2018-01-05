@@ -108,6 +108,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\BaseConverter.cs" />
+    <Compile Include="Converter\InvertBoolConverter.cs" />
+    <Compile Include="Converter\BoolToHiddenConverter.cs" />
     <Compile Include="Converter\BoolToVisibleConverter.cs" />
     <Compile Include="Converter\PriceToStringConverter.cs" />
     <Compile Include="UI\Pages\BaseDataManagement\BaseDataManagementView.xaml.cs">
