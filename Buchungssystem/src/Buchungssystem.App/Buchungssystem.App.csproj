@@ -108,6 +108,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\BaseConverter.cs" />
+    <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converter\IntToBoolConverter.cs" />
     <Compile Include="Converter\InvertBoolConverter.cs" />
     <Compile Include="Converter\BoolToHiddenConverter.cs" />
     <Compile Include="Converter\BoolToVisibleConverter.cs" />
@@ -126,6 +128,9 @@
     </Compile>
     <Compile Include="UI\Pages\BaseDataManagement\Room\CreateRoomView.xaml.cs">
       <DependentUpon>CreateRoomView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\BaseDataManagement\Table\EditTableView.xaml.cs">
+      <DependentUpon>EditTableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Booking\BookingListView.xaml.cs">
       <DependentUpon>BookingListView.xaml</DependentUpon>
@@ -149,11 +154,13 @@
       <DependentUpon>LoadingScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\BaseDataManagement\Product\ChangeProductsViewModel.cs" />
-    <Compile Include="ViewModel\BaseDataManagement\Product\CreateProductViewModel.cs" />
-    <Compile Include="ViewModel\BaseDataManagement\Room\CreateRoomViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Product\EditProductViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Room\ChangeRoomsViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Room\EditRoomViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\Product\ProductViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Table\EditTableViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\Room\RoomViewModel.cs" />
-    <Compile Include="ViewModel\BaseDataManagement\TableViewModel.cs" />
+    <Compile Include="ViewModel\BaseDataManagement\Table\TableViewModel.cs" />
     <Compile Include="ViewModel\Loading\LoadingViewModel.cs" />
     <Compile Include="ViewModel\RoomView\TableListViewModel.cs" />
     <Compile Include="ViewModel\TableView\BookingViewModel.cs" />
@@ -163,7 +170,6 @@
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\BaseDataManagementViewModel.cs" />
-    <Compile Include="ViewModel\BaseDataManagement\Room\ChangeRoomsViewModel.cs" />
     <Compile Include="ViewModel\ProductGroupViewModel.cs" />
     <Compile Include="ViewModel\RoomView\RoomListViewModel.cs" />
     <Compile Include="ViewModel\RoomView\RoomViewModel.cs" />
@@ -185,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Pages\BaseDataManagement\Room\CreateRoomView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\BaseDataManagement\Table\EditTableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -43,6 +43,11 @@ namespace Buchungssystem.TestRepository
             return Repository.Tables.Where(t => t.Room.Id== room.Id).ToList();
         }
 
+        public void DeleteTable(Table table)
+        {
+            throw new NotImplementedException();
+        }
+
         public Table PersistTable(Table table)
         {
             table.Id = Repository.Tables.Count + 1;
@@ -65,6 +70,11 @@ namespace Buchungssystem.TestRepository
             productGroup.Id = Repository.ProductGroups.Count + 1;
             Repository.ProductGroups.Add(productGroup);
             return productGroup;
+        }
+
+        public void DeleteProductGroup(ProductGroup productGroup)
+        {
+            throw new NotImplementedException();
         }
 
         public List<Product> Products()

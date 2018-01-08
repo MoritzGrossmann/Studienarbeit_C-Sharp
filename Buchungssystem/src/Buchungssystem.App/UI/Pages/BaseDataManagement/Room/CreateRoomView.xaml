@@ -3,24 +3,33 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:converter1="clr-namespace:Buchungssystem.App.Converter"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:table="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.Table"
+    xmlns:tableView="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Table"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
+    
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type table:EditTableViewModel}">
+            <tableView:EditTableView/>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <TextBlock
@@ -28,7 +37,7 @@
             Grid.Column="0"
             Margin="0,0,0,20"
             FontSize="18pt"
-            Text="Raum Anlegen" />
+            Text="Raum bearbeiten" />
 
         <TextBlock
             Grid.Row="1"
@@ -44,6 +53,7 @@
             Margin="5"
             controls:TextBoxHelper.ClearTextButton="True"
             FontSize="18pt"
+            HorizontalAlignment="Left"
             IsEnabled="{Binding Path=Edit, Mode=OneWay}"
             Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -63,7 +73,7 @@
                 Height="40px"
                 Command="{Binding Path=SaveCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
-                IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter1:InvertBoolConverter}}"
+                IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:InvertBoolConverter}}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Speichern" />
             <Button
@@ -72,7 +82,79 @@
                 Command="{Binding Path=DeleteCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome TrashOutline}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
+                IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"
                 ToolTip="Löschen" />
         </StackPanel>
+
+        <Border Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" Margin="5px" Padding="5px" BorderBrush="#FF686868" BorderThickness="1px">
+            <Grid IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="400px"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Tische" FontSize="18pt"></TextBlock>
+                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                    <Button
+                        Width="40px"
+                        Height="40px"
+                        Command="{Binding Path=AddTableCommand, Mode=OneWay}"
+                        Content="{iconPacks:PackIconFontAwesome Plus}"
+                        Style="{DynamicResource MetroCircleButtonStyle}" 
+                        IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"
+                        ToolTip="Tisch Hinzufügen"/>
+                </StackPanel>
+                <ListView
+                Grid.Row="2"
+                Grid.Column="0"
+                MinWidth="200px"
+                Margin="0,0,10px,0"
+                ItemsSource="{Binding Path=TableViewModels}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="table:TableViewModel">
+                            <Grid>
+                                <Grid.InputBindings>
+                                    <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
+                                </Grid.InputBindings>
+                                <Border
+                                Padding="30,10,30,10"
+                                BorderBrush="LightSlateGray"
+                                BorderThickness="0,0,0,1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock
+                                        Grid.Column="0"
+                                        FontSize="14pt"
+                                        Text="{Binding Path=Table.Name, Mode=OneWay}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ContentControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Content="{Binding Path=EditTableViewModel, Mode=OneWay}" BorderBrush="#FF686868" BorderThickness="1px"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

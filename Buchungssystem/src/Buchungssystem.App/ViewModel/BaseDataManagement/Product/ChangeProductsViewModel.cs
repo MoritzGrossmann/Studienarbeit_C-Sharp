@@ -30,7 +30,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             ProductViewModels = new ObservableCollection<ProductViewModel>(_bookingSystemPersistence.Products().Select(p => new ProductViewModel(p, Select)));
             AddCommand = new RelayCommand(Add);
 
-            ActualProductViewModel = ProductViewModels.Any() ? new CreateProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : null;
+            ActualProductViewModel = ProductViewModels.Any() ? new EditProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : null;
         }
 
 
@@ -38,7 +38,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         public void Select(Domain.Model.Product product)
         {
-            ActualProductViewModel = new CreateProductViewModel(Save, Delete, _bookingSystemPersistence, product);
+            ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, product);
         }
 
         public void Save(object sender, Domain.Model.Product product)
@@ -51,7 +51,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 if (p.Id != oldId)
                 {
                     ProductViewModels.Add(new ProductViewModel(p, Select));
-                    ActualProductViewModel = new CreateProductViewModel(Save, Delete, _bookingSystemPersistence, p);
+                    ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
                 }
                 else
                 {
@@ -69,13 +69,13 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         {
             var productViewModel = ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
             ProductViewModels.Remove(productViewModel);
-            ActualProductViewModel = ProductViewModels.Any() ? new CreateProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : new CreateProductViewModel(Save, _bookingSystemPersistence);
+            ActualProductViewModel = ProductViewModels.Any() ? new EditProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : new EditProductViewModel(Save, _bookingSystemPersistence);
 
         }
 
         public void Add()
         {
-            ActualProductViewModel = new CreateProductViewModel(Save, _bookingSystemPersistence);
+            ActualProductViewModel = new EditProductViewModel(Save, _bookingSystemPersistence);
         }
 
         #endregion

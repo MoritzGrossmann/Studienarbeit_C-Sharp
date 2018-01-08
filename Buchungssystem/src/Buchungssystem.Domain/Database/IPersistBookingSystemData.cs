@@ -15,6 +15,8 @@ namespace Buchungssystem.Domain.Database
 
         List<Table> Tables(Room room);
 
+        void DeleteTable(Table table);
+
         Table PersistTable(Table table);
 
         List<ProductGroup> ProductGroups();
@@ -22,6 +24,8 @@ namespace Buchungssystem.Domain.Database
         List<ProductGroup> LeafProductGroups();
         
         ProductGroup PersistProductGroup(ProductGroup productGroup);
+
+        void DeleteProductGroup(ProductGroup productGroup);
 
         List<Product> Products();
 

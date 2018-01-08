@@ -9,7 +9,7 @@ using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 {
-    internal class CreateProductViewModel : BaseViewModel
+    internal class EditProductViewModel : BaseViewModel
     {
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
 
@@ -84,13 +84,14 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels { get; set; }
 
-        public CreateProductViewModel(EventHandler<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence)
+        public EditProductViewModel(EventHandler<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
             Edit = true;
             Name = "";
             Price = 0;
             _bookingSystemPersistence = bookingSystemPersistence;
             ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
+
             _onSave = onSave;
 
             SaveCommand = new RelayCommand(Save);
@@ -98,7 +99,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             DeleteCommand = new RelayCommand(Delete);
         }
 
-        public CreateProductViewModel(EventHandler<Domain.Model.Product> onSave, EventHandler<Domain.Model.Product> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
+        public EditProductViewModel(EventHandler<Domain.Model.Product> onSave, EventHandler<Domain.Model.Product> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
         {
             _product = product;
 

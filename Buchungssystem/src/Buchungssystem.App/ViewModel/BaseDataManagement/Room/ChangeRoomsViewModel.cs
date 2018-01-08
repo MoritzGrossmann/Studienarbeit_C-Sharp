@@ -31,9 +31,12 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         public ChangeRoomsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
+
             RoomViewModels = new ObservableCollection<RoomViewModel>(_bookingSystemPersistence.Rooms().Select(r => new RoomViewModel(r, SelectRoom)));
+
             AddRoomCommand = new RelayCommand(AddRoom);
-            ActualRoomViewModel = RoomViewModels.Any() ? new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : null;
+
+            ActualRoomViewModel = RoomViewModels.Any() ? new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : null;
         }
 
         #endregion
@@ -42,44 +45,31 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 
         private void SelectRoom(Domain.Model.Room room)
         {
-            ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, room);
+            ActualRoomViewModel = new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, room);
         }
 
-        private void SaveRoom(object sender, Domain.Model.Room room)
+        private void Save(Domain.Model.Room room)
         {
+            var roomViewModel = RoomViewModels.FirstOrDefault(r => r.Room.Id == room.Id);
 
-            try
-            {
-
-                int oldId = room.Id;
-
-            var r = room.Persist();
-            if (r.Id != oldId)
-            {
-                RoomViewModels.Add(new RoomViewModel(r, SelectRoom));
-                ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, r);
-            }
+            if (roomViewModel != null)
+                roomViewModel.Room = room;
             else
-            {
-                RoomViewModels.FirstOrDefault(rvm => rvm.Room.Id == room.Id).Room = r;
-            }
-            }
-            catch (ModelExistException ex)
-            {
-                throw ex;
-            }
+                RoomViewModels.Add(new RoomViewModel(room, SelectRoom));
+
+            ActualRoomViewModel = new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, room);
         }
 
-        private void Delete(object sender, Domain.Model.Room room)
+        private void Delete(Domain.Model.Room room)
         {
             var roomViewModel = RoomViewModels.FirstOrDefault(r => r.Room.Id == room.Id);
             RoomViewModels.Remove(roomViewModel);
-            ActualRoomViewModel = RoomViewModels.Any() ? new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : new CreateRoomViewModel(SaveRoom, _bookingSystemPersistence);
+            ActualRoomViewModel = RoomViewModels.Any() ? new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : new EditRoomViewModel(Save, _bookingSystemPersistence);
         }
 
         private void AddRoom()
         {
-            ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, _bookingSystemPersistence);
+            ActualRoomViewModel = new EditRoomViewModel(Save, _bookingSystemPersistence);
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Policy;
 
 namespace Buchungssystem.Domain.Model
 {
@@ -19,6 +20,11 @@ namespace Buchungssystem.Domain.Model
         public Table Persist()
         {
             return Persistence?.PersistTable(this);
+        }
+
+        public void Delete()
+        {
+            Persistence?.DeleteTable(this);
         }
 
         public void Occupy()

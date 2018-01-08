@@ -13,7 +13,7 @@
 
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type room:CreateRoomViewModel}">
+        <DataTemplate DataType="{x:Type room:EditRoomViewModel}">
             <baseDataManagement:CreateRoomView />
         </DataTemplate>
     </UserControl.Resources>

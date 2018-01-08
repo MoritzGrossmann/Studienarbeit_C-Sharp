@@ -70,6 +70,15 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
+        public void DeleteProductGroup(ProductGroup productGroup)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.ProductGroups.FirstOrDefault(p => p.Id == productGroup.Id).Deleted = true;
+                context.SaveChanges();
+            }
+        }
+
         #endregion
 
         #region Product
@@ -80,7 +89,7 @@ namespace Buchungssystem.Repository.Database
             {
                 if (context.Products.Any(p => p.DbProductId == product.Id)) return UpdateProduct(product, context);
 
-                if (context.Products.Any(p => p.Name.Equals(product.Name))) throw new ModelExistException($"Ein Product mit dem Name {product.Name} exisitert bereits!");
+                if (context.Products.Any(p => p.Name.Equals(product.Name) && p.Deleted == false)) throw new ModelExistException($"Ein Product mit dem Name {product.Name} exisitert bereits!");
 
                 var dbProduct = FromProduct(product);
                 context.Products.Add(dbProduct);
@@ -161,7 +170,7 @@ namespace Buchungssystem.Repository.Database
             {
                 if (context.Rooms.Any(r => r.DbRoomId == room.Id)) return UpdateRoom(room, context);
 
-                if (context.Rooms.Any(r => r.Name.Equals(room.Name))) throw new ModelExistException($"Ein Raum mit dem Name {room.Name} exisitert bereits!");
+                if (context.Rooms.Any(r => r.Name.Equals(room.Name) && r.Deleted == false)) throw new ModelExistException($"Ein Raum mit dem Name {room.Name} exisitert bereits!");
 
                 var dbRoom = FromRoom(room);
                 context.Rooms.Add(dbRoom);
@@ -201,6 +210,7 @@ namespace Buchungssystem.Repository.Database
                 table.Occupied = false;
                 context.Tables.Add(dbTable);
                 context.SaveChanges();
+                table.Id = dbTable.Id;
                 return table;
             }
         }
@@ -221,8 +231,36 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
+        public void Occupy(Table table)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.Tables.FirstOrDefault(t => t.Id == table.Id).Occupied = true;
+                context.SaveChanges();
+            }
+        }
+
+        public void Clear(Table table)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.Tables.FirstOrDefault(t => t.Id == table.Id).Occupied = false;
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteTable(Table table)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.Tables.FirstOrDefault(t => t.Id == table.Id).Deleted = true;
+                context.SaveChanges();
+            }
+        }
+
         #endregion
 
+        #region Booking
         public Booking Book(Booking booking)
         { 
             using (var context = new BookingsystemEntities())
@@ -265,61 +303,56 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
-        public void Occupy(Table table)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                context.Tables.FirstOrDefault(t => t.Id == table.Id).Occupied = true;
-                context.SaveChanges();
-            }
-        }
+        #endregion
 
-        public void Clear(Table table)
-        {
-            using (var context = new BookingsystemEntities())
-            {
-                context.Tables.FirstOrDefault(t => t.Id == table.Id).Occupied = false;
-                context.SaveChanges();
-            }
-        }
+        #region Converter
+
+        #region Room
 
         private DbRoom FromRoom(Room room)
         {
-            return new DbRoom(){ DbRoomId = room.Id, Name = room.Name};
+            return new DbRoom() { DbRoomId = room.Id, Name = room.Name };
         }
 
         private Room FromDbRoom(DbRoom dbRoom)
         {
-            var room = new Room() {Id = dbRoom.DbRoomId, Name = dbRoom.Name};
+            var room = new Room() { Id = dbRoom.DbRoomId, Name = dbRoom.Name };
             room.Tables = Tables(room);
             room.Tables.ToList().ForEach(t => t.Room = room);
             room.Persistence = this;
             return room;
         }
 
+        #endregion
+
+        #region Product
 
         private DbProduct FromProduct(Product product)
         {
-            var productGroup = (ProductGroup) product.Parent();
-            return new DbProduct() {DbProductGroupId = productGroup.Id, Deleted = false, Name = product.Name, Price = product.Price};
+            var productGroup = (ProductGroup)product.Parent();
+            return new DbProduct() { DbProductGroupId = productGroup.Id, Deleted = false, Name = product.Name, Price = product.Price };
         }
 
         private Product FromDbProduct(DbProduct dbProduct)
         {
-            var product = new Product() {Id = dbProduct.DbProductId, Name = dbProduct.Name, Price = dbProduct.Price};
+            var product = new Product() { Id = dbProduct.DbProductId, Name = dbProduct.Name, Price = dbProduct.Price };
             product.SetParent(ProductGroup(dbProduct));
             product.Persistence = this;
             return product;
         }
 
+        #endregion
+
+        #region ProductGroup
+
         private DbProductGroup FromProductGroup(ProductGroup productGroup)
         {
-            return new DbProductGroup() {Name = productGroup.Name, Id = productGroup.Id};
+            return new DbProductGroup() { Name = productGroup.Name, Id = productGroup.Id };
         }
 
         private ProductGroup FromDbProductGroup(DbProductGroup dbProductGroup)
         {
-            var productsGroup = new ProductGroup() {Id = dbProductGroup.Id, Name = dbProductGroup.Name };
+            var productsGroup = new ProductGroup() { Id = dbProductGroup.Id, Name = dbProductGroup.Name };
 
             //ProductGroups(productsGroup).ForEach(pg => productsGroup.AddNode(pg));
             //Products(productsGroup).ForEach(p => productsGroup.AddNode(p));
@@ -328,31 +361,44 @@ namespace Buchungssystem.Repository.Database
             return productsGroup;
         }
 
+        #endregion
+
+        #region Table
+
         private DbTable FromTable(Table table)
         {
-            return new DbTable() {Name = table.Name, Occupied = table.Occupied, RoomId = table.Room.Id};
+            return new DbTable() { Name = table.Name, Occupied = table.Occupied, RoomId = table.Room.Id, Id = table.Id, Places = table.Places};
         }
 
         private Table FromDbTable(DbTable dbTable)
         {
-            var table = new Table() {Name = dbTable.Name, Occupied = dbTable.Occupied, Id = dbTable.Id, Places = dbTable.Places};
+            var table = new Table() { Name = dbTable.Name, Occupied = dbTable.Occupied, Id = dbTable.Id, Places = dbTable.Places };
             table.Bookings = Bookings(table);
             table.Bookings.ToList().ForEach(b => b.Table = table);
             table.Persistence = this;
             return table;
         }
 
+        #endregion
+
+        #region Booking
+
         private DbBooking FromBooking(Booking booking)
         {
-            return new DbBooking(){Id = booking.Id, TableId = booking.Table.Id, ProductId = booking.Product.Id, Status = (int)booking.Status, Created = booking.Created, Finished = booking.Finished, Price = booking.Price};
+            return new DbBooking() { Id = booking.Id, TableId = booking.Table.Id, ProductId = booking.Product.Id, Status = (int)booking.Status, Created = booking.Created, Finished = booking.Finished, Price = booking.Price };
         }
 
         private Booking FromDbBooking(DbBooking dbBooking)
         {
-            var booking = new Booking() { Id = dbBooking.Id, Status = (BookingStatus)dbBooking.Status, Created = dbBooking.Created ?? DateTime.MinValue, Finished = dbBooking.Finished ?? DateTime.MinValue, Price = dbBooking.Price};
+            var booking = new Booking() { Id = dbBooking.Id, Status = (BookingStatus)dbBooking.Status, Created = dbBooking.Created ?? DateTime.MinValue, Finished = dbBooking.Finished ?? DateTime.MinValue, Price = dbBooking.Price };
             booking.Product = Product(dbBooking.ProductId);
             booking.Persistence = this;
             return booking;
         }
+
+        #endregion
+
+        #endregion
+
     }
 }
