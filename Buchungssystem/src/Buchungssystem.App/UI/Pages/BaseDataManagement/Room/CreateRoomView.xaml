@@ -45,7 +45,7 @@
             controls:TextBoxHelper.ClearTextButton="True"
             FontSize="18pt"
             IsEnabled="{Binding Path=Edit, Mode=OneWay}"
-            Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True}" />
+            Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
 
         <StackPanel
             Grid.Row="2"
