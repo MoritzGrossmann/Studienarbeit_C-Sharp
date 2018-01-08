@@ -25,6 +25,8 @@ namespace Buchungssystem.Domain.Database
 
         Product PersistProduct(Product product);
 
+        void DeleteProduct(Product product);
+
         Booking Book(Booking booking);
 
         void Cancel(Booking booking);

@@ -25,5 +25,7 @@ namespace Buchungssystem.Repository.Model
         public ICollection<DbBooking> Bookings { get; set; }
 
         public bool Occupied { get; set; }
+
+        public bool Deleted { get; set; }
     }
 }

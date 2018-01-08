@@ -25,9 +25,15 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 if (this._name != value)
                 {
                     if (value.Trim().Equals(""))
+                    {
                         base.AddError(nameof(Name), "Der Name darf nicht leer sein");
+                        RaisePropertyChanged(nameof(HasErrors));
+                    }
                     else
+                    {
                         base.RemoveError(nameof(Name));
+                        RaisePropertyChanged(nameof(HasErrors));
+                    }
 
                     SetProperty(ref _name, value, nameof(Name));
                 }
@@ -43,9 +49,16 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 if (this._price != value)
                 {
                     if (value < 0)
+                    {
                         base.AddError(nameof(Price), "Der Preis darf nicht negativ sein");
+                        RaisePropertyChanged(nameof(HasErrors));
+                    }
                     else
+                    {
                         base.RemoveError(nameof(Price));
+                        RaisePropertyChanged(nameof(HasErrors));
+                    }
+
 
                     SetProperty(ref _price, value, nameof(Price));
                 }
@@ -67,23 +80,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             set => SetProperty(ref _edit, value, nameof(Edit));
         }
 
+        private Domain.Model.Product _product;
+
         public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels { get; set; }
-
-        private string _errorText;
-
-        public string ErrorText
-        {
-            get => _errorText;
-            set => SetProperty(ref _errorText, value, nameof(ErrorText));
-        }
-
-        private bool _hasErrors;
-
-        public bool HasErrors
-        {
-            get => _hasErrors;
-            set => SetProperty(ref _hasErrors, value, nameof(Name));
-        }
 
         public CreateProductViewModel(EventHandler<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
@@ -91,23 +90,31 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             Name = "";
             Price = 0;
             _bookingSystemPersistence = bookingSystemPersistence;
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, SelectProductGroup)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
             _onSave = onSave;
+
             SaveCommand = new RelayCommand(Save);
             EditCommand = new RelayCommand(ToggleEdit);
+            DeleteCommand = new RelayCommand(Delete);
         }
 
-        public CreateProductViewModel(EventHandler<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
+        public CreateProductViewModel(EventHandler<Domain.Model.Product> onSave, EventHandler<Domain.Model.Product> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
         {
+            _product = product;
+
             Edit = false;
             Name = product.Name;
             _id = product.Id;
             Price = product.Price;
             _bookingSystemPersistence = bookingSystemPersistence;
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, SelectProductGroup)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
+
             _onSave = onSave;
+            _onDelete = onDelete;
+
             SaveCommand = new RelayCommand(Save);
             EditCommand = new RelayCommand(ToggleEdit);
+            DeleteCommand = new RelayCommand(Delete);
 
             ProductGroupViewModel =
                 ProductGroupViewModels.FirstOrDefault(p => p.ProductGroup.Id == ((ProductGroup) product.Parent()).Id);
@@ -119,6 +126,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         public ICommand EditCommand { get; }
 
+        public ICommand DeleteCommand { get; set; }
+
         #endregion
 
         #region Actions
@@ -128,17 +137,13 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             Edit = !Edit;
         }
 
-        private void SelectProductGroup(object sender, ProductGroup productGroup)
-        {
-            
-        }
-
         private void Save()
         {
             try
             {
                 var product = new Domain.Model.Product()
                 {
+                    Id = _id,
                     Name = Name,
                     Persistence = _bookingSystemPersistence,
                     Price = Price
@@ -150,11 +155,20 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             catch (ModelExistException)
             {
                 base.AddError(nameof(Name), $"Der Name {_name} wurde schon vergeben");
+                RaisePropertyChanged(nameof(HasErrors));
             }
+        }
+
+        private void Delete()
+        {
+            _product.Delete();
+            _onDelete?.Invoke(this, _product);
         }
 
         private readonly EventHandler<Domain.Model.Product> _onSave;
 
-    #endregion
+        private readonly EventHandler<Domain.Model.Product> _onDelete;
+
+        #endregion
     }
 }

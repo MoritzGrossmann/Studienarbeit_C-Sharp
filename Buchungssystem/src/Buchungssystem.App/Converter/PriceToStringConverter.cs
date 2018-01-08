@@ -20,6 +20,29 @@ namespace Buchungssystem.App.Converter
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value != null)
+            {
+                string val = (string) value;
+
+                val = val.Trim();
+
+                if (val.Contains(".") && val.Contains(","))
+                {
+                    throw new Exception();
+                    // TODO darf nicht beide Zeichen enthalten
+                }
+
+                if (val.Contains("."))
+                {
+                    // TODO
+                }
+
+                if (val.Contains(","))
+                {
+                    // TODO
+                }
+            }
+
             throw new NotSupportedException();
         }
     }

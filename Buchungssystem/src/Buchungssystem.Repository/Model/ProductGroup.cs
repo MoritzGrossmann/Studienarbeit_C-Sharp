@@ -23,5 +23,7 @@ namespace Buchungssystem.Repository.Model
         public int ParentId { get; set; }
 
         public DbProductGroup ProductGroup { get; set; }
+
+        public bool Deleted { get; set; }
     }
 }

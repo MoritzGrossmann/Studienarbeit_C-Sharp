@@ -59,19 +59,23 @@
         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
             <Button 
                 Width="40px" Height="40px"
+                ToolTip="Editieren"
                 Command="{Binding Path=EditCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
                 Style="{DynamicResource MetroCircleButtonStyle}" />
             <Button 
                 Width="40px" Height="40px"
+                ToolTip="Speichern"
                 Command="{Binding Path=SaveCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
                 Style="{DynamicResource MetroCircleButtonStyle}" 
                 IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:InvertBoolConverter}}"/>
             <Button 
                 Width="40px" Height="40px"
+                ToolTip="Löschen"
                 Content="{iconPacks:PackIconFontAwesome TrashOutline}"
-                Style="{DynamicResource MetroCircleButtonStyle}" />
+                Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding Path=DeleteCommand, Mode=OneWay}"/>
         </StackPanel>
     </Grid>
 </UserControl>
