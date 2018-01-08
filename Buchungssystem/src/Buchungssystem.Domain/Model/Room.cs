@@ -20,6 +20,11 @@ namespace Buchungssystem.Domain.Model
         {
             return Persistence?.PersistRoom(this);
         }
+
+        public void Delete()
+        {
+            Persistence.DeleteRoom(this);
+        }
     }
 }
  

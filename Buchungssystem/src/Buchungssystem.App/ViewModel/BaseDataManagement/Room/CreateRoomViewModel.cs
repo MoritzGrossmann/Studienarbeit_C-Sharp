@@ -11,28 +11,41 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
     {
         private readonly IPersistBookingSystemData _bookingSystemPerstence;
 
+        private int _id;
+
+        private Domain.Model.Room _room;
+
         private string _name;
 
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value, nameof(Name));
+            set
+            {
+                if (value != _name)
+                {
+                    if (value.Trim().Equals(String.Empty))
+                    {
+                        AddError(nameof(Name), "Der Name darf nicht leer sein");
+                        RaisePropertyChanged(nameof(HasErrors));
+                    }
+                    else
+                    {
+                        RemoveError(nameof(Name));
+                        RaisePropertyChanged(nameof(HasErrors));
+
+                    }
+                }
+                SetProperty(ref _name, value, nameof(Name));
+            } 
         }
 
-        private string _errorText;
+        private bool _edit;
 
-        public string ErrorText
+        public bool Edit
         {
-            get => _errorText;
-            set => SetProperty(ref _errorText, value, nameof(ErrorText));
-        }
-
-        private bool _hasErrors;
-
-        public bool HasErrors
-        {
-            get => _hasErrors;
-            set => SetProperty(ref _hasErrors, value, nameof(Name));
+            get => _edit;
+            set => SetProperty(ref _edit, value, nameof(Edit));
         }
 
         public CreateRoomViewModel(EventHandler<Domain.Model.Room> onSave, IPersistBookingSystemData bookingSystemPerstence)
@@ -41,30 +54,64 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             _bookingSystemPerstence = bookingSystemPerstence;
             _onSave = onSave;
             SaveCommand = new RelayCommand(Save);
+            EditCommand = new RelayCommand(ToggleEdit);
+            DeleteCommand = new RelayCommand(Delete);
         }
 
-        public CreateRoomViewModel()
+        public CreateRoomViewModel(EventHandler<Domain.Model.Room> onSave, EventHandler<Domain.Model.Room> onDelete,
+            IPersistBookingSystemData bookingSystemPerstence, Domain.Model.Room room)
         {
-            Name = "";
+            _id = room.Id;
+            _room = room;
+            _name = room.Name;
+
+            _bookingSystemPerstence = bookingSystemPerstence;
+
+            _onSave = onSave;
+            _onDelete = onDelete;
+
+            SaveCommand = new RelayCommand(Save);
+            EditCommand = new RelayCommand(ToggleEdit);
+            DeleteCommand = new RelayCommand(Delete);
         }
 
         public ICommand SaveCommand { get; }
 
+        public ICommand EditCommand { get; }
+
+        public ICommand DeleteCommand { get; }
+
         private void Save()
         {
-            HasErrors = false;
             try
             {
                 _onSave?.Invoke(this,
-                    new Domain.Model.Room() {Name = _name, Persistence = _bookingSystemPerstence, Tables = new List<Table>()});
+                    new Domain.Model.Room() {Id = _id, Name = _name, Persistence = _bookingSystemPerstence, Tables = new List<Table>()});
             }
-            catch (ModelExistException modelExistException)
+            catch (ModelExistException)
             {
-                ErrorText = modelExistException.Message;
-                HasErrors = true;
+                AddError(nameof(Name), $"Der Name {Name} wurde schon vergeben");
+                RaisePropertyChanged(nameof(HasErrors));
             }
         }
 
+        private void Delete()
+        {
+            _room?.Delete();
+            _onDelete?.Invoke(this, _room);
+        }
+
         private readonly EventHandler<Domain.Model.Room> _onSave;
+
+        private readonly EventHandler<Domain.Model.Room> _onDelete;
+
+        #region Actions
+
+        private void ToggleEdit()
+        {
+            Edit = !Edit;
+        }
+
+        #endregion
     }
 }

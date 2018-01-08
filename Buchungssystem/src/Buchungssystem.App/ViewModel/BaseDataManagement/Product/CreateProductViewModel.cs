@@ -13,7 +13,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
     {
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
 
-        private int _id;
+        private readonly int _id;
 
         private string _name;
 
@@ -24,7 +24,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             {
                 if (this._name != value)
                 {
-                    if (value.Trim().Equals(""))
+                    if (value.Trim().Equals(String.Empty))
                     {
                         base.AddError(nameof(Name), "Der Name darf nicht leer sein");
                         RaisePropertyChanged(nameof(HasErrors));

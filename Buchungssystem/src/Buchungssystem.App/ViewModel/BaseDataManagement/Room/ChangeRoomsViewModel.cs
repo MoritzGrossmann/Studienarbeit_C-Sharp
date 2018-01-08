@@ -33,7 +33,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             _bookingSystemPersistence = bookingSystemPersistence;
             RoomViewModels = new ObservableCollection<RoomViewModel>(_bookingSystemPersistence.Rooms().Select(r => new RoomViewModel(r, SelectRoom)));
             AddRoomCommand = new RelayCommand(AddRoom);
-            ActualRoomViewModel = new RoomViewModel(RoomViewModels.FirstOrDefault().Room, SaveRoom);
+            ActualRoomViewModel = RoomViewModels.Any() ? new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : null;
         }
 
         #endregion
@@ -42,7 +42,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 
         private void SelectRoom(Domain.Model.Room room)
         {
-            ActualRoomViewModel = new RoomViewModel(room, SaveRoom);
+            ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, room);
         }
 
         private void SaveRoom(object sender, Domain.Model.Room room)
@@ -57,8 +57,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             if (r.Id != oldId)
             {
                 RoomViewModels.Add(new RoomViewModel(r, SelectRoom));
-                ActualRoomViewModel = new RoomViewModel(r, SaveRoom);
-                Console.WriteLine($"INFO:\tRaum {room.Name} angelegt");
+                ActualRoomViewModel = new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, r);
             }
             else
             {
@@ -69,6 +68,13 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             {
                 throw ex;
             }
+        }
+
+        private void Delete(object sender, Domain.Model.Room room)
+        {
+            var roomViewModel = RoomViewModels.FirstOrDefault(r => r.Room.Id == room.Id);
+            RoomViewModels.Remove(roomViewModel);
+            ActualRoomViewModel = RoomViewModels.Any() ? new CreateRoomViewModel(SaveRoom, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : new CreateRoomViewModel(SaveRoom, _bookingSystemPersistence);
         }
 
         private void AddRoom()

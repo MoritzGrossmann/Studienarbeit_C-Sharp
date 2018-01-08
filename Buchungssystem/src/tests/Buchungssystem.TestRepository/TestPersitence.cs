@@ -23,6 +23,11 @@ namespace Buchungssystem.TestRepository
             return room;
         }
 
+        public void DeleteRoom(Room room)
+        {
+            throw new NotImplementedException();
+        }
+
         public Room Room(Table table)
         {
             return Repository.Rooms.FirstOrDefault(r => r.Id == table.Room.Id);

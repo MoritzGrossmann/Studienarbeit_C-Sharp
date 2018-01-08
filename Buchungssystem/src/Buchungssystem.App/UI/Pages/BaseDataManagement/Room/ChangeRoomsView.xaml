@@ -1,23 +1,18 @@
 ﻿<UserControl
-    x:Class="Buchungssystem.App.UI.Pages.BaseDataManagement.ChangeRoomsView"
+    x:Class="Buchungssystem.App.UI.Pages.BaseDataManagement.Room.ChangeRoomsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="clr-namespace:Buchungssystem.App.Converter.Buchungssystem.App.Converter"
+    xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:room="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.Room"
-    xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
 
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type room:RoomViewModel}">
-            <baseDataManagement:ChangeRoomView />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type room:CreateRoomViewModel}">
             <baseDataManagement:CreateRoomView />
         </DataTemplate>
@@ -38,7 +33,10 @@
                     Style="{DynamicResource MetroCircleButtonStyle}" />
             </StackPanel>
 
-            <ListView Grid.Row="1" ItemsSource="{Binding Path=RoomViewModels}">
+            <ListView
+                Grid.Row="1"
+                MinWidth="400px"
+                ItemsSource="{Binding Path=RoomViewModels}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

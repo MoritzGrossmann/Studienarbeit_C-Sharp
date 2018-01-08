@@ -13,9 +13,9 @@ namespace Buchungssystem.App.Converter
             {
                 var price = (decimal) value;
                 return
-                    $"{decimal.Round(price, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)} {culture.NumberFormat.CurrencySymbol}";
+                    $"{decimal.Round(price, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)}{culture.NumberFormat.CurrencySymbol}";
             }
-            return $"{decimal.Round(0, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)} {culture.NumberFormat.CurrencySymbol}";
+            return $"{decimal.Round(0, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)}{culture.NumberFormat.CurrencySymbol}";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -26,24 +26,10 @@ namespace Buchungssystem.App.Converter
 
                 val = val.Trim();
 
-                if (val.Contains(".") && val.Contains(","))
-                {
-                    throw new Exception();
-                    // TODO darf nicht beide Zeichen enthalten
-                }
-
-                if (val.Contains("."))
-                {
-                    // TODO
-                }
-
-                if (val.Contains(","))
-                {
-                    // TODO
-                }
+                return decimal.Parse(val,
+                    NumberStyles.AllowCurrencySymbol | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
             }
-
-            throw new NotSupportedException();
+            return 0;
         }
     }
 

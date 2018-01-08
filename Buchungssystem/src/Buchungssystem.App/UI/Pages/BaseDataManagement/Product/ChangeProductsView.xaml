@@ -1,20 +1,18 @@
-﻿<UserControl x:Class="Buchungssystem.App.UI.Pages.BaseDataManagement.Product.ChangeProductsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Product"
-             xmlns:product="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.Product"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    
-    
-    <UserControl.Resources>
-        <DataTemplate DataType="{x:Type product:ProductViewModel}">
-            <local:ChangeProductView />
-        </DataTemplate>
+﻿<UserControl
+    x:Class="Buchungssystem.App.UI.Pages.BaseDataManagement.Product.ChangeProductsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Product"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:product="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.Product"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
 
+
+    <UserControl.Resources>
         <DataTemplate DataType="{x:Type product:CreateProductViewModel}">
             <local:CreateProductView />
         </DataTemplate>
@@ -35,7 +33,10 @@
                     Style="{DynamicResource MetroCircleButtonStyle}" />
             </StackPanel>
 
-            <ListView Grid.Row="1" ItemsSource="{Binding Path=ProductViewModels}">
+            <ListView
+                Grid.Row="1"
+                MinWidth="400px"
+                ItemsSource="{Binding Path=ProductViewModels}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

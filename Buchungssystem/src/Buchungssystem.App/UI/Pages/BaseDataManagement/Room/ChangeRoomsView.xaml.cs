@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Buchungssystem.App.UI.Pages.BaseDataManagement
+namespace Buchungssystem.App.UI.Pages.BaseDataManagement.Room
 {
     /// <summary>
     /// Interaktionslogik für ChangeRoomsView.xaml

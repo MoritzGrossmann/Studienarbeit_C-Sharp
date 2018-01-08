@@ -151,7 +151,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Rooms.Select(FromDbRoom).ToList();
+                return context.Rooms.Where(r => r.Deleted == false).AsEnumerable().Select(FromDbRoom).ToList();
             }
         }
 
@@ -178,6 +178,15 @@ namespace Buchungssystem.Repository.Database
             dbroom.Name = room.Name;
             context.SaveChanges();
             return room;
+        }
+
+        public void DeleteRoom(Room room)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                context.Rooms.FirstOrDefault(r => r.DbRoomId == room.Id).Deleted = true;
+                context.SaveChanges();
+            }
         }
 
         #endregion

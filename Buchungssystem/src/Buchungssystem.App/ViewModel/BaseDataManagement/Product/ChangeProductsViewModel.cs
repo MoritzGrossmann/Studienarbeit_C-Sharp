@@ -23,6 +23,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             set => SetProperty(ref _actualProductViewModel, value, nameof(ActualProductViewModel));
         }
 
+#endregion
         public ChangeProductsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
@@ -32,7 +33,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             ActualProductViewModel = ProductViewModels.Any() ? new CreateProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : null;
         }
 
-        #endregion
 
         #region Actions
 

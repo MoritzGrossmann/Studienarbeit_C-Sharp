@@ -118,17 +118,11 @@
     <Compile Include="UI\Pages\BaseDataManagement\Product\ChangeProductsView.xaml.cs">
       <DependentUpon>ChangeProductsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\BaseDataManagement\Product\ChangeProductView.xaml.cs">
-      <DependentUpon>ChangeProductView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\Pages\BaseDataManagement\Product\CreateProductView.xaml.cs">
       <DependentUpon>CreateProductView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\BaseDataManagement\Room\ChangeRoomsView.xaml.cs">
       <DependentUpon>ChangeRoomsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Pages\BaseDataManagement\Room\ChangeRoomView.xaml.cs">
-      <DependentUpon>ChangeRoomView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\BaseDataManagement\Room\CreateRoomView.xaml.cs">
       <DependentUpon>CreateRoomView.xaml</DependentUpon>
@@ -182,15 +176,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\BaseDataManagement\Product\ChangeProductView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UI\Pages\BaseDataManagement\Product\CreateProductView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Pages\BaseDataManagement\Room\ChangeRoomView.xaml">
+    <Page Include="UI\Pages\BaseDataManagement\Room\ChangeRoomsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -223,10 +213,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UI\Pages\BaseDataManagement\BaseDataManagementView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Pages\BaseDataManagement\Room\ChangeRoomsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
