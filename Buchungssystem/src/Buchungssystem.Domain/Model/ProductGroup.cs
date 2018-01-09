@@ -20,6 +20,11 @@ namespace Buchungssystem.Domain.Model
             return Persistence.PersistProductGroup(this);
         }
 
+        public void Delete()
+        {
+            Persistence.DeleteProductGroup(this);
+        }
+
         public int CompareTo(ProductGroup other)
         {
             return String.Compare(Name, other.Name, StringComparison.CurrentCulture);

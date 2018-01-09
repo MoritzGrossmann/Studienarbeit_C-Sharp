@@ -30,16 +30,16 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Contructor
 
-        public ProductListViewModel(ProductGroup productGroup, ICollection<Product> products, EventHandler<Product> onProductSelect,
-            EventHandler<ProductGroup> returnToProductGroup)
+        public ProductListViewModel(ProductGroup productGroup, ICollection<Product> products, Action<Product> onProductSelect,
+            Action<ProductGroup> returnToProductGroup)
         {
             Name = productGroup.Name;
             _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
             ShowReturnButton = true;
-            ReturnToParentCommand = new RelayCommand(() => returnToProductGroup?.Invoke(this,(ProductGroup)productGroup.Parent()));
+            ReturnToParentCommand = new RelayCommand(() => returnToProductGroup?.Invoke((ProductGroup)productGroup.Parent()));
         }
 
-        public ProductListViewModel(ICollection<Product> products, EventHandler<Product> onProductSelect)
+        public ProductListViewModel(ICollection<Product> products, Action<Product> onProductSelect)
         {
             _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
             ShowReturnButton = false;

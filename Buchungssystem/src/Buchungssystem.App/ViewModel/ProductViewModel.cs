@@ -9,10 +9,10 @@ namespace Buchungssystem.App.ViewModel
     {
         #region Contructor
 
-        public ProductViewModel(Product product, EventHandler<Product> onProductSelect)
+        public ProductViewModel(Product product, Action<Product> onProductSelect)
         {
             _product = product;
-            SelectCommand = new RelayCommand(() => onProductSelect?.Invoke(this,_product));
+            SelectCommand = new RelayCommand(() => onProductSelect?.Invoke(_product));
         }
 
         #endregion

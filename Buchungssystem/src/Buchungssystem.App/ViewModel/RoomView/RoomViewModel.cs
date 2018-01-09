@@ -48,7 +48,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         #region Actions
 
-        private void OnTableSelect(object sender, Table table)
+        private void OnTableSelect(Table table)
         {
             CurrentViewModel = new TableBookViewModel(table, _productGroups, ShowTables);
         }

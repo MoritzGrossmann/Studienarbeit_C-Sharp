@@ -7,13 +7,12 @@ namespace Buchungssystem.App.ViewModel
 {
     internal class ProductGroupViewModel : BaseViewModel
     {
-
         #region Constructor
 
-        public ProductGroupViewModel(ProductGroup productGroup, EventHandler<ProductGroup> onProductGroupSelect)
+        public ProductGroupViewModel(ProductGroup productGroup, Action<ProductGroup> onSelect)
         {
             _productGroup = productGroup;
-            SelectCommand = new RelayCommand(() => onProductGroupSelect?.Invoke(this, _productGroup));
+            SelectCommand = new RelayCommand(() => onSelect?.Invoke(_productGroup));
         }
 
         #endregion
@@ -25,7 +24,7 @@ namespace Buchungssystem.App.ViewModel
         public ProductGroup ProductGroup
         {
             get => _productGroup;
-            set { _productGroup = value; }
+            set => SetProperty(ref _productGroup, value, nameof(ProductGroup));
         }
 
         #endregion

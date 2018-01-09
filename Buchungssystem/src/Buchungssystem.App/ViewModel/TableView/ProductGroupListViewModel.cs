@@ -34,11 +34,11 @@ namespace Buchungssystem.App.ViewModel.TableView
         #region Constructor
 
         public ProductGroupListViewModel(string name, ICollection<ProductGroup> productGroups,
-            EventHandler<ProductGroup> onProductGroupSelect, Action<ProductGroup> returnToParent)
+            Action<ProductGroup> onSelect, Action<ProductGroup> returnToParent)
         {
-            _productGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.Select(p => new ProductGroupViewModel(p, onProductGroupSelect)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.Select(p => new ProductGroupViewModel(p, onSelect)));
             HasParent = productGroups.Any(p => p.Parent() != null);
-            _name = name;
+            Name = name;
 
             // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit productGroups.Any() ausgeschlossen
             ReturnToParentCommand = productGroups.Any() ? new RelayCommand(() => returnToParent?.Invoke((ProductGroup)productGroups.FirstOrDefault().Parent())) : null;

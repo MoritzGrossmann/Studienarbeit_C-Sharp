@@ -18,12 +18,31 @@ namespace Buchungssystem.Repository.Database
         { 
             using (var context = new BookingsystemEntities())
             {
+                if (context.Products.Any(p => p.DbProductGroupId == FromProductGroup(productGroup).ParentId))
+                    throw new NoLeafException();
+
+                if (productGroup.Id > 0)
+                    return UpdateProductGroup(productGroup, context);
+
+                if (context.ProductGroups.Any(p=> p.Name == productGroup.Name && p.Deleted == false))
+                    throw new ModelExistException();
+
                 var dbProductsGroup = FromProductGroup(productGroup);
                 context.ProductGroups.Add(dbProductsGroup);
                 context.SaveChanges();
                 productGroup.Id = dbProductsGroup.Id;
                 return productGroup;
             }
+        }
+
+        private ProductGroup UpdateProductGroup(ProductGroup productGroup, BookingsystemEntities context)
+        {
+            var dbProductGroup = context.ProductGroups.FirstOrDefault(p => p.Id == productGroup.Id);
+            dbProductGroup.Name = productGroup.Name;
+            dbProductGroup.ParentId = ((ProductGroup) productGroup.Parent()).Id;
+            context.SaveChanges();
+
+            return productGroup;
         }
 
         private ProductGroup ProductGroup(DbProduct product)
@@ -41,6 +60,14 @@ namespace Buchungssystem.Repository.Database
                 var roots =  context.ProductGroups.Where(p => p.ParentId == p.Id).AsEnumerable().Select(FromDbProductGroup).ToList();
                 roots.ForEach(p => LoadChilds(p, context));
                 return roots;
+            }
+        }
+
+        private DbProductGroup parentProductGroup(DbProductGroup productGroup)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                return context.ProductGroups.FirstOrDefault(p => p.Id == productGroup.ParentId);
             }
         }
 
@@ -347,17 +374,25 @@ namespace Buchungssystem.Repository.Database
 
         private DbProductGroup FromProductGroup(ProductGroup productGroup)
         {
-            return new DbProductGroup() { Name = productGroup.Name, Id = productGroup.Id };
+            var parent = (ProductGroup) productGroup.Parent();
+            return new DbProductGroup() { Name = productGroup.Name, Id = productGroup.Id, ParentId = parent.Id};
         }
 
         private ProductGroup FromDbProductGroup(DbProductGroup dbProductGroup)
         {
-            var productsGroup = new ProductGroup() { Id = dbProductGroup.Id, Name = dbProductGroup.Name };
 
-            //ProductGroups(productsGroup).ForEach(pg => productsGroup.AddNode(pg));
-            //Products(productsGroup).ForEach(p => productsGroup.AddNode(p));
 
-            productsGroup.Persistence = this;
+            var productsGroup = new ProductGroup
+            {
+                Id = dbProductGroup.Id,
+                Name = dbProductGroup.Name,
+                Persistence = this
+            };
+
+            productsGroup.SetParent(dbProductGroup.Id == dbProductGroup.ParentId
+                ? productsGroup
+                : FromDbProductGroup(parentProductGroup(dbProductGroup)));
+
             return productsGroup;
         }
 
@@ -400,5 +435,9 @@ namespace Buchungssystem.Repository.Database
 
         #endregion
 
+    }
+
+    public class NoLeafException : Exception
+    {
     }
 }

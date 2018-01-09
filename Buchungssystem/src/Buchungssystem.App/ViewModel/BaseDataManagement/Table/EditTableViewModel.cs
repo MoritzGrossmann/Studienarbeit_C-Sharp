@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 {
-    internal class EditTableViewModel : BaseViewModel
+    internal class EditTableViewModel : EditViewModel
     {
         #region Constructors
 
@@ -14,8 +13,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// <param name="onSave"></param>
         public EditTableViewModel(Action<Domain.Model.Table> onSave)
         {
-            _edit = true;
-
+            Edit = true;
             Name = String.Empty;
             Places = 1;
 
@@ -56,36 +54,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 
         private readonly Domain.Model.Table _table;
 
-        private string _name;
-
-        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
-
-        /// <summary>
-        /// Name des Tisches
-        /// </summary>
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (value != _name)
-                {
-                    if (value.Trim().Equals(String.Empty))
-                    {
-                        AddError(nameof(Name), "Der Name darf nicht leer sein");
-                        RaisePropertyChanged(nameof(HasErrors));
-                    }
-                    else
-                    {
-                        RemoveError(nameof(Name));
-                        RaisePropertyChanged(nameof(HasErrors));
-
-                    }
-                }
-                SetProperty(ref _name, value, nameof(Name));
-            }
-        }
-
         private int _places;
 
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
@@ -114,19 +82,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
             }
         }
 
-        private bool _edit;
-
-        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
-
-        /// <summary>
-        /// Zeigt an, ob Editieransicht oder Leseansicht angezeigt werden soll
-        /// </summary>
-        public bool Edit
-        {
-            get => _edit;
-            set => SetProperty(ref _edit, value, nameof(Edit));
-        }
-
         #endregion
 
         #region Actions
@@ -143,42 +98,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
             _onDelete?.Invoke(_table);
         }
 
-        private void ToggleEdit()
-        {
-            Edit = !Edit;
-        }
-
         private readonly Action<Domain.Model.Table> _onDelete;
 
         private readonly Action<Domain.Model.Table> _onSave;
-
-        #endregion
-
-        #region Commands
-
-        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-
-        /// <summary>
-        /// Kommando zum Speichern eines neuen oder eines Bearbeiteten Tisches
-        /// </summary>
-        public ICommand SaveCommand { get; }
-
-        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-
-        /// <summary>
-        /// Kommando zum Umschalten zwischen Editier- und Leseansicht
-        /// </summary>
-        public ICommand EditCommand { get; }
-
-        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-
-        /// <summary>
-        /// Kommand zum Löschen eines Tisches
-        /// </summary>
-        public ICommand DeleteCommand { get; }
 
         #endregion
     }

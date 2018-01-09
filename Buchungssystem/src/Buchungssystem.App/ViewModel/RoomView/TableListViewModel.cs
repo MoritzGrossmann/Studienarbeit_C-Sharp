@@ -28,7 +28,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         #region Contructor
 
-        public TableListViewModel(ICollection<Table> tables, EventHandler<Table> onTableSelected)
+        public TableListViewModel(ICollection<Table> tables, Action<Table> onTableSelected)
         {
             TableViewModels = new ObservableCollection<TableViewModel>(tables.Select(t => new TableViewModel(t, onTableSelected, TableStatusChanged)));
         }
@@ -42,7 +42,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         #region Actions
 
-        private void TableStatusChanged(object sender, Table t)
+        private void TableStatusChanged(Table t)
         {
             RaisePropertyChanged(nameof(FreeTables));
             RaisePropertyChanged(nameof(FreePlaces));

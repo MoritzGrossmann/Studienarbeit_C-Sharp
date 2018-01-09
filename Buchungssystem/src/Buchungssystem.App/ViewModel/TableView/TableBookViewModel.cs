@@ -201,33 +201,35 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #endregion
 
-        #region EventHandler
+        #region Actions
 
-        private void OnProductGroupSelect(object sender, ProductGroup p)
+        private void OnProductGroupSelect(ProductGroup productGroup)
         {
-            var productGroups = p.ChildNodes().Where(c => c.GetType() == typeof(ProductGroup)).AsEnumerable().Select(pg => (ProductGroup)pg).ToList();
+            var productGroups = productGroup.ChildNodes().Where(c => c.GetType() == typeof(ProductGroup)).AsEnumerable().Select(pg => (ProductGroup)pg).ToList();
 
             if (productGroups.Any())
             {
-                SidebarViewModel = new ProductGroupListViewModel(p.Name, productGroups, OnProductGroupSelect, ShowParent);
+                SidebarViewModel = new ProductGroupListViewModel(productGroup.Name, productGroups, OnProductGroupSelect, ShowParent);
             }
             else
             {
-                SidebarViewModel = new ProductListViewModel(p,
-                    p.ChildNodes().Where(c => c.GetType() == typeof(Product)).AsEnumerable().Select(c => (Product) c)
+                SidebarViewModel = new ProductListViewModel(productGroup,
+                    productGroup.ChildNodes().Where(c => c.GetType() == typeof(Product)).AsEnumerable().Select(c => (Product) c)
                         .ToList(), OnProductSelect, OnProductGroupSelect);
             }
 
-            SidebarHeaderText = p.Name;
+            SidebarHeaderText = productGroup.Name;
         }
 
-        private void OnProductDeSelect(object sender, Product p)
+        private void OnProductDeSelect(Product product)
         {
-            SelectedProducts.ProductViewModels.Remove((ProductViewModel) sender);
+            var productViewModel = SelectedProducts.ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
+            SelectedProducts.ProductViewModels.Remove(productViewModel);
+
             RaisePropertyChanged(nameof(CanBookProducts));
         }
 
-        private void OnProductSelect(object sender, Product p)
+        private void OnProductSelect( Product p)
         {
             SelectedProducts.ProductViewModels.Add(new ProductViewModel(p, OnProductDeSelect));
             RaisePropertyChanged(nameof(CanBookProducts));
