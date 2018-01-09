@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
-using Buchungssystem.Domain.Database;
-using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 {
@@ -14,10 +12,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// Kontruktor zum Erstellen eines neuen Tisches
         /// </summary>
         /// <param name="onSave"></param>
-        /// <param name="bookingSystemPersistence"></param>
-        public EditTableViewModel(Action<Domain.Model.Table> onSave, IPersistBookingSystemData bookingSystemPersistence)
+        public EditTableViewModel(Action<Domain.Model.Table> onSave)
         {
-            _bookingSystemPersistence = bookingSystemPersistence;
             _edit = true;
 
             Name = String.Empty;
@@ -34,12 +30,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// </summary>
         /// <param name="onSave"></param>
         /// <param name="onDelete"></param>
-        /// <param name="bookingSystemPersistence"></param>
         /// <param name="table"></param>
-        public EditTableViewModel(Action<Domain.Model.Table> onSave, Action<Domain.Model.Table> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Table table)
+        public EditTableViewModel(Action<Domain.Model.Table> onSave, Action<Domain.Model.Table> onDelete, Domain.Model.Table table)
         {
-            _bookingSystemPersistence = bookingSystemPersistence;
-
             Id = table.Id;
 
             _table = table;
@@ -58,8 +51,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         #endregion
 
         #region Properties
-
-        private IPersistBookingSystemData _bookingSystemPersistence;
 
         public int Id { get; }
 

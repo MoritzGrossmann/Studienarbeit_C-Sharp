@@ -1,25 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement;
 using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
-using Buchungssystem.Domain.Model;
 using Buchungssystem.TestRepository;
-using MahApps.Metro.Controls.Dialogs;
-using Unity.Injection;
 
 namespace Buchungssystem.App.ViewModel
 {
     internal class MainViewModel : BaseViewModel
     {
         private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
-
-        private readonly IDialogCoordinator _dialogCoordinator;
 
         #region Constructor
 
@@ -32,10 +22,8 @@ namespace Buchungssystem.App.ViewModel
         }
 
 
-        public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence, IDialogCoordinator instance)
+        public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
-            _dialogCoordinator = instance;
-
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
 
             _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());

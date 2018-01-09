@@ -29,51 +29,45 @@ namespace Buchungssystem.App.ViewModel.Base
     #endregion
 
         #region Notify data error
-        private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
+
+        private readonly Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         // get errors by property
         public IEnumerable GetErrors(string propertyName)
         {
-            if (this._errors.ContainsKey(propertyName))
-                return this._errors[propertyName];
+            if (_errors.ContainsKey(propertyName))
+                return _errors[propertyName];
             return null;
         }
 
         // has errors
-        public bool HasErrors
-        {
-            get { return (this._errors.Count > 0); }
-        }
+        public bool HasErrors => (_errors.Count > 0);
 
         // object is valid
-        public bool IsValid
-        {
-            get { return !this.HasErrors; }
-
-        }
+        public bool IsValid => !HasErrors;
 
         public void AddError(string propertyName, string error)
         {
             // Add error to list
-            this._errors[propertyName] = new List<string>() { error };
-            this.NotifyErrorsChanged(propertyName);
+            _errors[propertyName] = new List<string> { error };
+            NotifyErrorsChanged(propertyName);
         }
 
         public void RemoveError(string propertyName)
         {
             // remove error
-            if (this._errors.ContainsKey(propertyName))
-                this._errors.Remove(propertyName);
-            this.NotifyErrorsChanged(propertyName);
+            if (_errors.ContainsKey(propertyName))
+                _errors.Remove(propertyName);
+            NotifyErrorsChanged(propertyName);
         }
 
         public void NotifyErrorsChanged(string propertyName)
         {
             // Notify
-            if (this.ErrorsChanged != null)
-                this.ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+            if (ErrorsChanged != null)
+                ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
         }
         #endregion
     }

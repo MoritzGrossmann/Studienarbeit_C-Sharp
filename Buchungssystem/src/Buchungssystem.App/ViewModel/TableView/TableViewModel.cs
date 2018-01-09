@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using Buchungssystem.App.ViewModel.Base;
-using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Unity.Interception.Utilities;
 
@@ -19,7 +16,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         public Table Table
         {
             get => _table;
-            set
+            private set
             {
                 SetProperty(ref _table, value, nameof(Table));
                 RaisePropertyChanged(nameof(Name));
@@ -41,6 +38,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         public Brush Color => (Brush) new BrushConverter().ConvertFrom(Table.Occupied ? "#f44242" : "#000000");
 
+        // ReSharper disable once PossibleNullReferenceException : Mögliche NullreferenzExcptions wird mit Abfrage Table.Bookings.Any() vermieden
         public string LastBookingTime => Table.Bookings.Any() ? ((int) (DateTime.Now.Subtract(Table.Bookings.LastOrDefault().Created).TotalMinutes)).ToString() : "";
 
         #endregion

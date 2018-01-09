@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
-using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
@@ -36,6 +34,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 
             AddRoomCommand = new RelayCommand(AddRoom);
 
+            // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit RoomViewModels.Any() ausgeschlossen
             ActualRoomViewModel = RoomViewModels.Any() ? new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : null;
         }
 
@@ -64,6 +63,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         {
             var roomViewModel = RoomViewModels.FirstOrDefault(r => r.Room.Id == room.Id);
             RoomViewModels.Remove(roomViewModel);
+
+            // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit RoomViewModels.Any() ausgeschlossen
             ActualRoomViewModel = RoomViewModels.Any() ? new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, RoomViewModels.FirstOrDefault().Room) : new EditRoomViewModel(Save, _bookingSystemPersistence);
         }
 

@@ -2,12 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
-using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 using Unity.Interception.Utilities;
 
@@ -38,18 +33,6 @@ namespace Buchungssystem.App.ViewModel.TableView
                 decimal sum = 0;
                 _bookingViewModels.ForEach(bvm => sum += bvm.Booking.Price);
                 return sum;
-            }
-        }
-
-        private int _selectedIndex;
-
-        public int SelectedIndex
-        {
-            get => _selectedIndex;
-            set
-            {
-                if (value == -1) return;
-                _selectedIndex = value; 
             }
         }
 
@@ -86,35 +69,6 @@ namespace Buchungssystem.App.ViewModel.TableView
             BookingViewModels.Clear();
             RaisePropertyChanged(nameof(Price));
         }
-
-        #region Actions for Commands
-
-        private void Pay()
-        {
-            foreach (var bookingViewModel in BookingViewModels)
-            {
-                try
-                {
-                    // TODO
-                }
-                catch (Exception)
-                {
-                    // TODO
-                }
-            }
-            BookingViewModels.Clear();
-
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Commands
-
-        public ICommand PayCommand { get; }
-
-        public ICommand CancelCommand { get; }
 
         #endregion
     }

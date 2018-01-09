@@ -39,7 +39,9 @@ namespace Buchungssystem.App.ViewModel.TableView
             _productGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.Select(p => new ProductGroupViewModel(p, onProductGroupSelect)));
             HasParent = productGroups.Any(p => p.Parent() != null);
             _name = name;
-            ReturnToParentCommand = new RelayCommand(() => returnToParent?.Invoke((ProductGroup)productGroups.FirstOrDefault().Parent()));
+
+            // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit productGroups.Any() ausgeschlossen
+            ReturnToParentCommand = productGroups.Any() ? new RelayCommand(() => returnToParent?.Invoke((ProductGroup)productGroups.FirstOrDefault().Parent())) : null;
         }
 
         #endregion

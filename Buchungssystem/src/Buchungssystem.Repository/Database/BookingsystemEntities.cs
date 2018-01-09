@@ -4,7 +4,7 @@ using System.Linq;
 using Buchungssystem.Domain.Model;
 using Buchungssystem.Repository.Model;
 
-namespace Buchungssystem.Repository
+namespace Buchungssystem.Repository.Database
 {
     public class BookingsystemEntities : DbContext
     {
@@ -14,7 +14,7 @@ namespace Buchungssystem.Repository
             //  Database.SetInitializer<ProjectDatabase>(null);
             // Database initialize
 
-            System.Data.Entity.Database.SetInitializer<BookingsystemEntities>(new DbInitializer());
+            System.Data.Entity.Database.SetInitializer(new DbInitializer());
             using (BookingsystemEntities db = new BookingsystemEntities())
                 db.Database.Initialize(false);
 
@@ -87,7 +87,7 @@ namespace Buchungssystem.Repository
             context.Products.Add(new DbProduct()
             {
                 Name = "Whiskey Cola",
-                Price = (decimal)6,
+                Price = 6,
                 DbProductGroupId = 6
             });
             context.Products.Add(new DbProduct()

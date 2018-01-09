@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.TestRepository
@@ -58,7 +55,7 @@ namespace Buchungssystem.TestRepository
             }, new Product()
                 {
                 Name = "Whiskey Cola",
-                Price = (decimal)6,
+                Price = 6,
                 Id = 1
             }, new Product()
             {

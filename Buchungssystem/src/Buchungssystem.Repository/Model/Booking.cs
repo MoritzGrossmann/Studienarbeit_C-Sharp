@@ -1,16 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Buchungssystem.Domain.Annotations;
+using Buchungssystem.Domain.Properties;
 
 namespace Buchungssystem.Repository.Model
 {
     public class DbBooking
     {
-        public DbBooking()
-        {
-        }
-
         [Key]
         public int Id { get; set; }
 

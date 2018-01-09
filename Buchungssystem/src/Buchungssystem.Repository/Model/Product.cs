@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.Repository.Model
 {
     public class DbProduct
     {
-        public DbProduct()
-        {
-            
-        }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty : Id wird von Datenbank inititalisiert
 
         [Key]
         public int DbProductId { get; set; }

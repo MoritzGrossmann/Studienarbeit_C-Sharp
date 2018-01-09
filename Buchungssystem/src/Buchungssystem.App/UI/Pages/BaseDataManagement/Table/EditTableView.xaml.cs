@@ -1,24 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace Buchungssystem.App.UI.Pages.BaseDataManagement.Table
+﻿namespace Buchungssystem.App.UI.Pages.BaseDataManagement.Table
 {
     /// <summary>
     /// Interaktionslogik für EditTableView.xaml
     /// </summary>
-    public partial class EditTableView : UserControl
+    public partial class EditTableView
     {
         public EditTableView()
         {

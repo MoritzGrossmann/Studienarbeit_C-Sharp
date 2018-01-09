@@ -1,32 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Buchungssystem.App.ViewModel;
-using Buchungssystem.Domain.Model;
-using Buchungssystem.Repository;
 using Buchungssystem.Repository.Database;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace Buchungssystem.App.UI.Windows
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -34,7 +17,7 @@ namespace Buchungssystem.App.UI.Windows
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             InitializeComponent();
-            DataContext = new MainViewModel(new BookingSystemDataPersitence(), DialogCoordinator.Instance);
+            DataContext = new MainViewModel(new BookingSystemDataPersitence());
         }
     }
 }

@@ -1,16 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Buchungssystem.Repository.Model
 {
     public class DbProductGroup
     {
-        public DbProductGroup()
-        {
-            
-        }
-
         [Key]
         public int Id { get; set; }
 

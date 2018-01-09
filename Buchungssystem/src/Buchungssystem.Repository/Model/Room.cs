@@ -5,11 +5,6 @@ namespace Buchungssystem.Repository.Model
 {
     public class DbRoom
     {
-        public DbRoom()
-        {
-            
-        }
-
         [Key]
         public int DbRoomId { get; set; }
 

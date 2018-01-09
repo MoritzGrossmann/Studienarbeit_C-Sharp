@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.TableView;
 using Buchungssystem.Domain.Model;
-using Buchungssystem.TestRepository;
 
 namespace Buchungssystem.App.ViewModel.RoomView
 {

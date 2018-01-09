@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
@@ -30,50 +29,45 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             ProductViewModels = new ObservableCollection<ProductViewModel>(_bookingSystemPersistence.Products().Select(p => new ProductViewModel(p, Select)));
             AddCommand = new RelayCommand(Add);
 
+            // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit ProductViewModels.Any() ausgeschlossen
             ActualProductViewModel = ProductViewModels.Any() ? new EditProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : null;
         }
 
 
         #region Actions
 
-        public void Select(Domain.Model.Product product)
+        private void Select(Domain.Model.Product product)
         {
             ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, product);
         }
 
-        public void Save(object sender, Domain.Model.Product product)
+        private void Save(Domain.Model.Product product)
         {
-            try
-            {
-                int oldId = product.Id;
-                var p = product.Persist();
 
-                if (p.Id != oldId)
-                {
-                    ProductViewModels.Add(new ProductViewModel(p, Select));
-                    ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
-                }
-                else
-                {
-                    ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = p;
-                }
+            int oldId = product.Id;
+            var p = product.Persist();
 
-            }
-            catch (ModelExistException ex)
+            if (p.Id != oldId)
             {
-                throw ex;
+                ProductViewModels.Add(new ProductViewModel(p, Select));
+                ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
             }
+            else
+                // ReSharper disable once PossibleNullReferenceException
+                ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = p;
         }
 
-        public void Delete(object Sender, Domain.Model.Product product)
+        private void Delete(Domain.Model.Product product)
         {
             var productViewModel = ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
             ProductViewModels.Remove(productViewModel);
+
+            // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit ProductViewModels.Any() ausgeschlossen
             ActualProductViewModel = ProductViewModels.Any() ? new EditProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : new EditProductViewModel(Save, _bookingSystemPersistence);
 
         }
 
-        public void Add()
+        private void Add()
         {
             ActualProductViewModel = new EditProductViewModel(Save, _bookingSystemPersistence);
         }
@@ -82,6 +76,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         #region Commands
 
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public ICommand AddCommand { get; }
 
         #endregion

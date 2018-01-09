@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement.Table;
 using Buchungssystem.Domain.Database;
-using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 {
@@ -139,7 +138,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
                 TableViewModels = new ObservableCollection<TableViewModel>();    
 
             if (TableViewModels.Any())
-                EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, _bookingSystemPerstence, TableViewModels.FirstOrDefault()?.Table);
+                EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, TableViewModels.FirstOrDefault()?.Table);
         }
 
         #endregion
@@ -211,12 +210,12 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 
         private void AddTable()
         {
-            EditTableViewModel = new EditTableViewModel(SaveTable, _bookingSystemPerstence);
+            EditTableViewModel = new EditTableViewModel(SaveTable);
         }
 
         private void SelectTable(Domain.Model.Table table)
         {
-            EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, _bookingSystemPerstence, table);
+            EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, table);
         }
 
         private void SaveTable(Domain.Model.Table table)
@@ -233,7 +232,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             else
                 TableViewModels.Add(new TableViewModel(table, SelectTable));
 
-            EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, _bookingSystemPerstence, table);
+            EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, table);
         }
 
         private void DeleteTable(Domain.Model.Table table)

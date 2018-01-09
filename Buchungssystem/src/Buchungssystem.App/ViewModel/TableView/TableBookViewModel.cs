@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
-using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
-using Buchungssystem.Repository.Database;
 using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
@@ -191,6 +188,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Commands
 
+        
         public ICommand ToTableListCommand { get; }
 
         public ICommand PayCommand { get; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
@@ -15,23 +14,26 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         private readonly int _id;
 
+        #region Properties
+
         private string _name;
 
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
         public string Name
         {
             get => _name;
             set
             {
-                if (this._name != value)
+                if (_name != value)
                 {
                     if (value.Trim().Equals(String.Empty))
                     {
-                        base.AddError(nameof(Name), "Der Name darf nicht leer sein");
+                        AddError(nameof(Name), "Der Name darf nicht leer sein");
                         RaisePropertyChanged(nameof(HasErrors));
                     }
                     else
                     {
-                        base.RemoveError(nameof(Name));
+                        RemoveError(nameof(Name));
                         RaisePropertyChanged(nameof(HasErrors));
                     }
 
@@ -41,21 +43,23 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         }
 
         private decimal _price;
+
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
         public decimal Price
         {
             get => _price;
             set
             {
-                if (this._price != value)
+                if (_price != value)
                 {
                     if (value < 0)
                     {
-                        base.AddError(nameof(Price), "Der Preis darf nicht negativ sein");
+                        AddError(nameof(Price), "Der Preis darf nicht negativ sein");
                         RaisePropertyChanged(nameof(HasErrors));
                     }
                     else
                     {
-                        base.RemoveError(nameof(Price));
+                        RemoveError(nameof(Price));
                         RaisePropertyChanged(nameof(HasErrors));
                     }
 
@@ -66,6 +70,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         }
 
         private ProductGroupViewModel _productGroupViewModel;
+
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
         public ProductGroupViewModel ProductGroupViewModel
         {
             get => _productGroupViewModel;
@@ -74,17 +80,21 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         private bool _edit;
 
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
         public bool Edit
         {
             get => _edit;
             set => SetProperty(ref _edit, value, nameof(Edit));
         }
 
-        private Domain.Model.Product _product;
+        private readonly Domain.Model.Product _product;
 
-        public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels { get; set; }
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+        public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels { get; }
 
-        public EditProductViewModel(EventHandler<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence)
+        #endregion
+
+        public EditProductViewModel(Action<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
             Edit = true;
             Name = "";
@@ -99,7 +109,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             DeleteCommand = new RelayCommand(Delete);
         }
 
-        public EditProductViewModel(EventHandler<Domain.Model.Product> onSave, EventHandler<Domain.Model.Product> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
+        public EditProductViewModel(Action<Domain.Model.Product> onSave, Action<Domain.Model.Product> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
         {
             _product = product;
 
@@ -123,11 +133,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         #region Commands
 
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public ICommand SaveCommand { get; }
 
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public ICommand EditCommand { get; }
+        // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
-        public ICommand DeleteCommand { get; set; }
+        public ICommand DeleteCommand { get; }
 
         #endregion
 
@@ -151,11 +167,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 };
 
                 product.SetParent(ProductGroupViewModel.ProductGroup);
-                _onSave?.Invoke(this, product);
+                _onSave?.Invoke(product);
             }
             catch (ModelExistException)
             {
-                base.AddError(nameof(Name), $"Der Name {_name} wurde schon vergeben");
+                AddError(nameof(Name), $"Der Name {_name} wurde schon vergeben");
                 RaisePropertyChanged(nameof(HasErrors));
             }
         }
@@ -163,12 +179,12 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         private void Delete()
         {
             _product.Delete();
-            _onDelete?.Invoke(this, _product);
+            _onDelete?.Invoke(_product);
         }
 
-        private readonly EventHandler<Domain.Model.Product> _onSave;
+        private readonly Action<Domain.Model.Product> _onSave;
 
-        private readonly EventHandler<Domain.Model.Product> _onDelete;
+        private readonly Action<Domain.Model.Product> _onDelete;
 
         #endregion
     }

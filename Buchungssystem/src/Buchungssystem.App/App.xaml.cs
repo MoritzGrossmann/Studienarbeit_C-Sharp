@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Markup;
+﻿using System.Windows;
 
 namespace Buchungssystem.App
 {
+    /// <inheritdoc />
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>
-    public partial class App : Application
+    // ReSharper disable once UnusedMember.Global
+    public class App : Application
     {
         
     }

@@ -12,7 +12,7 @@ namespace Buchungssystem.Domain.Model
 
         private ICollection<IProductNode> _childs;
 
-        private IProductNode _parent { get; set; }
+        private IProductNode _parent;
 
 
         public ProductGroup Persist()

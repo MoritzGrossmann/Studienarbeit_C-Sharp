@@ -1,23 +1,21 @@
-﻿<Controls:MetroWindow
+﻿<controls:MetroWindow
     x:Class="Buchungssystem.App.UI.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement"
     xmlns:baseDataManagementView="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement"
     xmlns:booking="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:roomView="clr-namespace:Buchungssystem.App.ViewModel.RoomView"
-    xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
     Title="MainWindow"
     Width="525"
     Height="350"
     MinWidth="1100px"
     MinHeight="600px"
-    Dialog:DialogParticipation.Register="{Binding}"
+    dialog:DialogParticipation.Register="{Binding}"
     Icon="../Ressources/icon.png"
     WindowState="Maximized"
     mc:Ignorable="d">
@@ -55,7 +53,11 @@
             <ContentControl Content="{Binding CurrentViewModel}" />
         </Border>
     </Grid>
-</Controls:MetroWindow>
+</controls:MetroWindow>
+
+
+
+
 
 
 
