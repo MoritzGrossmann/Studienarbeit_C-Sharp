@@ -16,7 +16,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         {
             _bookingSystemPersistence = bookingSystemPersistence;
 
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.ProductGroups().Select(p => new ProductGroupViewModel(p, Select)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.ProductGroups().OrderBy(p => p.Name).Select(p => new ProductGroupViewModel(p, Select)));
 
             ActualProductGroupViewModel = ProductGroupViewModels.Any()
                 ? new EditProductGroupViewModel(Save,Delete, _bookingSystemPersistence, ProductGroupViewModels.FirstOrDefault().ProductGroup)

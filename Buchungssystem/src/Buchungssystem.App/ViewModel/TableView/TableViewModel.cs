@@ -95,5 +95,10 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(Table.Occupied));
             _onStatusChanged.Invoke(Table);
         }
+
+        public void TableSelected(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

@@ -88,8 +88,8 @@ namespace Buchungssystem.Repository.Database
 
         private void LoadChilds(ProductGroup productGroup, BookingsystemEntities context)
         {
-            var childnodes = context.ProductGroups.Where(p => p.ParentId == productGroup.Id && p.ParentId != p.Id).AsEnumerable().Select(FromDbProductGroup).ToList();
-            context.Products.Where(p => p.DbProductGroupId == productGroup.Id).AsEnumerable()
+            var childnodes = context.ProductGroups.Where(p => p.ParentId == productGroup.Id && p.ParentId != p.Id && p.Deleted == false).AsEnumerable().Select(FromDbProductGroup).ToList();
+            context.Products.Where(p => p.DbProductGroupId == productGroup.Id && p.Deleted == false).AsEnumerable()
                 .Select(FromDbProduct).ToList().ForEach(productGroup.AddNode);
 
 

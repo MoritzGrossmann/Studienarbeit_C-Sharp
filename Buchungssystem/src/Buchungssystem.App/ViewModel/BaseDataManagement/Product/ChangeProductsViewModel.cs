@@ -26,7 +26,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         public ChangeProductsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
-            ProductViewModels = new ObservableCollection<ProductViewModel>(_bookingSystemPersistence.Products().Select(p => new ProductViewModel(p, Select)));
+            ProductViewModels = new ObservableCollection<ProductViewModel>(_bookingSystemPersistence.Products().OrderBy(p => p.Name).Select(p => new ProductViewModel(p, Select)));
             AddCommand = new RelayCommand(Add);
 
             // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit ProductViewModels.Any() ausgeschlossen

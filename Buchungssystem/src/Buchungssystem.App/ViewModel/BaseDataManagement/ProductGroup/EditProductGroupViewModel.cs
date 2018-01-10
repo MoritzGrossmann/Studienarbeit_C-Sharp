@@ -20,7 +20,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         {
             HeaderText = $"{productGroup.Name} bearbeiten";
             BookingSystemPersistence = bookingSystemPersistence;
-            BookingSystemPersistence = bookingSystemPersistence;
+
             _onSave = onSave;
             _onDelete = onDelete;
 
@@ -31,6 +31,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(bookingSystemPersistence.ProductGroups().Where(pg => pg.ChildNodes().All(c => c.GetType() != typeof(Domain.Model.Product))).Select(p => new ProductGroupViewModel(p,null)));
 
             var parent = (Domain.Model.ProductGroup) productGroup.Parent();
+
+            NoParent = parent.Id == productGroup.Id;
 
             SelectedProductGroupViewModel =
                 ProductGroupViewModels.FirstOrDefault(pwm => pwm.ProductGroup.Id == parent.Id);
