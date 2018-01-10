@@ -29,19 +29,24 @@ namespace Buchungssystem.App.ViewModel.TableView
             set => SetProperty(ref _name, value, nameof(Name));
         }
 
+        private ProductGroup _parent;
+
         #endregion
 
         #region Constructor
 
-        public ProductGroupListViewModel(string name, ICollection<ProductGroup> productGroups,
+        public ProductGroupListViewModel(ProductGroup productGroup, ICollection<ProductGroup> productGroups,
             Action<ProductGroup> onSelect, Action<ProductGroup> returnToParent)
         {
             ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.Select(p => new ProductGroupViewModel(p, onSelect)));
             HasParent = productGroups.Any(p => p.Parent() != null);
-            Name = name;
+            Name = productGroup != null ? productGroup.Name : "Warengruppen";
+            _parent = productGroup;
+            _returnToParent = returnToParent;
 
             // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit productGroups.Any() ausgeschlossen
-            ReturnToParentCommand = productGroups.Any() ? new RelayCommand(() => returnToParent?.Invoke((ProductGroup)productGroups.FirstOrDefault().Parent())) : null;
+            //ReturnToParentCommand = productGroups.Any() ? new RelayCommand(() => returnToParent?.Invoke((ProductGroup)productGroups.FirstOrDefault().Parent())) : null;
+            ReturnToParentCommand = new RelayCommand(ReturnToParent);
         }
 
         #endregion
@@ -49,6 +54,17 @@ namespace Buchungssystem.App.ViewModel.TableView
         #region Commands
 
         public ICommand ReturnToParentCommand { get; }
+
+        #endregion
+
+        #region Actions
+
+        private readonly Action<ProductGroup> _returnToParent;
+
+        public void ReturnToParent()
+        {
+            _returnToParent?.Invoke(_parent);
+        }
 
         #endregion
     }

@@ -102,10 +102,6 @@ namespace Buchungssystem.Repository.Database
                     LoadChilds(c, context);
                 }
             }
-            else
-            {
-                productGroup.SetNodes(new List<IProductNode>());
-            }
         }
 
         public void DeleteProductGroup(ProductGroup productGroup)

@@ -20,22 +20,21 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             get => _price;
             set
             {
-                if (_price != value)
+
+                if (value < 0)
                 {
-                    if (value < 0)
-                    {
-                        AddError(nameof(Price), "Der Preis darf nicht negativ sein");
-                        RaisePropertyChanged(nameof(HasErrors));
-                    }
-                    else
-                    {
-                        RemoveError(nameof(Price));
-                        RaisePropertyChanged(nameof(HasErrors));
-                    }
-
-
-                    SetProperty(ref _price, value, nameof(Price));
+                    AddError(nameof(Price), "Der Preis darf nicht negativ sein");
+                    RaisePropertyChanged(nameof(HasErrors));
                 }
+                else
+                {
+                    RemoveError(nameof(Price));
+                    RaisePropertyChanged(nameof(HasErrors));
+                }
+
+
+                SetProperty(ref _price, value, nameof(Price));
+               
             }
         }
 

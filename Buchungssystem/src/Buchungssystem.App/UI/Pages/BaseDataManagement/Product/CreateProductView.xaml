@@ -66,7 +66,7 @@
             controls:TextBoxHelper.ClearTextButton="True"
             FontSize="18pt"
             IsEnabled="{Binding Path=Edit, Mode=OneWay}"
-            Text="{Binding Path=Price, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Path=Price, Mode=TwoWay, NotifyOnValidationError=True}"
             TextAlignment="Right" />
         <StackPanel
             Grid.Row="3"

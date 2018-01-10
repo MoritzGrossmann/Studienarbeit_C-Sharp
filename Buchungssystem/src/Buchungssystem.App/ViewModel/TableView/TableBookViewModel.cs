@@ -98,7 +98,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             OpenBookings = new BookingListViewModel(table.Bookings.Where(b => b.Status == BookingStatus.Open).ToList(), SelectBooking);
             SelectedBookings = new BookingListViewModel(new List<Booking>(), SelectBooking);
             SelectedProducts = new ProductListViewModel(new List<Product>(), OnProductSelect);
-            SidebarViewModel = new ProductGroupListViewModel("Warengruppen", _productGroups, OnProductGroupSelect, ShowParent);
+            SidebarViewModel = new ProductGroupListViewModel(null, _productGroups, OnProductGroupSelect, ShowParent);
 
             ToTableListCommand = new RelayCommand(() => onReturn?.Invoke());
             PayCommand = new RelayCommand(PayBookings);
@@ -151,18 +151,26 @@ namespace Buchungssystem.App.ViewModel.TableView
             {
                 var parent = (ProductGroup) productGroup.Parent();
 
-                SidebarViewModel = new ProductGroupListViewModel(
-                    parent.Name,
-                    parent.ChildNodes()
-                        .Where(c => c.GetType() == typeof(ProductGroup))
-                        .AsEnumerable()
-                        .Select(c => (ProductGroup) c)
-                        .ToList(), OnProductGroupSelect, ShowParent);
-                SidebarHeaderText = parent.Name;
+                if (parent.Id == productGroup.Id)
+                {
+                    SidebarViewModel =
+                        new ProductGroupListViewModel(null, _productGroups, OnProductGroupSelect, ShowParent);
+                }
+                else
+                {
+                    SidebarViewModel = new ProductGroupListViewModel(
+                        parent,
+                        parent.ChildNodes()
+                            .Where(c => c.GetType() == typeof(ProductGroup))
+                            .AsEnumerable()
+                            .Select(c => (ProductGroup)c)
+                            .ToList(), OnProductGroupSelect, ShowParent);
+                    SidebarHeaderText = parent.Name;
+                }
             }
             catch (NullReferenceException)
             {
-                SidebarViewModel = new ProductGroupListViewModel("Warengruppen", _productGroups, OnProductGroupSelect, ShowParent);
+                SidebarViewModel = new ProductGroupListViewModel(null, _productGroups, OnProductGroupSelect, ShowParent);
             }
         }
 
@@ -209,7 +217,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
             if (productGroups.Any())
             {
-                SidebarViewModel = new ProductGroupListViewModel(productGroup.Name, productGroups, OnProductGroupSelect, ShowParent);
+                SidebarViewModel = new ProductGroupListViewModel(productGroup, productGroups, OnProductGroupSelect, ShowParent);
             }
             else
             {
