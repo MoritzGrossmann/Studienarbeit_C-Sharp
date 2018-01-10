@@ -19,6 +19,8 @@ namespace Buchungssystem.Domain.Database
 
         Table PersistTable(Table table);
 
+        List<ProductGroup> RootProductGroups();
+
         List<ProductGroup> ProductGroups();
 
         List<ProductGroup> LeafProductGroups();

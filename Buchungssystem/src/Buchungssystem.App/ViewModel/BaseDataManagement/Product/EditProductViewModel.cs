@@ -8,8 +8,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 {
     internal class EditProductViewModel : EditViewModel
     {
-        private readonly IPersistBookingSystemData _bookingSystemPersistence;
-
         private readonly int _id;
 
         #region Properties
@@ -64,8 +62,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             Edit = true;
             Name = "";
             Price = 0;
-            _bookingSystemPersistence = bookingSystemPersistence;
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
+            BookingSystemPersistence = bookingSystemPersistence;
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(BookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
 
             _onSave = onSave;
 
@@ -84,8 +82,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             Name = product.Name;
             _id = product.Id;
             Price = product.Price;
-            _bookingSystemPersistence = bookingSystemPersistence;
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
+            BookingSystemPersistence = bookingSystemPersistence;
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(BookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
 
             _onSave = onSave;
             _onDelete = onDelete;
@@ -110,7 +108,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 {
                     Id = _id,
                     Name = Name,
-                    Persistence = _bookingSystemPersistence,
+                    Persistence = BookingSystemPersistence,
                     Price = Price
                 };
 

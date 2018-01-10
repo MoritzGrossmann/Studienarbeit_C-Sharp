@@ -116,6 +116,12 @@
     <Compile Include="UI\Pages\BaseDataManagement\BaseDataManagementView.xaml.cs">
       <DependentUpon>BaseDataManagementView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\BaseDataManagement\ProductGroup\ChangeProductGroupsView.xaml.cs">
+      <DependentUpon>ChangeProductGroupsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\BaseDataManagement\ProductGroup\EditProductGroupView.xaml.cs">
+      <DependentUpon>EditProductGroupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\BaseDataManagement\Product\ChangeProductsView.xaml.cs">
       <DependentUpon>ChangeProductsView.xaml</DependentUpon>
     </Compile>
@@ -180,6 +186,14 @@
     <Compile Include="ViewModel\TableView\TableBookViewModel.cs" />
     <Compile Include="ViewModel\TableView\TableViewModel.cs" />
     <Compile Include="ViewModel\TableView\BookingListViewModel.cs" />
+    <Page Include="UI\Pages\BaseDataManagement\ProductGroup\ChangeProductGroupsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\BaseDataManagement\ProductGroup\EditProductGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Pages\BaseDataManagement\Product\ChangeProductsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

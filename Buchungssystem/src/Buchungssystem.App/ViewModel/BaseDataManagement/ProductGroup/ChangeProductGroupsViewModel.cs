@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
@@ -26,7 +22,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
                 ? new EditProductGroupViewModel(Save,Delete, _bookingSystemPersistence, ProductGroupViewModels.FirstOrDefault().ProductGroup)
                 : new EditProductGroupViewModel(Save, _bookingSystemPersistence);
 
-            AddProductGroupCommand = new RelayCommand(AddProductGroup);
+            AddCommand = new RelayCommand(AddProductGroup);
         }
 
         #endregion
@@ -52,7 +48,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 
         #region Commands
 
-        public ICommand AddProductGroupCommand { get; }
+        public ICommand AddCommand { get; }
         
         #endregion
 

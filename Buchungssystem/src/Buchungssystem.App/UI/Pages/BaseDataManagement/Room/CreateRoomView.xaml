@@ -96,7 +96,7 @@
             BorderThickness="1px">
             <Grid IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="400px" />
+                    <ColumnDefinition Width="Auto" MinWidth="200px" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 

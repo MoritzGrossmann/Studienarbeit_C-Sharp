@@ -35,7 +35,7 @@
 
             <ListView
                 Grid.Row="1"
-                MinWidth="400px"
+                MinWidth="200px"
                 ItemsSource="{Binding Path=ProductViewModels}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">

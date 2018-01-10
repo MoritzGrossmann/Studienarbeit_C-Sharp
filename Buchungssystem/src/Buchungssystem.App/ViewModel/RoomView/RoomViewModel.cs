@@ -32,7 +32,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         private BaseViewModel _currentViewModel;
 
-        private readonly ICollection<ProductGroup> _productGroups = new BookingSystemDataPersitence().ProductGroups();
+        private readonly ICollection<ProductGroup> _productGroups = new BookingSystemDataPersitence().RootProductGroups();
     
         #endregion
 

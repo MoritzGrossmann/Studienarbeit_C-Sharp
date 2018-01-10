@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Buchungssystem.App.ViewModel.Base;
@@ -10,7 +11,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
     { 
         public int Id;
 
-        private Domain.Model.ProductGroup _productGroup;
+        private readonly Domain.Model.ProductGroup _productGroup;
 
         #region Constructor
 
@@ -18,13 +19,16 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             Action<Domain.Model.ProductGroup> onDelete, IPersistBookingSystemData bookingSystemPersistence,
             Domain.Model.ProductGroup productGroup)
         {
-            _bookingSystemPersistence = bookingSystemPersistence;
+            BookingSystemPersistence = bookingSystemPersistence;
+            BookingSystemPersistence = bookingSystemPersistence;
             _onSave = onSave;
             _onDelete = onDelete;
 
+            _productGroup = productGroup;
+
             Id = productGroup.Id;
             Name = productGroup.Name;
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(bookingSystemPersistence.ProductGroups().Select(p => new ProductGroupViewModel(p,null)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(bookingSystemPersistence.ProductGroups().Where(pg => pg.ChildNodes().All(c => c.GetType() != typeof(Domain.Model.Product))).Select(p => new ProductGroupViewModel(p,null)));
 
             var parent = (Domain.Model.ProductGroup) productGroup.Parent();
 
@@ -39,13 +43,13 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         public EditProductGroupViewModel(Action<Domain.Model.ProductGroup> onSave,
             IPersistBookingSystemData bookingSystemPersistence)
         {
-            _bookingSystemPersistence = bookingSystemPersistence;
+            BookingSystemPersistence = bookingSystemPersistence;
             _onSave = onSave;
             
             Name = String.Empty;
             Edit = true;
 
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(bookingSystemPersistence.ProductGroups().Select(p => new ProductGroupViewModel(p, null)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(bookingSystemPersistence.ProductGroups().Where(pg => pg.ChildNodes().All(c => c.GetType() != typeof(Domain.Model.Product))).Select(p => new ProductGroupViewModel(p, null)));
 
             if (ProductGroupViewModels.Any())
                 SelectedProductGroupViewModel = ProductGroupViewModels.FirstOrDefault();
@@ -72,10 +76,18 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 
         private ProductGroupViewModel _selectedProductGroupViewModel;
 
-        internal ProductGroupViewModel SelectedProductGroupViewModel
+        public ProductGroupViewModel SelectedProductGroupViewModel
         {
             get => _selectedProductGroupViewModel;
             set => SetProperty(ref _selectedProductGroupViewModel, value, nameof(SelectedProductGroupViewModel));
+        }
+
+        private bool _noParent;
+
+        public bool NoParent
+        {
+            get => _noParent;
+            set => SetProperty(ref _noParent, value, nameof(NoParent));
         }
 
         #endregion
@@ -91,8 +103,14 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         private void Save()
         {
             var productGroup =
-                new Domain.Model.ProductGroup() {Id = Id, Name = Name, Persistence = _bookingSystemPersistence};
+                new Domain.Model.ProductGroup() {Id = Id, Name = Name, Persistence = BookingSystemPersistence};
             productGroup.SetParent(SelectedProductGroupViewModel.ProductGroup ?? productGroup);
+
+            productGroup = productGroup.Persist();
+
+            if (NoParent)
+                productGroup.SetParent(productGroup);
+
             productGroup = productGroup.Persist();
 
             _onSave?.Invoke(productGroup);

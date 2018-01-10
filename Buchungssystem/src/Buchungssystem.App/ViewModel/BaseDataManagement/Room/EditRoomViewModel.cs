@@ -46,12 +46,12 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// Konstruktor zum Erstellen eines neuen Raumes
         /// </summary>
         /// <param name="onSave">Action welche beim Speichern ausgelößt wird</param>
-        /// <param name="bookingSystemPerstence">Kontext zurt Datenbank</param>
+        /// <param name="bookingSystemPersistence"></param>
         public EditRoomViewModel(Action<Domain.Model.Room> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
             Name = String.Empty;
             Edit = true;
-            _bookingSystemPersistence = bookingSystemPersistence;
+            BookingSystemPersistence = bookingSystemPersistence;
             _onSave = onSave;
 
             SaveCommand = new RelayCommand(Save);
@@ -68,7 +68,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// </summary>
         /// <param name="onSave"></param>
         /// <param name="onDelete"></param>
-        /// <param name="bookingSystemPerstence"></param>
+        /// <param name="bookingSystemPersistence"></param>
         /// <param name="room"></param>
         public EditRoomViewModel(Action<Domain.Model.Room> onSave, Action<Domain.Model.Room> onDelete,
             IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Room room)
@@ -77,7 +77,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             _room = room;
             Name = room.Name;
 
-            bookingSystemPersistence = bookingSystemPersistence;
+            BookingSystemPersistence = bookingSystemPersistence;
 
             _onSave = onSave;
             _onDelete = onDelete;
@@ -119,7 +119,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         {
             try
             {
-                var room = new Domain.Model.Room() {Id = Id, Name = Name, Persistence = _bookingSystemPersistence }.Persist();
+                var room = new Domain.Model.Room() {Id = Id, Name = Name, Persistence = BookingSystemPersistence }.Persist();
 
                 _onSave?.Invoke(room);
             }
@@ -149,7 +149,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         private void SaveTable(Domain.Model.Table table)
         {
             table.Room = _room;
-            table.Persistence = _bookingSystemPersistence;
+            table.Persistence = BookingSystemPersistence;
 
             table = table.Persist();
             

@@ -18,9 +18,6 @@ namespace Buchungssystem.Repository.Database
         { 
             using (var context = new BookingsystemEntities())
             {
-                if (context.Products.Any(p => p.DbProductGroupId == FromProductGroup(productGroup).ParentId))
-                    throw new NoLeafException();
-
                 if (productGroup.Id > 0)
                     return UpdateProductGroup(productGroup, context);
 
@@ -53,13 +50,23 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
-        public List<ProductGroup> ProductGroups()
+        public List<ProductGroup> RootProductGroups()
         {
             using (var context = new BookingsystemEntities())
             {
                 var roots =  context.ProductGroups.Where(p => p.ParentId == p.Id).AsEnumerable().Select(FromDbProductGroup).ToList();
                 roots.ForEach(p => LoadChilds(p, context));
                 return roots;
+            }
+        }
+
+        public List<ProductGroup> ProductGroups()
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                var productGroups = context.ProductGroups.Select(FromDbProductGroup).ToList();
+                productGroups.ForEach(p => LoadChilds(p,context));
+                return productGroups;
             }
         }
 
@@ -94,6 +101,10 @@ namespace Buchungssystem.Repository.Database
                 {
                     LoadChilds(c, context);
                 }
+            }
+            else
+            {
+                productGroup.SetNodes(new List<IProductNode>());
             }
         }
 
@@ -435,9 +446,5 @@ namespace Buchungssystem.Repository.Database
 
         #endregion
 
-    }
-
-    public class NoLeafException : Exception
-    {
     }
 }

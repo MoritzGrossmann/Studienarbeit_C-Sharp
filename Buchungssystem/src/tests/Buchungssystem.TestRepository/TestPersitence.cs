@@ -53,9 +53,14 @@ namespace Buchungssystem.TestRepository
             return table;
         }
 
-        public List<ProductGroup> ProductGroups()
+        public List<ProductGroup> RootProductGroups()
         {
             return Repository.ProductGroups;
+        }
+
+        public List<ProductGroup> ProductGroups()
+        {
+            throw new NotImplementedException();
         }
 
         public List<ProductGroup> LeafProductGroups()

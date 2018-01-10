@@ -5,6 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:product="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.Product"
+    xmlns:productGroup="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup"
+    xmlns:productGroupView="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.ProductGroup"
     xmlns:productView="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Product"
     xmlns:room="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.Room"
     xmlns:roomView="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Room"
@@ -20,6 +22,10 @@
         <DataTemplate DataType="{x:Type product:ChangeProductsViewModel}">
             <productView:ChangeProductsView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type productGroup:ChangeProductGroupsViewModel}">
+            <productGroupView:ChangeProductGroupsView />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -29,8 +35,11 @@
                     <ContentControl Content="{Binding Path=RoomsViewModel, Mode=OneWay}" />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Header="Tische" />
-            <TabItem Header="Warengruppen" />
+            <TabItem Header="Warengruppen">
+                <TabItem.Content>
+                    <ContentControl Content="{Binding Path=ProductGroupsViewModel, Mode=OneWay}" />
+                </TabItem.Content>
+            </TabItem>
             <TabItem Header="Waren">
                 <TabItem.Content>
                     <ContentControl Content="{Binding Path=ProductsViewModel, Mode=OneWay}" />

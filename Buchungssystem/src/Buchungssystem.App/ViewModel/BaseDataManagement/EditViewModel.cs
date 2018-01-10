@@ -7,13 +7,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 {
     internal abstract class EditViewModel : BaseViewModel
     {
-        protected IPersistBookingSystemData _bookingSystemPersistence;
+        protected IPersistBookingSystemData BookingSystemPersistence;
 
         #region Properties
 
         private string _name;
 
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+
+        /// <summary>
+        /// Repräsemtiert den Namen eines Elements
+        /// </summary>
         public string Name
         {
             get => _name;
@@ -58,7 +62,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
         /// <summary>
-        /// Kommando zum Speichern eines neuen oder eines Bearbeiteten Raumes
+        /// Kommando zum Speichern eines neuen oder eines Bearbeiteten Elements
         /// </summary>
         public ICommand SaveCommand { get; set; }
 
@@ -74,7 +78,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
         /// <summary>
-        /// Kommand zum Löschen eines Raumes
+        /// Kommand zum Löschen eines Elements
         /// </summary>
         public ICommand DeleteCommand { get; set; }
 

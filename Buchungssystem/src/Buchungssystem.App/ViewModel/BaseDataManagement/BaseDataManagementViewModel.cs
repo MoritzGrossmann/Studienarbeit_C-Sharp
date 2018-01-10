@@ -1,5 +1,6 @@
 ﻿using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement.Product;
+using Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup;
 using Buchungssystem.App.ViewModel.BaseDataManagement.Room;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.TestRepository;
@@ -17,9 +18,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         public BaseDataManagementViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
-            var bookingSystemDataPersistence1 = bookingSystemDataPersistence;
-            RoomsViewModel = new ChangeRoomsViewModel(bookingSystemDataPersistence1);
-            ProductsViewModel = new ChangeProductsViewModel(bookingSystemDataPersistence1);
+            RoomsViewModel = new ChangeRoomsViewModel(bookingSystemDataPersistence);
+            ProductGroupsViewModel = new ChangeProductGroupsViewModel(bookingSystemDataPersistence);
+            ProductsViewModel = new ChangeProductsViewModel(bookingSystemDataPersistence);
         }
 
         #endregion
@@ -29,6 +30,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         public BaseViewModel RoomsViewModel { get; set; }
 
         public BaseViewModel ProductsViewModel { get; set; }
+
+        public BaseViewModel ProductGroupsViewModel { get; set; }
 
         #endregion
     }
