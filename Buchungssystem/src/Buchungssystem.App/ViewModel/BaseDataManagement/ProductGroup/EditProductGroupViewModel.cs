@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Buchungssystem.App.ViewModel.Base;

@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
-using Buchungssystem.TestRepository;
 
 namespace Buchungssystem.App.ViewModel.RoomView
 {
@@ -28,11 +27,6 @@ namespace Buchungssystem.App.ViewModel.RoomView
         public RoomListViewModel(ICollection<Room> rooms) 
         {
            RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r)));
-        }
-
-        public RoomListViewModel() : this(new TestPersitence().Rooms())
-        {
-            
         }
     }
 }

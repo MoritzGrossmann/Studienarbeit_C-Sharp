@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace Buchungssystem.App.UI.Pages.BaseDataManagement.ProductGroup
+﻿namespace Buchungssystem.App.UI.Pages.BaseDataManagement.ProductGroup
 {
     /// <summary>
     /// Interaktionslogik für ChangeProductGroupsView.xaml

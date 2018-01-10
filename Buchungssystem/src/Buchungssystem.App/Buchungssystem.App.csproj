@@ -295,10 +295,6 @@
       <Project>{fc6a2ef4-fec2-4f24-88f2-97675be3988f}</Project>
       <Name>Buchungssystem.Repository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\tests\Buchungssystem.TestRepository\Buchungssystem.TestRepository.csproj">
-      <Project>{4aa64e67-d586-4ca6-a2df-2e0d17a4002d}</Project>
-      <Name>Buchungssystem.TestRepository</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UI\Ressources\Icons\" />

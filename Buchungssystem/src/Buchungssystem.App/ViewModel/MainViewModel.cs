@@ -3,7 +3,7 @@ using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement;
 using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
-using Buchungssystem.TestRepository;
+
 
 namespace Buchungssystem.App.ViewModel
 {
@@ -12,15 +12,6 @@ namespace Buchungssystem.App.ViewModel
         private readonly IPersistBookingSystemData _bookingSystemDataPersistence;
 
         #region Constructor
-
-
-        public MainViewModel()
-        {
-            _bookingSystemDataPersistence = new TestPersitence();
-
-            _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
-        }
-
 
         public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
