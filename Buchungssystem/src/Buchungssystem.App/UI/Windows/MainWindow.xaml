@@ -13,7 +13,7 @@
     Title="MainWindow"
     Width="525"
     Height="350"
-    MinWidth="1100px"
+    MinWidth="800px"
     MinHeight="600px"
     dialog:DialogParticipation.Register="{Binding}"
     Icon="../Ressources/icon.png"
@@ -29,6 +29,18 @@
             <baseDataManagementView:BaseDataManagementView />
         </DataTemplate>
     </Window.Resources>
+
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout
+                Width="200"
+                Header="Flyout"
+                Position="Right"
+                IsOpen="True">
+                <!--  Your custom content here  -->
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
 
     <Grid>
         <Grid.RowDefinitions>
