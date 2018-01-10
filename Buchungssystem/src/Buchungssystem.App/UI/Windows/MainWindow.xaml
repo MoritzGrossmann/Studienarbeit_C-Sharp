@@ -8,7 +8,10 @@
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:loading="clr-namespace:Buchungssystem.App.ViewModel.Loading"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="clr-namespace:Buchungssystem.App.UI.Pages"
     xmlns:roomView="clr-namespace:Buchungssystem.App.ViewModel.RoomView"
     Title="MainWindow"
     Width="525"
@@ -28,41 +31,71 @@
         <DataTemplate DataType="{x:Type baseDataManagement:BaseDataManagementViewModel}">
             <baseDataManagementView:BaseDataManagementView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type loading:LoadingViewModel}">
+            <pages:LoadingScreen />
+        </DataTemplate>
     </Window.Resources>
 
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout
-                Width="200"
-                Header="Flyout"
-                Position="Right"
-                IsOpen="True">
-                <!--  Your custom content here  -->
+                x:Name="Flyout"
+                Width="300"
+                AutoCloseInterval="2"
+                Header="Ansicht ändern"
+                Position="Right">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Width="40px"
+                            Height="40px"
+                            Command="{Binding Path=ToBaseDataCommand, Mode=OneWay}"
+                            Content="{iconPacks:PackIconFontAwesome Wrench}"
+                            Style="{DynamicResource MetroCircleButtonStyle}"
+                            ToolTip="Stammdatenverwaltung" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="{StaticResource FontSizeLarge}"
+                            Text="Stammdatenverwaltung" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Width="40px"
+                            Height="40px"
+                            Command="{Binding Path=ToBookingCommand, Mode=OneWay}"
+                            Content="{iconPacks:PackIconFontAwesome ShoppingCart}"
+                            Style="{DynamicResource MetroCircleButtonStyle}"
+                            ToolTip="Buchungsansicht" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="{StaticResource FontSizeLarge}"
+                            Text="Buchungsansicht" />
+                    </StackPanel>
+                </StackPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Menu Grid.Row="0">
-            <MenuItem Header="Datei">
-                <MenuItem Command="{Binding Path=ToBaseDataCommand}" Header="Stammdatenpflege" />
-                <MenuItem Command="{Binding Path=ToBookingCommand}" Header="Buchen" />
-            </MenuItem>
-        </Menu>
-        <Border Grid.Row="1">
-            <Border.BorderThickness>
-                <Thickness
-                    Bottom="5"
-                    Left="5"
-                    Right="5"
-                    Top="5" />
-            </Border.BorderThickness>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Padding="{StaticResource MarginAllSides4}">
             <ContentControl Content="{Binding CurrentViewModel}" />
+        </Border>
+        <Border Grid.Column="1" Padding="{StaticResource MarginAllSides4}">
+            <ToggleButton
+                Width="40px"
+                Height="40px"
+                VerticalAlignment="Top"
+                Command="{Binding Path=ToggleFlyoutCommand, Mode=OneWay}"
+                Content="{iconPacks:PackIconFontAwesome eye}"
+                IsChecked="{Binding ElementName=Flyout, Path=IsOpen}"
+                Style="{DynamicResource MetroCircleToggleButtonStyle}"
+                ToolTip="Ansicht ändern" />
         </Border>
     </Grid>
 </controls:MetroWindow>

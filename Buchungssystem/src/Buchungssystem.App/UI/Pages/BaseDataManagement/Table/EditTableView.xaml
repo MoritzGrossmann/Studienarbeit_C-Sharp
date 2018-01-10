@@ -26,9 +26,10 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
+            Grid.ColumnSpan="2"
             Margin="0,0,0,20"
             FontSize="18pt"
-            Text="Tisch bearbeiten" />
+            Text="{Binding HeaderText}" />
 
         <TextBlock
             Grid.Row="1"

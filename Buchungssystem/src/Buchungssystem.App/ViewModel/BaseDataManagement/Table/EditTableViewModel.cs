@@ -13,6 +13,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// <param name="onSave"></param>
         public EditTableViewModel(Action<Domain.Model.Table> onSave)
         {
+            HeaderText = "Neuen Tisch anlegen";
             Edit = true;
             Name = String.Empty;
             Places = 1;
@@ -31,6 +32,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// <param name="table"></param>
         public EditTableViewModel(Action<Domain.Model.Table> onSave, Action<Domain.Model.Table> onDelete, Domain.Model.Table table)
         {
+            HeaderText = $"{table.Name} bearbeiten";
             Id = table.Id;
 
             _table = table;

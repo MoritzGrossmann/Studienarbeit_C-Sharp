@@ -50,8 +50,8 @@
                                 <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
                             </Grid.InputBindings>
                             <Border
-                                Padding="30,10,30,10"
-                                BorderBrush="LightSlateGray"
+                                Padding="{StaticResource PaddingListItem}"
+                                BorderBrush="{StaticResource LightGray}"
                                 BorderThickness="0,0,0,1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -65,7 +65,7 @@
 
                                     <TextBlock
                                         Grid.Column="0"
-                                        FontSize="14pt"
+                                        FontSize="{StaticResource FontSizeLarge}"
                                         Text="{Binding Path=ProductGroup.Name, Mode=OneWay}" />
                                 </Grid>
                             </Border>

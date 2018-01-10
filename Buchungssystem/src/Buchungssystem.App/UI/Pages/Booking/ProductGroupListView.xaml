@@ -41,8 +41,8 @@
                                 <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
                             </Grid.InputBindings>
                             <Border
-                                Padding="30,10,30,10"
-                                BorderBrush="LightSlateGray"
+                                Padding="{StaticResource PaddingListItem}"
+                                BorderBrush="{StaticResource LightGray}"
                                 BorderThickness="0,0,0,1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>

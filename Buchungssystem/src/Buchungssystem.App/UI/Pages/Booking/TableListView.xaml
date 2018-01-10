@@ -15,91 +15,74 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ListView
+        <ListBox
             Grid.Row="0"
             ItemsSource="{Binding Path=TableViewModels, Mode=OneWay}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
             SelectionMode="Single">
-            <ListView.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel ItemHeight="150" ItemWidth="200" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="{StaticResource MarginAllSides4}" />
+                    <Setter Property="Background" Value="{StaticResource AccentColorBrush2}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
                 <DataTemplate DataType="tableView:TableViewModel">
                     <Grid>
                         <Grid.InputBindings>
                             <MouseBinding Command="{Binding Path=SelectCommand}" MouseAction="LeftClick" />
                         </Grid.InputBindings>
-                        <Border
-                            Padding="30,10,30,10"
-                            BorderBrush="LightSlateGray"
-                            BorderThickness="0,0,0,1">
-                            <Border.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Command="{Binding Path=ChangeStatusCommand, Mode=OneWay}" Header="Status Ändern" />
-                                </ContextMenu>
-                            </Border.ContextMenu>
+                        <Grid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding Path=ChangeStatusCommand, Mode=OneWay}" Header="Status Ändern" />
+                            </ContextMenu>
+                        </Grid.ContextMenu>
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
+                        <StackPanel Margin="{StaticResource MarginAllSides4}" VerticalAlignment="Top">
+                            <TextBlock
+                                FontSize="{StaticResource FontSizeLarge}"
+                                FontWeight="Bold"
+                                Foreground="{Binding Color}"
+                                Text="{Binding Table.Name}" />
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    FontSize="18pt"
-                                    Foreground="{Binding Path=Color, Mode=OneWay}"
-                                    Text="{Binding Path=Table.Name, Mode=OneWay}" />
-                                <StackPanel
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Orientation="Horizontal"
-                                    Visibility="{Binding Path=Table.Occupied, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}">
-                                    <TextBlock
-                                        FontStyle="Italic"
-                                        Foreground="#FF686868"
-                                        Text="Letzte Buchung vor " />
-                                    <TextBlock
-                                        FontStyle="Italic"
-                                        Foreground="#FF686868"
-                                        Text="{Binding Path=LastBookingTime, Mode=OneWay}" />
-                                    <TextBlock
-                                        FontStyle="Italic"
-                                        Foreground="#FF686868"
-                                        Text=" Minuten" />
-                                </StackPanel>
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="2"
                                     HorizontalAlignment="Right"
-                                    FontSize="18pt"
-                                    Text="{Binding Path=Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" />
-
-                                <StackPanel
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Orientation="Horizontal">
-                                    <TextBlock
-                                        HorizontalAlignment="Left"
-                                        FontSize="18pt"
-                                        Foreground="{Binding Path=Color, Mode=OneWay}"
-                                        Text="{Binding Path=Table.Places, Mode=OneWay}" />
-                                    <TextBlock
-                                        HorizontalAlignment="Left"
-                                        FontSize="18pt"
-                                        Foreground="{Binding Path=Color, Mode=OneWay}"
-                                        Text=" Plätze" />
-                                </StackPanel>
-                            </Grid>
-                        </Border>
+                                    FontSize="{StaticResource FontSizeLarge}"
+                                    Text="{Binding Table.Places}" />
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    FontSize="{StaticResource FontSizeLarge}"
+                                    Text=" Plätze" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding Occupied, Converter={converter:BooleanToVisibilityConverter}}">
+                                <TextBlock
+                                    FontStyle="Italic"
+                                    Foreground="{StaticResource LightGray}"
+                                    Text="Letzte Buchung vor " />
+                                <TextBlock
+                                    FontStyle="Italic"
+                                    Foreground="{StaticResource LightGray}"
+                                    Text="{Binding Path=LastBookingTime, Mode=OneWay}" />
+                                <TextBlock
+                                    FontStyle="Italic"
+                                    Foreground="{StaticResource LightGray}"
+                                    Text=" Minuten" />
+                            </StackPanel>
+                            <TextBlock FontSize="{StaticResource FontSizeLarge}" Text="{Binding Price, Converter={converter:PriceToStringConverter}}" />
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <TextBlock FontSize="16pt" Text="Freie Tische: " />
             <TextBlock

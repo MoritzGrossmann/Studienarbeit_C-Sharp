@@ -11,6 +11,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         #region Properties
 
+        private string _headerText;
+
+        /// <summary>
+        /// Repräsentiert den Text, der als Überschrift in einer Bearbeitungsansicht erscheint
+        /// </summary>
+        public string HeaderText
+        {
+            get => _headerText;
+            set => SetProperty(ref _headerText, value, nameof(HeaderText));
+        }
+
         private string _name;
 
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt

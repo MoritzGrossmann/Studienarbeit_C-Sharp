@@ -58,6 +58,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         public EditProductViewModel(Action<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
+            HeaderText = "Neue Ware Anelegen";
             Edit = true;
             Name = "";
             Price = 0;
@@ -75,6 +76,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         public EditProductViewModel(Action<Domain.Model.Product> onSave, Action<Domain.Model.Product> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
         {
+            HeaderText = $"{product.Name} bearbeiten";
             _product = product;
 
             Edit = false;

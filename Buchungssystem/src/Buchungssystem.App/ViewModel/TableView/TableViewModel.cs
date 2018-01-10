@@ -36,6 +36,14 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
         }
 
+        private bool _occuipied;
+
+        public bool Occupied
+        {
+            get => _occuipied;
+            set => SetProperty(ref _occuipied, value, nameof(Occupied));
+        }
+
         public Brush Color => (Brush) new BrushConverter().ConvertFrom(Table.Occupied ? "#f44242" : "#000000");
 
         // ReSharper disable once PossibleNullReferenceException : Mögliche NullreferenzExcptions wird mit Abfrage Table.Bookings.Any() vermieden
@@ -49,8 +57,8 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             _onSelect = onSelect;
             _onStatusChanged = onStatusChanged;
-            _table = table;
-
+            Table = table;
+            Occupied = Table.Occupied;
 
             SelectCommand = new RelayCommand(Select);
             ChangeStatusCommand = new RelayCommand(ChangeStatus);
@@ -73,6 +81,8 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private void ChangeStatus()
         {
+            Occupied = !Occupied;
+
             if (Table.Occupied)
             {
                 Table.Clear();

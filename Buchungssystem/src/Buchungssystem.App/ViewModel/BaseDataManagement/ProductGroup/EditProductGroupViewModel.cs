@@ -18,6 +18,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             Action<Domain.Model.ProductGroup> onDelete, IPersistBookingSystemData bookingSystemPersistence,
             Domain.Model.ProductGroup productGroup)
         {
+            HeaderText = $"{productGroup.Name} bearbeiten";
             BookingSystemPersistence = bookingSystemPersistence;
             BookingSystemPersistence = bookingSystemPersistence;
             _onSave = onSave;
@@ -42,6 +43,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         public EditProductGroupViewModel(Action<Domain.Model.ProductGroup> onSave,
             IPersistBookingSystemData bookingSystemPersistence)
         {
+            HeaderText = "Neue Warengruppe anlegen";
             BookingSystemPersistence = bookingSystemPersistence;
             _onSave = onSave;
             

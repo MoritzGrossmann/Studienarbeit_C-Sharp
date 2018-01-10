@@ -1,6 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System.Net;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement;
+using Buchungssystem.App.ViewModel.Loading;
 using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
 
@@ -15,30 +19,39 @@ namespace Buchungssystem.App.ViewModel
 
         public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
+            CurrentViewModel = new LoadingViewModel();
+
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
 
-            _currentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
+            ToBookingCommand = new RelayCommand(ToBooking);
+
+            ToggleFlyoutCommand = new RelayCommand(ToggleFlyout);
 
             ToBaseDataCommand = new RelayCommand(ToBaseData);
 
-            ToBookingCommand = new RelayCommand(ToBooking);
+            TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
+
+            awaiter.OnCompleted(() => CurrentViewModel = awaiter.GetResult());
         }
 
         #endregion
 
         #region Properties
 
+        private bool _showFlyout;
+
+        public bool ShowFlyout
+        {
+            get => _showFlyout;
+            set => SetProperty(ref _showFlyout, value, nameof(CurrentViewModel));
+        }
+
         private BaseViewModel _currentViewModel;
 
         public BaseViewModel CurrentViewModel
         {
             get => _currentViewModel;
-            set
-            {
-                if (_currentViewModel.Equals(value)) return;
-                _currentViewModel = value;
-                RaisePropertyChanged(nameof(CurrentViewModel));
-            }
+            set => SetProperty(ref _currentViewModel, value, nameof(CurrentViewModel));
         }
 
         #endregion
@@ -49,21 +62,43 @@ namespace Buchungssystem.App.ViewModel
 
         public ICommand ToBookingCommand { get; }
 
+        public ICommand ToggleFlyoutCommand { get; }
+
         #endregion
 
         #region Actions
 
         private void ToBaseData()
         {
-            //_dialogCoordinator.ShowMessageAsync(this, "fjrebhf", "gehe zu basedata");
-            CurrentViewModel = new BaseDataManagementViewModel(_bookingSystemDataPersistence);
+            CurrentViewModel = new LoadingViewModel();
+            TaskAwaiter<BaseDataManagementViewModel> awaiter = GetBaseDataManagementViewModel().GetAwaiter();
+
+            awaiter.OnCompleted(() => CurrentViewModel = awaiter.GetResult());
+
+        }
+
+        private Task<BaseDataManagementViewModel> GetBaseDataManagementViewModel()
+        {
+            return Task.Run(() => new BaseDataManagementViewModel(_bookingSystemDataPersistence));
         }
 
         private void ToBooking()
         {
-            CurrentViewModel = new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
+            CurrentViewModel = new LoadingViewModel();
+            TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
+
+            awaiter.OnCompleted(() => CurrentViewModel = awaiter.GetResult());
         }
 
+        private Task<RoomListViewModel> GetBookingViewModel()
+        {
+            return Task.Run(() => new RoomListViewModel(_bookingSystemDataPersistence.Rooms()));
+        }
+
+        private void ToggleFlyout()
+        {
+            ShowFlyout = !ShowFlyout;
+        }
         #endregion
 
     }

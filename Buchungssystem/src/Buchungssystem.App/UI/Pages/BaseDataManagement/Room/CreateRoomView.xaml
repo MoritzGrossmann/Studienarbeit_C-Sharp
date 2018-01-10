@@ -35,9 +35,10 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
+            Grid.ColumnSpan="2"
             Margin="0,0,0,20"
             FontSize="18pt"
-            Text="Raum bearbeiten" />
+            Text="{Binding HeaderText}" />
 
         <TextBlock
             Grid.Row="1"
@@ -145,8 +146,8 @@
                                     <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
                                 </Grid.InputBindings>
                                 <Border
-                                    Padding="30,10,30,10"
-                                    BorderBrush="LightSlateGray"
+                                    Padding="{StaticResource PaddingListItem}"
+                                    BorderBrush="{StaticResource LightGray}"
                                     BorderThickness="0,0,0,1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>

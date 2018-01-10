@@ -28,6 +28,10 @@
                     <Thickness x:Key="MarginLeftRight12">12,0</Thickness>
                     <Thickness x:Key="MarginLeft4">4,0,0,0</Thickness>
 
+                    <Thickness x:Key="PaddingListItem">10,5,10,5</Thickness>
+
+                    <Brush x:Key="LightGray">LightSlateGray</Brush>
+
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 

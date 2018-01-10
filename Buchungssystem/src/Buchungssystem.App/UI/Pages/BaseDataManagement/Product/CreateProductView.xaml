@@ -26,9 +26,10 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock
+            Grid.ColumnSpan="2"
             Margin="0,0,0,20"
             FontSize="18pt"
-            Text="Ware Anlegen" />
+            Text="{Binding HeaderText}" />
 
         <TextBlock
             Grid.Row="1"

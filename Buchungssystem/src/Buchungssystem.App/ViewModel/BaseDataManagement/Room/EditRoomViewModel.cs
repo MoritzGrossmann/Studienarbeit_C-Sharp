@@ -49,6 +49,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// <param name="bookingSystemPersistence"></param>
         public EditRoomViewModel(Action<Domain.Model.Room> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
+            HeaderText = "Neuen Raum anlegen";
             Name = String.Empty;
             Edit = true;
             BookingSystemPersistence = bookingSystemPersistence;
@@ -73,6 +74,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         public EditRoomViewModel(Action<Domain.Model.Room> onSave, Action<Domain.Model.Room> onDelete,
             IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Room room)
         {
+            HeaderText = $"{room.Name} bearbeiten";
             Id = room.Id;
             _room = room;
             Name = room.Name;

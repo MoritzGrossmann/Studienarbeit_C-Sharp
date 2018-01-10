@@ -10,6 +10,8 @@ namespace Buchungssystem.App.ViewModel.TableView
 {
     internal class ProductListViewModel : BaseViewModel
     {
+        private ProductGroup _parent;
+
         #region Properties
 
         private ObservableCollection<ProductViewModel> _productViewModels;
@@ -31,12 +33,14 @@ namespace Buchungssystem.App.ViewModel.TableView
         #region Contructor
 
         public ProductListViewModel(ProductGroup productGroup, ICollection<Product> products, Action<Product> onProductSelect,
-            Action<ProductGroup> returnToProductGroup)
+            Action<ProductGroup> returnToParent)
         {
             Name = productGroup.Name;
             _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
+            _returnToParent = returnToParent;
+            _parent = productGroup;
             ShowReturnButton = true;
-            ReturnToParentCommand = new RelayCommand(() => returnToProductGroup?.Invoke((ProductGroup)productGroup.Parent()));
+            ReturnToParentCommand = new RelayCommand(ReturnToParent);
         }
 
         public ProductListViewModel(ICollection<Product> products, Action<Product> onProductSelect)
@@ -50,6 +54,17 @@ namespace Buchungssystem.App.ViewModel.TableView
         #region Commands
 
         public ICommand ReturnToParentCommand { get; }
+
+        #endregion
+
+        #region Actions
+
+        private void ReturnToParent()
+        {
+            _returnToParent?.Invoke(_parent);
+        }
+
+        private readonly Action<ProductGroup> _returnToParent;
 
         #endregion
     }

@@ -89,7 +89,7 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         public TableBookViewModel(Table table, ICollection<ProductGroup> productGroups, Action onReturn)
         {
@@ -109,7 +109,53 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #endregion
 
+        #region Commands
+
+        public ICommand ToTableListCommand { get; }
+
+        public ICommand PayCommand { get; }
+
+        public ICommand CancelCommand { get; }
+
+        public ICommand ToogleSidebarCommand { get; }
+
+        public ICommand BookProductsCommand { get; set; }
+
+        #endregion
+
         #region Actions
+
+        private void OnProductGroupSelect(ProductGroup productGroup)
+        {
+            var productGroups = productGroup.ChildNodes().Where(c => c.GetType() == typeof(ProductGroup)).AsEnumerable().Select(pg => (ProductGroup)pg).ToList();
+
+            if (productGroups.Any())
+            {
+                SidebarViewModel = new ProductGroupListViewModel(productGroup, productGroups, OnProductGroupSelect, ShowParent);
+            }
+            else
+            {
+                SidebarViewModel = new ProductListViewModel(productGroup,
+                    productGroup.ChildNodes().Where(c => c.GetType() == typeof(Product)).AsEnumerable().Select(c => (Product) c)
+                        .ToList(), OnProductSelect, ShowParent);
+            }
+
+            SidebarHeaderText = productGroup.Name;
+        }
+
+        private void OnProductDeSelect(Product product)
+        {
+            var productViewModel = SelectedProducts.ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
+            SelectedProducts.ProductViewModels.Remove(productViewModel);
+
+            RaisePropertyChanged(nameof(CanBookProducts));
+        }
+
+        private void OnProductSelect(Product product)
+        {
+            SelectedProducts.ProductViewModels.Add(new ProductViewModel(product, OnProductDeSelect));
+            RaisePropertyChanged(nameof(CanBookProducts));
+        }
 
         private void SelectBooking(BookingViewModel bookingViewModel)
         {
@@ -149,7 +195,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             try
             {
-                var parent = (ProductGroup) productGroup.Parent();
+                var parent = (ProductGroup)productGroup.Parent();
 
                 if (parent.Id == productGroup.Id)
                 {
@@ -189,57 +235,6 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
             SelectedProducts.ProductViewModels.Clear();
 
-            RaisePropertyChanged(nameof(CanBookProducts));
-        }
-
-        #endregion
-
-        #region Commands
-
-        
-        public ICommand ToTableListCommand { get; }
-
-        public ICommand PayCommand { get; }
-
-        public ICommand CancelCommand { get; }
-
-        public ICommand ToogleSidebarCommand { get; }
-
-        public ICommand BookProductsCommand { get; set; }
-
-        #endregion
-
-        #region Actions
-
-        private void OnProductGroupSelect(ProductGroup productGroup)
-        {
-            var productGroups = productGroup.ChildNodes().Where(c => c.GetType() == typeof(ProductGroup)).AsEnumerable().Select(pg => (ProductGroup)pg).ToList();
-
-            if (productGroups.Any())
-            {
-                SidebarViewModel = new ProductGroupListViewModel(productGroup, productGroups, OnProductGroupSelect, ShowParent);
-            }
-            else
-            {
-                SidebarViewModel = new ProductListViewModel(productGroup,
-                    productGroup.ChildNodes().Where(c => c.GetType() == typeof(Product)).AsEnumerable().Select(c => (Product) c)
-                        .ToList(), OnProductSelect, OnProductGroupSelect);
-            }
-
-            SidebarHeaderText = productGroup.Name;
-        }
-
-        private void OnProductDeSelect(Product product)
-        {
-            var productViewModel = SelectedProducts.ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
-            SelectedProducts.ProductViewModels.Remove(productViewModel);
-
-            RaisePropertyChanged(nameof(CanBookProducts));
-        }
-
-        private void OnProductSelect( Product p)
-        {
-            SelectedProducts.ProductViewModels.Add(new ProductViewModel(p, OnProductDeSelect));
             RaisePropertyChanged(nameof(CanBookProducts));
         }
 
