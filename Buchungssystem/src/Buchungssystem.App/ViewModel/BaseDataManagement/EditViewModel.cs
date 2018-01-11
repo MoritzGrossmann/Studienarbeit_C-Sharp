@@ -5,6 +5,9 @@ using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement
 {
+    /// <summary>
+    /// Abstrakte Klasse für eine View zum Erzeugen und Editieren von Objekten
+    /// </summary>
     internal abstract class EditViewModel : BaseViewModel
     {
         protected IPersistBookingSystemData BookingSystemPersistence;
@@ -84,7 +87,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
         /// <summary>
-        /// Kommando zum Speichern eines neuen oder eines Bearbeiteten Elements
+        /// Command zum Speichern eines neuen oder eines Bearbeiteten Elements
         /// </summary>
         public ICommand SaveCommand { get; set; }
 
@@ -92,7 +95,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
         /// <summary>
-        /// Kommando zum Umschalten zwischen Editier- und Leseansicht
+        /// Command zum Umschalten zwischen Editier- und Leseansicht
         /// </summary>
         public ICommand EditCommand { get; set; }
 
@@ -100,7 +103,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
         /// <summary>
-        /// Kommand zum Löschen eines Elements
+        /// Command zum Löschen eines Elements
         /// </summary>
         public ICommand DeleteCommand { get; set; }
 
@@ -108,6 +111,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         #region Actions
 
+        /// <summary>
+        /// Wechselt die Ansicht von Lese- zu Editieransicht und umgekehrt
+        /// </summary>
         protected void ToggleEdit()
         {
             Edit = !Edit;

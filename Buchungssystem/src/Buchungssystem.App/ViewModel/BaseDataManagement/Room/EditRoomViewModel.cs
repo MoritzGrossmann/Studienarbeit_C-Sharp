@@ -10,8 +10,14 @@ using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 {
+    /// <summary>
+    /// ViewModel zum Erstellen oder Editieren von Räumen
+    /// </summary>
     internal class EditRoomViewModel : EditViewModel
     {
+        /// <summary>
+        /// Repräsentiert die Id des bearbeitenten Raumes
+        /// </summary>
         public int Id { get; }
 
         private readonly Domain.Model.Room _room;
@@ -47,8 +53,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// <summary>
         /// Konstruktor zum Erstellen eines neuen Raumes
         /// </summary>
-        /// <param name="onSave">Action welche beim Speichern ausgelößt wird</param>
-        /// <param name="bookingSystemPersistence"></param>
+        /// <param name="onSave">Aktion, welche beim Speichern eines Raumes aufgerufen wird</param>
+        /// <param name="bookingSystemPersistence">Datenbankkontext</param>
         public EditRoomViewModel(Action<Domain.Model.Room> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
             HeaderText = "Neuen Raum anlegen";
@@ -69,10 +75,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// <summary>
         /// Kontruktor zum Bearbeiten eines neuen Raumes
         /// </summary>
-        /// <param name="onSave"></param>
-        /// <param name="onDelete"></param>
-        /// <param name="bookingSystemPersistence"></param>
-        /// <param name="room"></param>
+        /// <param name="onSave">Aktion, welche beim Speichern eines Raumes aufgerufen wird</param>
+        /// <param name="onDelete">Aktion, welche beim Löschen eines Raumes aufgerufen wird</param>
+        /// <param name="bookingSystemPersistence">Datenbankkontext</param>
+        /// <param name="room">Raum, welcher bearbeitet werden soll</param>
         public EditRoomViewModel(Action<Domain.Model.Room> onSave, Action<Domain.Model.Room> onDelete,
             IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Room room)
         {
@@ -104,8 +110,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 
         #region Commands
 
-
-
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
@@ -119,6 +123,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 
         #region Actions
 
+        /// <summary>
+        /// Speichert den bearbeiteten Raum in der Datenbank
+        /// Ruft die im Konstruktor übergebene Methode onSave auf
+        /// </summary>
         private void Save()
         {
             try
@@ -144,22 +152,38 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             }
         }
 
+        /// <summary>
+        /// Löscht einen Raum 
+        /// Ruft die im Konstruktor übergebene Methode onDelete auf
+        /// </summary>
         private void Delete()
         {
             _room?.Delete();
             _onDelete?.Invoke(_room);
         }
-
+    
+        /// <summary>
+        /// Setzt das EditTableViewModel auf ein neues leeres EditTableViewModel
+        /// </summary>
         private void AddTable()
         {
             EditTableViewModel = new EditTableViewModel(SaveTable);
         }
 
+        /// <summary>
+        /// Setzt das EditTableViewModel auf ein neues EditTableViewModel mit dem übergebenen Tisch
+        /// </summary>
+        /// <param name="table">Tisch, welcher ausgwählt wurde</param>
         private void SelectTable(Domain.Model.Table table)
         {
             EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, table);
         }
 
+        /// <summary>
+        /// Speichert den bearbeiteten Tisch in der Datenbank
+        /// Fügt der Liste TableViewModels ein neues TableViewModel hinzu wenn ein neuer Tisch erstellt wurde, oder Updated ein vorhandenes mit dem jeweiligen Tisch
+        /// </summary>
+        /// <param name="table">Tisch, der gespeichert werden soll</param>
         private void SaveTable(Domain.Model.Table table)
         {
             table.Room = _room;
@@ -187,6 +211,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             return Task.Run(() => room.Persist());
         }
 
+        /// <summary>
+        /// Aktion, die nach dem Löschen eines Tisches aufgerufen wird
+        /// Löscht aus der Liste TableViewModels das TableViewModel mit dem entsprechenden Tisch
+        /// </summary>
+        /// <param name="table"></param>
         private void DeleteTable(Domain.Model.Table table)
         {
             var tableViewModel = TableViewModels.FirstOrDefault(t => t.Table.Id == table.Id);

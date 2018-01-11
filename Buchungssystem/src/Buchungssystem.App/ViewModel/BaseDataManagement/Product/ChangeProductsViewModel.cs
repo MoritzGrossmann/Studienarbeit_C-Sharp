@@ -8,23 +8,37 @@ using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 {
+    /// <summary>
+    /// ViewModel für die Übersicht der Waren-Verwaltung
+    /// </summary>
     internal class ChangeProductsViewModel : BaseViewModel
     {
         #region Properties
 
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
 
+        /// <summary>
+        /// Repräsentiert alle existenten Waren
+        /// </summary>
         public ObservableCollection<ProductViewModel> ProductViewModels { get; set; }
 
         private BaseViewModel _actualProductViewModel;
 
+        /// <summary>
+        /// Repräsentiert die aktuell bearbeitete Ware
+        /// </summary>
         public BaseViewModel ActualProductViewModel
         {
             get => _actualProductViewModel;
             set => SetProperty(ref _actualProductViewModel, value, nameof(ActualProductViewModel));
         }
 
-#endregion
+        #endregion
+
+        /// <summary>
+        /// Standardkontruktor
+        /// </summary>
+        /// <param name="bookingSystemPersistence">Datenbankkontext</param>
         public ChangeProductsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
@@ -38,11 +52,21 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         #region Actions
 
+        /// <summary>
+        /// Aktion, die bei der Auswahl einer Ware ausgeführt wird
+        /// </summary>
+        /// <param name="product">Ausgewählte Ware</param>
         private void Select(Domain.Model.Product product)
         {
             ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, product);
         }
 
+        /// <summary>
+        /// Aktion, die beim Speichern einer Ware ausgeführt wird
+        /// Speichert die Ware in der Datenbank
+        /// Fügt der Liste ProductViewModels ein neues ProductViewModel hinzu wenn eine neue Ware angelegt wurde oder Updated das PRoductViewModel mit der entsprechenden Ware
+        /// </summary>
+        /// <param name="product">Gespeicherte Ware</param>
         private void Save(Domain.Model.Product product)
         {
 
@@ -71,6 +95,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             return Task.Run(() => product.Persist());
         }
 
+        /// <summary>
+        /// Aktion, die beim Löschen einer Ware ausgeführt wird
+        /// Löscht aus der Liste ProductViewModels das ProductViewModel mit der gelöschten Ware
+        /// </summary>
+        /// <param name="product">Gelöschte Ware</param>
         private void Delete(Domain.Model.Product product)
         {
             var productViewModel = ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
@@ -81,6 +110,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         }
 
+        /// <summary>
+        /// Anlegen einer neuen Ware
+        /// ActualProductViewModel wird auf ein neues EditProductViewModel gesetzt
+        /// </summary>
         private void Add()
         {
             ActualProductViewModel = new EditProductViewModel(Save, _bookingSystemPersistence);
@@ -92,6 +125,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
+
+        /// <summary>
+        /// Kommando zun Anlegen einer neuen Ware
+        /// </summary>
         public ICommand AddCommand { get; }
 
         #endregion

@@ -6,6 +6,9 @@ using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 {
+    /// <summary>
+    /// ViewModel zum Erstellen und Editieren von Waren
+    /// </summary>
     internal class EditProductViewModel : EditViewModel
     {
         private readonly int _id;
@@ -15,6 +18,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         private decimal _price;
 
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+
+        /// <summary>
+        /// Preis des Produktes in der jeweiligen Landeswährung
+        /// </summary>
         public decimal Price
         {
             get => _price;
@@ -41,6 +48,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         private ProductGroupViewModel _productGroupViewModel;
 
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+
+        /// <summary>
+        /// Angewählte Warengruppe für die Ware
+        /// </summary>
         public ProductGroupViewModel ProductGroupViewModel
         {
             get => _productGroupViewModel;
@@ -50,12 +61,21 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         private readonly Domain.Model.Product _product;
 
         // ReSharper disable once MemberCanBePrivate.Global : Datenkontext wird zur Laufzeit gesetzt
+
+        /// <summary>
+        /// Liste der Warengruppen, welche keine weiteren Warengruppen als Kinder hat
+        /// </summary>
         public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels { get; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Kontruktor für das Erstellen einer neuen Ware
+        /// </summary>
+        /// <param name="onSave">Methode, die beim Speichern der Ware aufgerufen wird</param>
+        /// <param name="bookingSystemPersistence">Datenbankkontext</param>
         public EditProductViewModel(Action<Domain.Model.Product> onSave, IPersistBookingSystemData bookingSystemPersistence)
         {
             HeaderText = "Neue Ware Anelegen";
@@ -74,6 +94,13 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             AddError(nameof(Name), "Der Name darf nicht leer sein");
         }
 
+        /// <summary>
+        /// Kontruktor für das Editieren einer vorhandenen Ware
+        /// </summary>
+        /// <param name="onSave">Methode, die beim Speichern der Ware aufgerufen wird</param>
+        /// <param name="onDelete">Methode, die beim Löschen der Ware aufgerufen wird</param>
+        /// <param name="bookingSystemPersistence">Datenbankkontext</param>
+        /// <param name="product">Die zu Editierende Ware</param>
         public EditProductViewModel(Action<Domain.Model.Product> onSave, Action<Domain.Model.Product> onDelete, IPersistBookingSystemData bookingSystemPersistence, Domain.Model.Product product)
         {
             HeaderText = $"{product.Name} bearbeiten";
@@ -101,6 +128,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         #region Actions
 
+        /// <summary>
+        /// Speichert eine Ware und Ruft die im Kontruktor übergebene Funktion onSave auf
+        /// </summary>
         private void Save()
         {
             ShowProgressbar = true;
@@ -130,6 +160,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             }
         }
 
+        /// <summary>
+        /// Löscht eine Ware und ruft die im Kontruktor übergebene Funktion onDelete auf
+        /// </summary>
         private void Delete()
         {
             _product.Delete();

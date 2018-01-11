@@ -6,10 +6,17 @@ using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement
 {
+    /// <summary>
+    /// ViewModel für die Stammdatenverwaltung
+    /// </summary>
     internal class BaseDataManagementViewModel : BaseViewModel
     {
         #region Constructor
 
+        /// <summary>
+        /// Standardkonstruktor für die Stammdatenverwaltung
+        /// </summary>
+        /// <param name="bookingSystemDataPersistence">Repräsentiert den Datenbankkontext</param>
         public BaseDataManagementViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
             RoomsViewModel = new ChangeRoomsViewModel(bookingSystemDataPersistence);
@@ -21,10 +28,19 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
 
         #region Properties
 
+        /// <summary>
+        /// ViewModel zum Editieren von Räumen und deren Tische
+        /// </summary>
         public BaseViewModel RoomsViewModel { get; set; }
 
+        /// <summary>
+        /// ViewModel zum Editieren von Waren
+        /// </summary>
         public BaseViewModel ProductsViewModel { get; set; }
 
+        /// <summary>
+        /// ViewModel zum Editieren von Warengruppen
+        /// </summary>
         public BaseViewModel ProductGroupsViewModel { get; set; }
 
         #endregion

@@ -3,6 +3,9 @@ using Buchungssystem.App.ViewModel.Base;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 {
+    /// <summary>
+    /// ViewModel zum Erstellen oder Editieren von Tischen
+    /// </summary>
     internal class EditTableViewModel : EditViewModel
     {
         #region Constructors
@@ -10,7 +13,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// <summary>
         /// Kontruktor zum Erstellen eines neuen Tisches
         /// </summary>
-        /// <param name="onSave"></param>
+        /// <param name="onSave">Methode, die beim Speichern des Tisches aufgerufen werden soll</param>
         public EditTableViewModel(Action<Domain.Model.Table> onSave)
         {
             HeaderText = "Neuen Tisch anlegen";
@@ -27,9 +30,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// <summary>
         /// Kontruktor zum Bearbeiten eines Vorhandenen Tisches
         /// </summary>
-        /// <param name="onSave"></param>
-        /// <param name="onDelete"></param>
-        /// <param name="table"></param>
+        /// <param name="onSave">Methode, die beim Speichern des Tisches aufgerufen werden soll</param>
+        /// <param name="onDelete">Methode, die beim Löschen des Tisches aufgerufen werden soll</param>
+        /// <param name="table">Tisch, welcher bearbeitet werden soll</param>
         public EditTableViewModel(Action<Domain.Model.Table> onSave, Action<Domain.Model.Table> onDelete, Domain.Model.Table table)
         {
             HeaderText = $"{table.Name} bearbeiten";
@@ -52,6 +55,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 
         #region Properties
 
+        /// <summary>
+        /// Repräsentiert die Id des Tisches
+        /// </summary>
         public int Id { get; }
 
         private readonly Domain.Model.Table _table;
@@ -88,6 +94,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 
         #region Actions
 
+        /// <summary>
+        /// Erstellt einen Neuen Tisch aus den Eingegebenen Paramtern und übergibt diesen an die im kontrutor übergebene Methode onSave
+        /// </summary>
         private void Save()
         {
             ShowProgressbar = true;
@@ -95,6 +104,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
             _onSave?.Invoke(table);
         }
 
+        /// <summary>
+        /// Löscht einen Tisch
+        /// Ruft die im Kontruktor übergebene Funktion onDelete auf und übergibt den gelöschten Tisch
+        /// </summary>
         private void Delete()
         {
             _table.Delete();

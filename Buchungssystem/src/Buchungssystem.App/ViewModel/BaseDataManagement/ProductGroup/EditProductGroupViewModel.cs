@@ -8,14 +8,27 @@ using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 {
+    /// <summary>
+    /// ViewModel zum Erstellen oder Bearbeiten von Warengruppen
+    /// </summary>
     internal class EditProductGroupViewModel : EditViewModel
     { 
+        /// <summary>
+        /// Repräsentiert die Id der zu bearbeiteten Warengruppe
+        /// </summary>
         public int Id;
 
         private readonly Domain.Model.ProductGroup _productGroup;
 
         #region Constructor
 
+        /// <summary>
+        /// Konstruktor zum Editieren einer vorhandenen Warengruppe
+        /// </summary>
+        /// <param name="onSave">Methode, die beim Speichern der Warengruppe aufgerufen wird</param>
+        /// <param name="onDelete">Methode, die beim Löschen einer Warengruppe aufgerufen wird</param>
+        /// <param name="bookingSystemPersistence">Datenbankkontext</param>
+        /// <param name="productGroup">Warengruppe, welche bearbeitet werden soll</param>
         public EditProductGroupViewModel(Action<Domain.Model.ProductGroup> onSave,
             Action<Domain.Model.ProductGroup> onDelete, IPersistBookingSystemData bookingSystemPersistence,
             Domain.Model.ProductGroup productGroup)
@@ -44,6 +57,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             EditCommand = new RelayCommand(ToggleEdit);
         }
 
+        /// <summary>
+        /// Konstruktor zum Erstellen einer neuen Warengruppe
+        /// </summary>
+        /// <param name="onSave">Methode, die beim Speichern der Warengruppe aufgerufen wird</param>
+        /// <param name="bookingSystemPersistence">Datenbankkontext</param>
         public EditProductGroupViewModel(Action<Domain.Model.ProductGroup> onSave,
             IPersistBookingSystemData bookingSystemPersistence)
         {
@@ -71,7 +89,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         private ObservableCollection<ProductGroupViewModel> _productGroupViewModels;
 
         /// <summary>
-        /// Repräsentiert alle Produktgruppen die Existieren
+        /// Repräsentiert alle Produktgruppen, welche keine Waren als Kind haben
         /// </summary>
         public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels
         {
@@ -81,6 +99,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 
         private ProductGroupViewModel _selectedProductGroupViewModel;
 
+        /// <summary>
+        /// Repräsentiert die Ausgewählte Warengruppe, die Elterngruppe der zu bearbeiteten Warengruppe ist
+        /// </summary>
         public ProductGroupViewModel SelectedProductGroupViewModel
         {
             get => _selectedProductGroupViewModel;
@@ -89,6 +110,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 
         private bool _noParent;
 
+        /// <summary>
+        /// Zeigt an, ob die Warengruppe keine Elterngruppe hat
+        /// </summary>
         public bool NoParent
         {
             get => _noParent;
@@ -99,6 +123,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             }
         }
 
+        /// <summary>
+        /// Zeigt an, ob die Elterngruppe-Auswahl aktiv ist
+        /// Ist Aktiv, wenn die Ansicht die Bearbeitungsansicht ist und NoParent false ist
+        /// </summary>
         public bool EnableParentContext
         {
             get => Edit && !NoParent;
@@ -106,14 +134,12 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 
         #endregion
 
-        #region Commands
-
-
-
-        #endregion
-
         #region Actions
 
+        /// <summary>
+        /// Aktion zum Speichern einer Warengruppe
+        /// Ruft die im Kontrukor übergebene Methode onSave auf
+        /// </summary>
         private void Save()
         {
             ShowProgressbar = true;
@@ -151,6 +177,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             return Task.Run(() => productGroup.Persist());
         }
 
+        /// <summary>
+        /// Aktion zum Löschen einer Warengruppe
+        /// Ruft die im Kontruktor übergebene Methode onDelete auf
+        /// </summary>
         private void Delete()
         {
             _productGroup.Delete();
