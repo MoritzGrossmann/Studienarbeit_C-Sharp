@@ -19,8 +19,8 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Margin="0,0,40,0"
                 Command="{Binding Path=ReturnToParentCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome ArrowUp}"
@@ -45,7 +45,7 @@
                         </Grid.InputBindings>
                         <Border
                             Padding="{StaticResource PaddingListItem}"
-                            BorderBrush="{StaticResource LightGray}"
+                            BorderBrush="{StaticResource Grey}"
                             BorderThickness="0,0,0,1">
                             <Grid>
                                 <Grid.ColumnDefinitions>

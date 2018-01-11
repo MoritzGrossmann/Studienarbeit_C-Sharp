@@ -19,6 +19,8 @@ namespace Buchungssystem.App.ViewModel
 
         public MainViewModel(IPersistBookingSystemData bookingSystemDataPersistence)
         {
+            ShowFlyout = false;
+
             CurrentViewModel = new LoadingViewModel();
 
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
@@ -43,7 +45,7 @@ namespace Buchungssystem.App.ViewModel
         public bool ShowFlyout
         {
             get => _showFlyout;
-            set => SetProperty(ref _showFlyout, value, nameof(CurrentViewModel));
+            set => SetProperty(ref _showFlyout, value, nameof(ShowFlyout));
         }
 
         private BaseViewModel _currentViewModel;
@@ -70,6 +72,8 @@ namespace Buchungssystem.App.ViewModel
 
         private void ToBaseData()
         {
+            ShowFlyout = false;
+
             CurrentViewModel = new LoadingViewModel();
             TaskAwaiter<BaseDataManagementViewModel> awaiter = GetBaseDataManagementViewModel().GetAwaiter();
 
@@ -84,6 +88,8 @@ namespace Buchungssystem.App.ViewModel
 
         private void ToBooking()
         {
+            ShowFlyout = false;
+
             CurrentViewModel = new LoadingViewModel();
             TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
 

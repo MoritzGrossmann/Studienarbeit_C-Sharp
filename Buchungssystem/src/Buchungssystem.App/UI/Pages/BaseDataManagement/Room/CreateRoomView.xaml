@@ -63,23 +63,23 @@
             Grid.Column="0"
             Orientation="Horizontal">
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=EditCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Editieren" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=SaveCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
                 IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:InvertBoolConverter}}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Speichern" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=DeleteCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome TrashOutline}"
                 IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"
@@ -93,7 +93,7 @@
             Grid.ColumnSpan="2"
             Margin="5px"
             Padding="5px"
-            BorderBrush="#FF686868"
+            BorderBrush="{StaticResource LightGrey}"
             BorderThickness="1px">
             <Grid IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}">
                 <Grid.ColumnDefinitions>
@@ -118,8 +118,8 @@
                     Grid.Column="0"
                     Orientation="Horizontal">
                     <Button
-                        Width="40px"
-                        Height="40px"
+                        Width="{StaticResource WidthStandardCircleButton}"
+                        Height="{StaticResource HeightStandardCircleButton}"
                         Command="{Binding Path=AddTableCommand, Mode=OneWay}"
                         Content="{iconPacks:PackIconFontAwesome Plus}"
                         IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"
@@ -147,7 +147,7 @@
                                 </Grid.InputBindings>
                                 <Border
                                     Padding="{StaticResource PaddingListItem}"
-                                    BorderBrush="{StaticResource LightGray}"
+                                    BorderBrush="{StaticResource Grey}"
                                     BorderThickness="0,0,0,1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -173,7 +173,6 @@
                     Grid.Row="1"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    BorderBrush="#FF686868"
                     BorderThickness="1px"
                     Content="{Binding Path=EditTableViewModel, Mode=OneWay}" />
             </Grid>

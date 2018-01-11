@@ -26,8 +26,8 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Button
-                    Width="40px"
-                    Height="40px"
+                    Width="{StaticResource WidthStandardCircleButton}"
+                    Height="{StaticResource HeightStandardCircleButton}"
                     Command="{Binding Path=AddRoomCommand, Mode=OneWay}"
                     Content="{iconPacks:PackIconFontAwesome Plus}"
                     Style="{DynamicResource MetroCircleButtonStyle}" />
@@ -52,7 +52,7 @@
                             </Grid.InputBindings>
                             <Border
                                 Padding="{StaticResource PaddingListItem}"
-                                BorderBrush="{StaticResource LightGray}"
+                                BorderBrush="{StaticResource Grey}"
                                 BorderThickness="0,0,0,1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>

@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -86,29 +87,38 @@
             Grid.Column="0"
             Orientation="Horizontal">
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=EditCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Editieren" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=SaveCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
                 IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:InvertBoolConverter}}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Speichern" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=DeleteCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome TrashOutline}"
                 IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Löschen" />
         </StackPanel>
-
+        <StackPanel
+            Grid.Row="5"
+            Grid.Column="1"
+            Orientation="Horizontal">
+            <ProgressBar
+                Width="200px"
+                Height="20px"
+                IsIndeterminate="True"
+                Visibility="{Binding ShowProgressbar, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}" />
+        </StackPanel>
     </Grid>
 </UserControl>

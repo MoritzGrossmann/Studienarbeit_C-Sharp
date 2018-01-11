@@ -50,6 +50,7 @@
             Grid.Column="1"
             Width="200px"
             Margin="5"
+            HorizontalAlignment="Left"
             controls:TextBoxHelper.ClearTextButton="True"
             FontSize="18pt"
             IsEnabled="{Binding Path=Edit, Mode=OneWay}"
@@ -60,6 +61,7 @@
             Grid.Column="1"
             Width="200px"
             Margin="5"
+            HorizontalAlignment="Left"
             controls:TextBoxHelper.ClearTextButton="True"
             FontSize="18pt"
             IsEnabled="{Binding Path=Edit, Mode=OneWay}"
@@ -70,24 +72,24 @@
             Grid.Column="0"
             Orientation="Horizontal">
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=EditCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
                 IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Editieren" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=SaveCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
                 IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:InvertBoolConverter}}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Speichern" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=DeleteCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome TrashOutline}"
                 IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"

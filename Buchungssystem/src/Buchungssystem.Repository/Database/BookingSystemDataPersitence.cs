@@ -220,7 +220,7 @@ namespace Buchungssystem.Repository.Database
             if (dbroom == null) throw new ModelNotExistException($"Der Raum mit der Id {room.Id} ist nicht vorhanden");
             dbroom.Name = room.Name;
             context.SaveChanges();
-            return room;
+            return FromDbRoom(dbroom);
         }
 
         public void DeleteRoom(Room room)

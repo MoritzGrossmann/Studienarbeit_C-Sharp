@@ -13,9 +13,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="clr-namespace:Buchungssystem.App.UI.Pages"
     xmlns:roomView="clr-namespace:Buchungssystem.App.ViewModel.RoomView"
-    Title="MainWindow"
-    Width="525"
-    Height="350"
+    Title="Buchungssystem"
     MinWidth="800px"
     MinHeight="600px"
     dialog:DialogParticipation.Register="{Binding}"
@@ -40,16 +38,16 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout
-                x:Name="Flyout"
                 Width="300"
                 AutoCloseInterval="2"
                 Header="Ansicht ändern"
+                IsOpen="{Binding ShowFlyout, Mode=TwoWay}"
                 Position="Right">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button
-                            Width="40px"
-                            Height="40px"
+                            Width="{StaticResource WidthStandardCircleButton}"
+                            Height="{StaticResource HeightStandardCircleButton}"
                             Command="{Binding Path=ToBaseDataCommand, Mode=OneWay}"
                             Content="{iconPacks:PackIconFontAwesome Wrench}"
                             Style="{DynamicResource MetroCircleButtonStyle}"
@@ -62,8 +60,8 @@
 
                     <StackPanel Orientation="Horizontal">
                         <Button
-                            Width="40px"
-                            Height="40px"
+                            Width="{StaticResource WidthStandardCircleButton}"
+                            Height="{StaticResource HeightStandardCircleButton}"
                             Command="{Binding Path=ToBookingCommand, Mode=OneWay}"
                             Content="{iconPacks:PackIconFontAwesome ShoppingCart}"
                             Style="{DynamicResource MetroCircleButtonStyle}"
@@ -87,15 +85,13 @@
             <ContentControl Content="{Binding CurrentViewModel}" />
         </Border>
         <Border Grid.Column="1" Padding="{StaticResource MarginAllSides4}">
-            <ToggleButton
-                Width="40px"
-                Height="40px"
+            <Button
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 VerticalAlignment="Top"
-                Command="{Binding Path=ToggleFlyoutCommand, Mode=OneWay}"
+                Command="{Binding ToggleFlyoutCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome eye}"
-                IsChecked="{Binding ElementName=Flyout, Path=IsOpen}"
-                Style="{DynamicResource MetroCircleToggleButtonStyle}"
-                ToolTip="Ansicht ändern" />
+                Style="{DynamicResource MetroCircleButtonStyle}" />
         </Border>
     </Grid>
 </controls:MetroWindow>

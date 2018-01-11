@@ -66,15 +66,15 @@
                             <StackPanel Orientation="Horizontal" Visibility="{Binding Occupied, Converter={converter:BooleanToVisibilityConverter}}">
                                 <TextBlock
                                     FontStyle="Italic"
-                                    Foreground="{StaticResource LightGray}"
+                                    Foreground="{StaticResource Grey}"
                                     Text="Letzte Buchung vor " />
                                 <TextBlock
                                     FontStyle="Italic"
-                                    Foreground="{StaticResource LightGray}"
+                                    Foreground="{StaticResource Grey}"
                                     Text="{Binding Path=LastBookingTime, Mode=OneWay}" />
                                 <TextBlock
                                     FontStyle="Italic"
-                                    Foreground="{StaticResource LightGray}"
+                                    Foreground="{StaticResource Grey}"
                                     Text=" Minuten" />
                             </StackPanel>
                             <TextBlock FontSize="{StaticResource FontSizeLarge}" Text="{Binding Price, Converter={converter:PriceToStringConverter}}" />

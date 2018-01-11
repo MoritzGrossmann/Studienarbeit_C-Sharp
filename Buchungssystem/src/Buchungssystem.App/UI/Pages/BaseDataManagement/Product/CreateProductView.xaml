@@ -91,23 +91,23 @@
             Grid.Column="0"
             Orientation="Horizontal">
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=EditCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome PencilSquareOutline}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Editieren" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=SaveCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome FloppyOutline}"
                 IsEnabled="{Binding Path=HasErrors, Mode=OneWay, Converter={converter:InvertBoolConverter}}"
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Speichern" />
             <Button
-                Width="40px"
-                Height="40px"
+                Width="{StaticResource WidthStandardCircleButton}"
+                Height="{StaticResource HeightStandardCircleButton}"
                 Command="{Binding Path=DeleteCommand, Mode=OneWay}"
                 Content="{iconPacks:PackIconFontAwesome TrashOutline}"
                 IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"

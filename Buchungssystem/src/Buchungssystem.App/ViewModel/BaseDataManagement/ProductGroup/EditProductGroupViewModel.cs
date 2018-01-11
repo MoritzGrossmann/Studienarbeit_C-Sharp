@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 
@@ -93,6 +95,14 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             set => SetProperty(ref _noParent, value, nameof(NoParent));
         }
 
+        private bool _showProgressbar;
+
+        public bool ShowProgressbar
+        {
+            get => _showProgressbar;
+            set => SetProperty(ref _showProgressbar, value, nameof(ShowProgressbar));
+        }
+
         #endregion
 
         #region Commands
@@ -105,18 +115,39 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 
         private void Save()
         {
+            ShowProgressbar = true;
+
             var productGroup =
-                new Domain.Model.ProductGroup() {Id = Id, Name = Name, Persistence = BookingSystemPersistence};
+                new Domain.Model.ProductGroup() { Id = Id, Name = Name, Persistence = BookingSystemPersistence };
             productGroup.SetParent(SelectedProductGroupViewModel.ProductGroup ?? productGroup);
 
-            productGroup = productGroup.Persist();
+            TaskAwaiter<Domain.Model.ProductGroup> awaiter = SaveTask(productGroup).GetAwaiter();
 
-            if (NoParent)
-                productGroup.SetParent(productGroup);
+            awaiter.OnCompleted(() =>
+            {
+                var p = awaiter.GetResult();
+                if (NoParent)
+                {
+                    p.SetParent(p);
+                    TaskAwaiter<Domain.Model.ProductGroup> awaiter2 = SaveTask(p).GetAwaiter();
+                    awaiter2.OnCompleted(() =>
+                    {
+                        ShowProgressbar = false;
+                        _onSave?.Invoke(p);
+                    });
+                }
+                else
+                {
+                    ShowProgressbar = false;
+                    _onSave?.Invoke(p);
+                }
+            });
 
-            productGroup = productGroup.Persist();
+        }
 
-            _onSave?.Invoke(productGroup);
+        private Task<Domain.Model.ProductGroup> SaveTask(Domain.Model.ProductGroup productGroup)
+        {
+            return Task.Run(() => productGroup.Persist());
         }
 
         private void Delete()

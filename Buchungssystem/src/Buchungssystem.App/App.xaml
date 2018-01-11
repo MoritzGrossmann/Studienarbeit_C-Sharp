@@ -30,7 +30,11 @@
 
                     <Thickness x:Key="PaddingListItem">10,5,10,5</Thickness>
 
-                    <Brush x:Key="LightGray">LightSlateGray</Brush>
+                    <Brush x:Key="Grey">LightSlateGray</Brush>
+                    <Brush x:Key="LightGrey">LightGray</Brush>
+
+                    <system:Double x:Key="HeightStandardCircleButton">40</system:Double>
+                    <system:Double x:Key="WidthStandardCircleButton">40</system:Double>
 
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
