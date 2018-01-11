@@ -10,7 +10,7 @@ namespace Buchungssystem.App.Converter
     internal class IntToBoolConverter : BaseConverter, IValueConverter
     {
         /// <summary>
-        /// Konvertiert einen Int-Wert > 0 in True und einen Int-Wert <= 0 in False
+        /// Konvertiert einen Int-Wert > 0 in True und einen Int-Wert kleiner gleich 0 in False
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>

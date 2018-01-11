@@ -6,10 +6,16 @@ using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel.RoomView
 {
+    /// <summary>
+    /// Repräsentiert eine Liste von RoomViewModel
+    /// </summary>
     internal class RoomListViewModel : BaseViewModel
     {
         private RoomViewModel _selectedRoom;
 
+        /// <summary>
+        /// Repräsentiert das angewählte RoomViewModel
+        /// </summary>
         public RoomViewModel SelectedRoom
         {
             get => _selectedRoom;
@@ -18,6 +24,9 @@ namespace Buchungssystem.App.ViewModel.RoomView
 
         private ObservableCollection<RoomViewModel> _roomViewModels;
 
+        /// <summary>
+        /// List von RommViewModel aller existenten Räume
+        /// </summary>
         public ObservableCollection<RoomViewModel> RoomViewModels
         {
             get => _roomViewModels;
