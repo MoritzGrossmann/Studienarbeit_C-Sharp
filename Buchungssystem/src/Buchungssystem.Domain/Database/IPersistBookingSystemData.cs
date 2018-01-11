@@ -11,15 +11,9 @@ namespace Buchungssystem.Domain.Database
 
         void DeleteRoom(Room room);
 
-        List<Table> Tables();
-
-        List<Table> Tables(Room room);
-
         void DeleteTable(Table table);
 
         Table PersistTable(Table table);
-
-        List<ProductGroup> RootProductGroups();
 
         List<ProductGroup> ProductGroups();
 
@@ -40,8 +34,6 @@ namespace Buchungssystem.Domain.Database
         void Cancel(Booking booking);
 
         void Pay(Booking booking);
-
-        List<Booking> Bookings(Table table);
 
         void Occupy(Table table);
 
