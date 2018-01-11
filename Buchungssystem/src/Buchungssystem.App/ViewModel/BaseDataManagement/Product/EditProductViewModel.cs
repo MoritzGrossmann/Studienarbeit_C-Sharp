@@ -103,6 +103,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         private void Save()
         {
+            ShowProgressbar = true;
+
             try
             {
                 var product = new Domain.Model.Product()
@@ -114,12 +116,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 };
 
                 product.SetParent(ProductGroupViewModel.ProductGroup);
+
                 _onSave?.Invoke(product);
             }
             catch (ModelExistException)
             {
                 AddError(nameof(Name), $"Der Name {Name} wurde schon vergeben");
                 RaisePropertyChanged(nameof(HasErrors));
+            }
+            finally
+            {
+                ShowProgressbar = false;
             }
         }
 

@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
@@ -45,16 +47,28 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         {
 
             int oldId = product.Id;
-            var p = product.Persist();
 
-            if (p.Id != oldId)
+            TaskAwaiter<Domain.Model.Product> awaiter = SaveTask(product).GetAwaiter();
+
+            awaiter.OnCompleted(() =>
             {
-                ProductViewModels.Add(new ProductViewModel(p, Select));
-                ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
-            }
-            else
-                // ReSharper disable once PossibleNullReferenceException
-                ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = p;
+                var p = product.Persist();
+
+                if (p.Id != oldId)
+                {
+                    ProductViewModels.Add(new ProductViewModel(p, Select));
+                    ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
+                }
+                else
+                    // ReSharper disable once PossibleNullReferenceException
+                    ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = p;
+            });
+        }
+
+
+        private Task<Domain.Model.Product> SaveTask(Domain.Model.Product product)
+        {
+            return Task.Run(() => product.Persist());
         }
 
         private void Delete(Domain.Model.Product product)

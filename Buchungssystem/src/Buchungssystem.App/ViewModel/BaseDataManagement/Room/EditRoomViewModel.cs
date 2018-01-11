@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement.Table;
@@ -121,9 +123,19 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         {
             try
             {
-                var room = new Domain.Model.Room() {Id = Id, Name = Name, Persistence = BookingSystemPersistence }.Persist();
 
-                _onSave?.Invoke(room);
+                var room = new Domain.Model.Room() {Id = Id, Name = Name, Persistence = BookingSystemPersistence};
+
+                ShowProgressbar = true;
+
+                TaskAwaiter<Domain.Model.Room> awaiter = SaveTask(room).GetAwaiter();
+
+                awaiter.OnCompleted(() =>
+                {
+                    var r = awaiter.GetResult();
+                    ShowProgressbar = false;
+                    _onSave?.Invoke(r);
+                });
             }
             catch (ModelExistException)
             {
@@ -153,16 +165,26 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             table.Room = _room;
             table.Persistence = BookingSystemPersistence;
 
-            table = table.Persist();
-            
+            var table1 = table;
 
-            var tableViewModel = TableViewModels.FirstOrDefault(t => t.Table.Id == table.Id);
-            if (tableViewModel != null)
-                tableViewModel.Table = table;
-            else
-                TableViewModels.Add(new TableViewModel(table, SelectTable));
+            TaskAwaiter<Domain.Model.Table> awaiter = Task.Run(() => table1.Persist()).GetAwaiter();
 
-            EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, table);
+            awaiter.OnCompleted(() =>
+            {
+                var tab = awaiter.GetResult();
+                    var tableViewModel = TableViewModels.FirstOrDefault(t => t.Table.Id == tab.Id);
+                    if (tableViewModel != null)
+                        tableViewModel.Table = tab;
+                    else
+                        TableViewModels.Add(new TableViewModel(tab, SelectTable));
+
+                    EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, tab);
+                });    
+        }
+
+        private Task<Domain.Model.Room> SaveTask(Domain.Model.Room room)
+        {
+            return Task.Run(() => room.Persist());
         }
 
         private void DeleteTable(Domain.Model.Table table)

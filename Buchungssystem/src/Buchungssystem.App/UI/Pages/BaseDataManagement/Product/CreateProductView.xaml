@@ -114,5 +114,15 @@
                 Style="{DynamicResource MetroCircleButtonStyle}"
                 ToolTip="Löschen" />
         </StackPanel>
+        <StackPanel
+            Grid.Row="5"
+            Grid.Column="1"
+            Orientation="Horizontal">
+            <ProgressBar
+                Width="200px"
+                Height="20px"
+                IsIndeterminate="True"
+                Visibility="{Binding ShowProgressbar, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}" />
+        </StackPanel>
     </Grid>
 </UserControl>

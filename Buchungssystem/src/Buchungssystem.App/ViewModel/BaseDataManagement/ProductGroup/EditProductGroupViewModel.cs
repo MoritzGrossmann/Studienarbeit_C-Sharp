@@ -92,15 +92,16 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         public bool NoParent
         {
             get => _noParent;
-            set => SetProperty(ref _noParent, value, nameof(NoParent));
+            set
+            {
+                SetProperty(ref _noParent, value, nameof(NoParent));
+                RaisePropertyChanged(nameof(EnableParentContext));
+            }
         }
 
-        private bool _showProgressbar;
-
-        public bool ShowProgressbar
+        public bool EnableParentContext
         {
-            get => _showProgressbar;
-            set => SetProperty(ref _showProgressbar, value, nameof(ShowProgressbar));
+            get => Edit && !NoParent;
         }
 
         #endregion

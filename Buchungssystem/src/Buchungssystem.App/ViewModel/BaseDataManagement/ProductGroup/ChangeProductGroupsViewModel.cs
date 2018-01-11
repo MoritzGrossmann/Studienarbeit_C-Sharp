@@ -19,6 +19,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.ProductGroups().OrderBy(p => p.Name).Select(p => new ProductGroupViewModel(p, Select)));
 
             ActualProductGroupViewModel = ProductGroupViewModels.Any()
+                // ReSharper disable once PossibleNullReferenceException : KAnn nicht null sein, da ausgeführt wird wenn ProductGroupViewModels.Any()
                 ? new EditProductGroupViewModel(Save,Delete, _bookingSystemPersistence, ProductGroupViewModels.FirstOrDefault().ProductGroup)
                 : new EditProductGroupViewModel(Save, _bookingSystemPersistence);
 

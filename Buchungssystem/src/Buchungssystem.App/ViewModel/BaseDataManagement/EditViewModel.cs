@@ -65,6 +65,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement
             set => SetProperty(ref _edit, value, nameof(Edit));
         }
 
+        private bool _showProgressbar;
+
+        /// <summary>
+        /// Zeigt an, ob die Progressbar sichtbar ist
+        /// </summary>
+        public bool ShowProgressbar
+        {
+            get => _showProgressbar;
+            set => SetProperty(ref _showProgressbar, value, nameof(ShowProgressbar));
+        }
+
         #endregion
 
         #region Commands

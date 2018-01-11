@@ -21,8 +21,7 @@ namespace Buchungssystem.Repository.Database
                 if (productGroup.Id > 0)
                     return UpdateProductGroup(productGroup, context);
 
-                if (context.ProductGroups.Any(p=> p.Name == productGroup.Name && p.Deleted == false))
-                    throw new ModelExistException();
+                //if (context.ProductGroups.Any(p=> p.Name == productGroup.Name && p.Deleted == false)) throw new ModelExistException();
 
                 var dbProductsGroup = FromProductGroup(productGroup);
                 context.ProductGroups.Add(dbProductsGroup);
@@ -123,7 +122,7 @@ namespace Buchungssystem.Repository.Database
             {
                 if (context.Products.Any(p => p.DbProductId == product.Id)) return UpdateProduct(product, context);
 
-                if (context.Products.Any(p => p.Name.Equals(product.Name) && p.Deleted == false)) throw new ModelExistException($"Ein Product mit dem Name {product.Name} exisitert bereits!");
+                //if (context.Products.Any(p => p.Name.Equals(product.Name) && p.Deleted == false)) throw new ModelExistException($"Ein Product mit dem Name {product.Name} exisitert bereits!");
 
                 var dbProduct = FromProduct(product);
                 context.Products.Add(dbProduct);
@@ -204,7 +203,7 @@ namespace Buchungssystem.Repository.Database
             {
                 if (context.Rooms.Any(r => r.DbRoomId == room.Id)) return UpdateRoom(room, context);
 
-                if (context.Rooms.Any(r => r.Name.Equals(room.Name) && r.Deleted == false)) throw new ModelExistException($"Ein Raum mit dem Name {room.Name} exisitert bereits!");
+                //if (context.Rooms.Any(r => r.Name.Equals(room.Name) && r.Deleted == false)) throw new ModelExistException($"Ein Raum mit dem Name {room.Name} exisitert bereits!");
 
                 var dbRoom = FromRoom(room);
                 context.Rooms.Add(dbRoom);

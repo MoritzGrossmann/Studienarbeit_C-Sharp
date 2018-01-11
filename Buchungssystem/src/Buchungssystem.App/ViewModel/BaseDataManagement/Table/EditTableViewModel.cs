@@ -90,6 +90,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 
         private void Save()
         {
+            ShowProgressbar = true;
             var table = new Domain.Model.Table() {Id = Id, Name = Name, Places = Places, Occupied = false};
             _onSave?.Invoke(table);
         }
