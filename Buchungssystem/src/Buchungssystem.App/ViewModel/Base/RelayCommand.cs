@@ -3,6 +3,11 @@ using System.Windows.Input;
 
 namespace Buchungssystem.App.ViewModel.Base
 {
+
+    /// <summary>
+    /// Operklasse für alle Commands
+    /// Kein eigener Code !
+    /// </summary>
     class RelayCommand : ICommand
     {
 

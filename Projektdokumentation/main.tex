@@ -1,4 +1,4 @@
-\input{formatvorgaben.tex}
+\input{formatvorgaben}
 
 \begin{document}
 	
@@ -7,22 +7,16 @@
 	\maketitle
 	\pagenumbering{gobble}
 	
-	\section{Idee}
+	\include{Einfuehrung/einfuehrung}
 	
-	Idee dieser Studienarbeit ist die Implementierung einer Buchungssoftware für Gastronomen. Neben einem ansprechendem Design müssen viele Funktionalitäten gegeben sein. Das System ist in 2 Teile geteilt. Zum einen die Buchungsverwaltung und zum anderen die Stammdatenverwaltung. 
+	\include{Aufgabenstellung/aufgabenstellung}
 	
-	In der Stammdatenverwaltung kann der Gastronom seine Räumlichkeiten (z.B. wenn eine Gaststube sowie ein Saal vorhanden ist), sowie die Tische in diesen mit Sitzplatzanzahl, einpflegen. Des weiteren müssen Waren und Warengruppen definiert werden, welche später gebucht werden sollen. 
+	\include{Implementierung/implementierung}
 	
-	Die Buchungsverwaltung ist das Herzstück der Applikation. Die Hauptseite dieser soll eine Übersicht über die Tische in einem Raum, mit den Buchung auf diesen, sein. Durch Klick auf einen Tisch öffnet sich das Buchungsfenster und der Gastronom kann Waren auf diesen buchen. In dieser Übersicht werden diese Buchungen auch als Bezahlt oder Storniert markiert.
+	\include{Benutzerhandbuch/benutzerhandbuch}
 	
-	Auf der Hauptseite der Buchungsverwaltung soll der Gastronom einen Überblick über den aktuellen Status seiner Einrichtung bekommen. Zum Beispiel soll er sofort sehen, wie viele Tische und Plätze noch frei sind. Auch soll er sehen, welcher Tisch schon wie lange besetzt ist. Diese Features sind gerade in stark frequentierten Einrichtungen sehr hilfreich, da so eine gute Auskunft bei Reservierungsanfragen abgegeben werden kann. Zu jedem Tisch wird außerdem der Aktuelle Geldbetrag, welcher auf diesen gebucht ist, angezeigt. 
+	\include{Diskussion/diskussion}
 	
-	Es soll möglich sein, einen Tagesabschluss zu machen, wo man alle Buchungen und den Umsatz des Tages aufgelistet bekommt. 
-	
-	Die Applikation soll für für ein Terminal mit Touch-Bedienung optimiert sein. Es soll eine Flache unkomplizierte Oberfläche erhalten.
-	
-	\section{Experimentelle Features}
-	
-	Neben der eigentlichen WPF-Applikation soll ein kleiner Webserver laufen. Über diesen kann man Buchungen über einen REST-Service vornehmen. Dies ermöglicht es, dass ein Kellner Buchungen am Gast über, zum Beispiel, eine Android-App erledigen kann. 
+	\include{Anhang/anhang}
 	
 \end{document}
