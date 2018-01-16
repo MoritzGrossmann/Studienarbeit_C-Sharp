@@ -33,6 +33,10 @@ namespace Buchungssystem.App.ViewModel.RoomView
             set => SetProperty(ref _roomViewModels, value, nameof(RoomViewModels));
         }
 
+        /// <summary>
+        /// Standardkonstruktor
+        /// </summary>
+        /// <param name="rooms">Collection der Räume, die im RoomListViewModel auftauchen</param>
         public RoomListViewModel(ICollection<Room> rooms) 
         {
            RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r)));

@@ -5,14 +5,22 @@ using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel
 {
+    /// <summary>
+    /// Repräsentiert eine Ware als ViewModel
+    /// </summary>
     internal class ProductViewModel : BaseViewModel
     {
         #region Contructor
 
-        public ProductViewModel(Product product, Action<Product> onProductSelect)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="product">Ware, welche gekapselt werden soll</param>
+        /// <param name="onSelect">Methode, die aufgerufen wird, wenn eine Ware ausgewählt wurde</param>
+        public ProductViewModel(Product product, Action<Product> onSelect)
         {
             _product = product;
-            SelectCommand = new RelayCommand(() => onProductSelect?.Invoke(_product));
+            SelectCommand = new RelayCommand(() => onSelect?.Invoke(_product));
         }
 
         #endregion
@@ -21,6 +29,9 @@ namespace Buchungssystem.App.ViewModel
 
         private Product _product;
 
+        /// <summary>
+        /// Ware, welche gekapselt ist
+        /// </summary>
         public Product Product
         {
             get => _product;
@@ -31,6 +42,9 @@ namespace Buchungssystem.App.ViewModel
 
         #region Commands
 
+        /// <summary>
+        /// Kommando zum Auswählen einer Ware
+        /// </summary>
         public ICommand SelectCommand { get; }
 
         #endregion
