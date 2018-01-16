@@ -4,6 +4,9 @@ using Buchungssystem.Domain.Database;
 
 namespace Buchungssystem.Domain.Model
 {
+    /// <summary>
+    /// Abstrakte Oberklasse für alle Models in diesem System
+    /// </summary>
     public abstract class BookingSystemModel : INotifyPropertyChanged
     {
         public IPersistBookingSystemData Persistence { get; set; }

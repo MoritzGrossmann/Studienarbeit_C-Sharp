@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Buchungssystem.Repository.Model
 {
+    /// <summary>
+    /// Datenbankrepräsentation einer Ware
+    /// </summary>
     public class DbProduct
     {
         // ReSharper disable once UnassignedGetOnlyAutoProperty : Id wird von Datenbank inititalisiert

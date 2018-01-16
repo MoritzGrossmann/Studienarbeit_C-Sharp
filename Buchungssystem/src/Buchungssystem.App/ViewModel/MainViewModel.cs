@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
@@ -6,6 +7,7 @@ using Buchungssystem.App.ViewModel.BaseDataManagement;
 using Buchungssystem.App.ViewModel.Loading;
 using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
+using Buchungssystem.Domain.Model;
 
 
 namespace Buchungssystem.App.ViewModel
@@ -137,6 +139,7 @@ namespace Buchungssystem.App.ViewModel
         {
             ShowFlyout = !ShowFlyout;
         }
+
         #endregion
 
     }

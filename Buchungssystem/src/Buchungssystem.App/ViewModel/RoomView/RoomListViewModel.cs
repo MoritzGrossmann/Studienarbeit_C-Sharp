@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel.RoomView
@@ -37,7 +39,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
         /// Standardkonstruktor
         /// </summary>
         /// <param name="rooms">Collection der Räume, die im RoomListViewModel auftauchen</param>
-        public RoomListViewModel(ICollection<Room> rooms) 
+        public RoomListViewModel( ICollection<Room> rooms)
         {
            RoomViewModels = new ObservableCollection<RoomViewModel>(rooms.Select(r => new RoomViewModel(r)));
         }
