@@ -113,6 +113,7 @@
     <Compile Include="Converter\InvertBoolConverter.cs" />
     <Compile Include="Converter\OccupiedToBrushConverter.cs" />
     <Compile Include="Converter\PriceToStringConverter.cs" />
+    <Compile Include="Converter\StatusToStringConverter.cs" />
     <Compile Include="UI\Pages\BaseDataManagement\BaseDataManagementView.xaml.cs">
       <DependentUpon>BaseDataManagementView.xaml</DependentUpon>
     </Compile>
@@ -155,6 +156,9 @@
     <Compile Include="UI\Pages\Booking\TableListView.xaml.cs">
       <DependentUpon>TableListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\DailyOverview\DailyOverview.xaml.cs">
+      <DependentUpon>DailyOverview.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\LoadingScreen.xaml.cs">
       <DependentUpon>LoadingScreen.xaml</DependentUpon>
     </Compile>
@@ -169,6 +173,7 @@
     <Compile Include="ViewModel\BaseDataManagement\Table\EditTableViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\Room\RoomViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\Table\TableViewModel.cs" />
+    <Compile Include="ViewModel\Bookings\BookingsFromDayViewModel.cs" />
     <Compile Include="ViewModel\Loading\LoadingViewModel.cs" />
     <Compile Include="ViewModel\RoomView\TableListViewModel.cs" />
     <Compile Include="ViewModel\TableView\BookingViewModel.cs" />
@@ -219,6 +224,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Pages\Booking\ProductListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\DailyOverview\DailyOverview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -277,6 +286,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

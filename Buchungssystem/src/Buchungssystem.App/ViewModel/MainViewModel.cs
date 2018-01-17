@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement;
+using Buchungssystem.App.ViewModel.Bookings;
 using Buchungssystem.App.ViewModel.Loading;
 using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
-using Buchungssystem.Domain.Model;
 
 
 namespace Buchungssystem.App.ViewModel
@@ -38,6 +37,8 @@ namespace Buchungssystem.App.ViewModel
             ToggleFlyoutCommand = new RelayCommand(ToggleFlyout);
 
             ToBaseDataCommand = new RelayCommand(ToBaseData);
+
+            ToOverviewCommand = new RelayCommand(ToOverview);
 
             TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
 
@@ -89,6 +90,11 @@ namespace Buchungssystem.App.ViewModel
         /// </summary>
         public ICommand ToggleFlyoutCommand { get; }
 
+        /// <summary>
+        /// Kommando, um die Tagesübersicht anzuzeigen
+        /// </summary>
+        public ICommand ToOverviewCommand { get; }
+
         #endregion
 
         #region Actions
@@ -115,7 +121,7 @@ namespace Buchungssystem.App.ViewModel
 
         /// <summary>
         /// Setzt ShowFlyout auf False
-        /// Setzut das CurrentViewModel auf ein neues RoomListViewModel
+        /// Setzt das CurrentViewModel auf ein neues RoomListViewModel
         /// </summary>
         private void ToBooking()
         {
@@ -125,6 +131,16 @@ namespace Buchungssystem.App.ViewModel
             TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
 
             awaiter.OnCompleted(() => CurrentViewModel = awaiter.GetResult());
+        }
+
+        /// <summary>
+        /// Setzt ShowFlyout auf False
+        /// Setzt das CurrentViewModel auf ein neues BookingsFromDayViewModel
+        /// </summary>
+        private void ToOverview()
+        {
+            ShowFlyout = false;
+            CurrentViewModel = new BookingsFromDayViewModel(_bookingSystemDataPersistence);
         }
 
         private Task<RoomListViewModel> GetBookingViewModel()

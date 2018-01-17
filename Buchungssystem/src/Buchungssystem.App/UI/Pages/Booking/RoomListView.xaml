@@ -23,10 +23,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <TabControl
-            IsEnabled="{Binding Path=CanStartStage, Mode=OneWay, Converter={converter:InvertBoolConverter}}"
-            ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}"
-            SelectedIndex="0">
+        <TabControl ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}" SelectedIndex="0">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="roomView:RoomViewModel">
                     <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />

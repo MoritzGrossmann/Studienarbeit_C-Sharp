@@ -348,6 +348,15 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
+        public List<Booking> Bookings(DateTime date)
+        {
+            using (var context = new BookingsystemEntities())
+            {
+                var bookings = context.Bookings.Where(b => b.Created.Value.Day == date.Day && b.Created.Value.Month == date.Month && b.Created.Value.Year == date.Year).AsEnumerable().Select(FromDbBooking).ToList();
+                return bookings;
+            }
+        }
+
         #endregion
 
         #region Converter

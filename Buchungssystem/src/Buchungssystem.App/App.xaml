@@ -2,6 +2,7 @@
     x:Class="WpfApplication.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     StartupUri="UI/Windows/MainWindow.xaml">
     <Application.Resources>
@@ -35,6 +36,28 @@
 
                     <system:Double x:Key="HeightStandardCircleButton">40</system:Double>
                     <system:Double x:Key="WidthStandardCircleButton">40</system:Double>
+
+                    <DataTemplate x:Key="IconButton" DataType="{x:Type Button}">
+                        <Grid Height="48px">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <iconPacks:PackIconFontAwesome
+                                Grid.Column="0"
+                                Width="20px"
+                                Height="20px"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Kind="{Binding Glyph}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Foreground="White"
+                                Text="{Binding Label}" />
+                        </Grid>
+                    </DataTemplate>
 
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

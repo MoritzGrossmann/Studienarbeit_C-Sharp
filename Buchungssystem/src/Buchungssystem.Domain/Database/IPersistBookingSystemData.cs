@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.Domain.Database
@@ -90,6 +91,14 @@ namespace Buchungssystem.Domain.Database
         /// <param name="booking">Buchung, welche gespeichert werden soll</param>
         /// <returns>Buchung mit Id</returns>
         Booking Book(Booking booking);
+
+
+        /// <summary>
+        /// Gibt alle Buchungen eines Tages aus
+        /// </summary>
+        /// <param name="date">Tag der Buchungen</param>
+        /// <returns></returns>
+        List<Booking> Bookings(DateTime date);
 
         /// <summary>
         /// Setzt den Status einer Buchung in der Datenbank auf Stoerniert

@@ -16,7 +16,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// <summary>
         /// Standardkonstruktor
         /// </summary>
-        /// <param name="bookings">Buchungen, welche im BookingListViewModel angezeogt werden soll</param>
+        /// <param name="bookings">Buchungen, welche im BookingListViewModel angezeigt werden soll</param>
         /// <param name="onBookingSelect">Methode, die aufgerufen wird, wenn eine Buchung ausgewählt wurde</param>
         public BookingListViewModel(ICollection<Booking> bookings, Action<BookingViewModel> onBookingSelect)
         {

@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
+using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.Converter
 {
     /// <summary>
-    /// Converter zum Konvertieren eines Decimal-Wertes in einen Währungsstring
+    /// Converter zum Konvertieren eines BookingStatus-Wertes in einen String
     /// </summary>
-    internal class PriceToStringConverter : BaseConverter, IValueConverter
+    internal class StatusToStringConverter : BaseConverter, IValueConverter
     {
         /// <summary>
-        /// Konvertiert ein Decimal-Wert in einen Währungsstring des jeweiligen Landes
-        /// Z.B. 2,50 => 2,50€ in Euro-Region
+        /// Converter zum Konvertieren eines BookingStatus-Wertes in einen String
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>
@@ -22,15 +26,26 @@ namespace Buchungssystem.App.Converter
         {
             if (value != null)
             {
-                var price = (decimal) value;
-                return
-                    $"{decimal.Round(price, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)}{culture.NumberFormat.CurrencySymbol}";
+                var val = (BookingStatus)value;
+                if (val == BookingStatus.Paid)
+                {
+                    return "Bezahlt";
+                }
+                if (val == BookingStatus.Cancled)
+                {
+                    return "Storniert";
+                }
+                else
+                {
+                    return "Offen";
+                }
             }
-            return $"{decimal.Round(0, culture.NumberFormat.CurrencyDecimalDigits, MidpointRounding.AwayFromZero)}{culture.NumberFormat.CurrencySymbol}";
+
+            return "unbekannter Status";
         }
 
         /// <summary>
-        /// Konvertierung von String in Decimal wird nicht Unterstützt
+        /// Konvertierung von String in Status wird nicht Unterstützt
         /// Wirft NotSupportedException
         /// </summary>
         /// <param name="value"></param>

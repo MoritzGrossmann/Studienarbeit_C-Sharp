@@ -5,8 +5,10 @@
     xmlns:baseDataManagement="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement"
     xmlns:baseDataManagementView="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement"
     xmlns:booking="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
+    xmlns:bookings="clr-namespace:Buchungssystem.App.ViewModel.Bookings"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dailyOverview="clr-namespace:Buchungssystem.App.UI.Pages.DailyOverview"
     xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:loading="clr-namespace:Buchungssystem.App.ViewModel.Loading"
@@ -21,9 +23,15 @@
     WindowState="Maximized"
     mc:Ignorable="d">
 
+
+
     <Window.Resources>
         <DataTemplate DataType="{x:Type roomView:RoomListViewModel}">
             <booking:RoomListView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type bookings:BookingsFromDayViewModel}">
+            <dailyOverview:DailyOverview />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type baseDataManagement:BaseDataManagementViewModel}">
@@ -33,66 +41,71 @@
         <DataTemplate DataType="{x:Type loading:LoadingViewModel}">
             <pages:LoadingScreen />
         </DataTemplate>
+
+        <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuGlyphItem}">
+            <Grid Height="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <iconPacks:PackIconFontAwesome
+                    Grid.Column="0"
+                    Width="20px"
+                    Height="20px"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Kind="{Binding Glyph}" />
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Foreground="White"
+                    Text="{Binding Label}" />
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
 
-    <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl>
-            <controls:Flyout
-                Width="300"
-                AutoCloseInterval="2"
-                Header="Ansicht ändern"
-                IsOpen="{Binding ShowFlyout, Mode=TwoWay}"
-                Position="Right">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button
-                            Width="{StaticResource WidthStandardCircleButton}"
-                            Height="{StaticResource HeightStandardCircleButton}"
-                            Command="{Binding Path=ToBaseDataCommand, Mode=OneWay}"
-                            Content="{iconPacks:PackIconFontAwesome Wrench}"
-                            Style="{DynamicResource MetroCircleButtonStyle}"
-                            ToolTip="Stammdatenverwaltung" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{StaticResource FontSizeLarge}"
-                            Text="Stammdatenverwaltung" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Button
-                            Width="{StaticResource WidthStandardCircleButton}"
-                            Height="{StaticResource HeightStandardCircleButton}"
-                            Command="{Binding Path=ToBookingCommand, Mode=OneWay}"
-                            Content="{iconPacks:PackIconFontAwesome ShoppingCart}"
-                            Style="{DynamicResource MetroCircleButtonStyle}"
-                            ToolTip="Buchungsansicht" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{StaticResource FontSizeLarge}"
-                            Text="Buchungsansicht" />
-                    </StackPanel>
-                </StackPanel>
-            </controls:Flyout>
-        </controls:FlyoutsControl>
-    </controls:MetroWindow.Flyouts>
-
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Padding="{StaticResource MarginAllSides4}">
-            <ContentControl Content="{Binding CurrentViewModel}" />
-        </Border>
-        <Border Grid.Column="1" Padding="{StaticResource MarginAllSides4}">
-            <Button
-                Width="{StaticResource WidthStandardCircleButton}"
-                Height="{StaticResource HeightStandardCircleButton}"
-                VerticalAlignment="Top"
-                Command="{Binding ToggleFlyoutCommand, Mode=OneWay}"
-                Content="{iconPacks:PackIconFontAwesome eye}"
-                Style="{DynamicResource MetroCircleButtonStyle}" />
-        </Border>
+        <controls:HamburgerMenu
+            DisplayMode="CompactInline"
+            IsPaneOpen="{Binding Mode=TwoWay, Path=ShowFlyout}"
+            ItemTemplate="{StaticResource MenuItemTemplate}"
+            OptionsItemTemplate="{StaticResource MenuItemTemplate}">
+
+            <controls:HamburgerMenu.HamburgerMenuHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="White"
+                        Text="Module" />
+                </DataTemplate>
+            </controls:HamburgerMenu.HamburgerMenuHeaderTemplate>
+
+            <controls:HamburgerMenu.ItemsSource>
+                <controls:HamburgerMenuItemCollection>
+                    <controls:HamburgerMenuGlyphItem
+                        Command="{Binding Path=ToBaseDataCommand}"
+                        Glyph="Wrench"
+                        Label="Stammdatenverwaltung" />
+                    <controls:HamburgerMenuGlyphItem
+                        Command="{Binding Path=ToBookingCommand}"
+                        Glyph="ShoppingCart"
+                        Label="Buchungsverwaltung" />
+                    <controls:HamburgerMenuGlyphItem
+                        Command="{Binding Path=ToOverviewCommand}"
+                        Glyph="List"
+                        Label="Tagesübersicht" />
+                </controls:HamburgerMenuItemCollection>
+            </controls:HamburgerMenu.ItemsSource>
+
+            <controls:HamburgerMenu.Content>
+                <Border Padding="{StaticResource MarginAllSides4}">
+                    <ContentControl Content="{Binding CurrentViewModel}" />
+                </Border>
+            </controls:HamburgerMenu.Content>
+        </controls:HamburgerMenu>
     </Grid>
 </controls:MetroWindow>
 

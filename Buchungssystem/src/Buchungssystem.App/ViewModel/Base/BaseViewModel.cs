@@ -30,7 +30,7 @@ namespace Buchungssystem.App.ViewModel.Base
             }
         }
 
-    #endregion
+        #endregion
 
         #region Notify data error
 
