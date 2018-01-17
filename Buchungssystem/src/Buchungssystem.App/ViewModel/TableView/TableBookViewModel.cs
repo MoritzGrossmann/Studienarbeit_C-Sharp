@@ -8,13 +8,18 @@ using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
 {
-
+    /// <summary>
+    /// ViewModel, welches für das Buchen von Waren auf Tische dient
+    /// </summary>
     internal class TableBookViewModel : BaseViewModel
     {
         #region Properties
 
         private Table _table;
 
+        /// <summary>
+        /// Tisch, auf den Waren gebucht werden sollen
+        /// </summary>
         public Table Table
         {
             get => _table;
@@ -23,6 +28,9 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private BaseViewModel _sidebarViewModel;
 
+        /// <summary>
+        /// View, welche an der Seite angezeigt wird. zum Beispiel ein ProductrGroup- oder ProductListViewModel
+        /// </summary>
         public BaseViewModel SidebarViewModel
         {
             get => _sidebarViewModel;
@@ -35,6 +43,9 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private bool _showSidebar;
 
+        /// <summary>
+        /// Zeigt an, ob diue Sidebar angezeigt wird
+        /// </summary>
         public bool SidebarIsShown
         {
             get { return _showSidebar; }
@@ -50,6 +61,9 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private string _sidebarHeaderText;
 
+        /// <summary>
+        /// Headertext der Sidebar
+        /// </summary>
         public string SidebarHeaderText
         {
             get { return _sidebarHeaderText; }
@@ -58,6 +72,9 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private BookingListViewModel _openBookings;
 
+        /// <summary>
+        /// Liste der Offenen Buchungen auf einem Tisch
+        /// </summary>
         public BookingListViewModel OpenBookings
         {
             get => _openBookings;
@@ -66,22 +83,36 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         private BookingListViewModel _selectedBookings;
 
+        /// <summary>
+        /// Liste der Buchungen, welche zum Bezahlen oder Stornieren angewählt wurden
+        /// </summary>
         public BookingListViewModel SelectedBookings
         {
             get => _selectedBookings;
             set => _selectedBookings = value;
         }
 
+        /// <summary>
+        /// Zeigt an, ob Buchungen Bezahlt oder Stoerniert werden können.
+        /// Dies ist der Fall, falls die Liste der Buchungen in den SelectedBookings nicht leer ist
+        /// </summary>
         public bool CanFinishBookings => SelectedBookings.Any();
 
         private ProductListViewModel _selectedProducts;
 
+        /// <summary>
+        /// Waren, welche zum Buchunen auf einen Tisch ausgewählt wurden
+        /// </summary>
         public ProductListViewModel SelectedProducts
         {
             get => _selectedProducts;
             set => _selectedProducts = value;
         }
 
+        /// <summary>
+        /// Zeigt an, ob Waren auf den Tisch gebucht werden können.
+        /// Dies ist der Fall wenn angewählte Waren existieren
+        /// </summary>
         public bool CanBookProducts => SelectedProducts.Any();
 
 
@@ -91,6 +122,12 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Constructors
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table">Tisch, auf den Waren gebucht werden sollen</param>
+        /// <param name="productGroups">alle Wurzel-Warengruppen</param>
+        /// <param name="onReturn">Methode, die ausgeführt wird, wenn man zur Raumansicht zurückkehrten will</param>
         public TableBookViewModel(Table table, ICollection<ProductGroup> productGroups, Action onReturn)
         {
             Table = table;
@@ -111,20 +148,39 @@ namespace Buchungssystem.App.ViewModel.TableView
 
         #region Commands
 
+        /// <summary>
+        /// Kommando, um zur Raumansiocht zurückzukehren
+        /// </summary>
         public ICommand ToTableListCommand { get; }
 
+        /// <summary>
+        /// Kommando zum Bezahlen der ausgewählten Buchungen
+        /// </summary>
         public ICommand PayCommand { get; }
 
+        /// <summary>
+        /// Kommando zum Stornieren der Ausgewählten Buchungen
+        /// </summary>
         public ICommand CancelCommand { get; }
 
+        /// <summary>
+        /// Kommando zum Verstecken und Anzeigen des SidebarViewModel
+        /// </summary>
         public ICommand ToogleSidebarCommand { get; }
 
-        public ICommand BookProductsCommand { get; set; }
+        /// <summary>
+        /// Kommando zum Buchen der ausgewählten Waren
+        /// </summary>
+        public ICommand BookProductsCommand { get; }
 
         #endregion
 
         #region Actions
 
+        /// <summary>
+        /// Im SidebarViewModel werden alle Kind-Warengruppen, oder wenn keine Existieren alle Kind-Waren, der Übergebenen Warengruppe angezeigt
+        /// </summary>
+        /// <param name="productGroup">Warengruppe, welche angezeigt werden soll</param>
         private void OnProductGroupSelect(ProductGroup productGroup)
         {
             var productGroups = productGroup.ChildNodes().Where(c => c.GetType() == typeof(ProductGroup)).AsEnumerable().Select(pg => (ProductGroup)pg).ToList();
@@ -143,6 +199,10 @@ namespace Buchungssystem.App.ViewModel.TableView
             SidebarHeaderText = productGroup.Name;
         }
 
+        /// <summary>
+        /// Entfernt das ProductViewModel der Ware aus den Angewählten Waren
+        /// </summary>
+        /// <param name="product">Ware, welche entfernt werden soll</param>
         private void OnProductDeSelect(Product product)
         {
             var productViewModel = SelectedProducts.ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
@@ -151,12 +211,20 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(CanBookProducts));
         }
 
+        /// <summary>
+        /// Fügt den Angewählten Waren ein ProductViewModel mit der übergebenen Ware hinzu
+        /// </summary>
+        /// <param name="product">Ware, welche hinzugefügt werden soll</param>
         private void OnProductSelect(Product product)
         {
             SelectedProducts.ProductViewModels.Add(new ProductViewModel(product, OnProductDeSelect));
             RaisePropertyChanged(nameof(CanBookProducts));
         }
 
+        /// <summary>
+        /// Verschiebt die Übergebene Buchung von den Offenen Buchungen in die Angewählten Buchungen und umgekehrt
+        /// </summary>
+        /// <param name="bookingViewModel"></param>
         private void SelectBooking(BookingViewModel bookingViewModel)
         {
             if (OpenBookings.BookingViewModels.Contains(bookingViewModel))
@@ -177,6 +245,9 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
+        /// <summary>
+        /// Alle angewählten Buchungen werden als Bezahlt markiert und aus den Angewählten Buchungen gelöscht
+        /// </summary>
         private void PayBookings()
         {
             SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Pay());
@@ -184,6 +255,9 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
+        /// <summary>
+        /// Alle angewählten Buchungen werden als Stoerniert markiert und aus den Angewählten Buchungen gelöscht
+        /// </summary>
         private void CancelBookings()
         {
             SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Cancel());
@@ -191,6 +265,10 @@ namespace Buchungssystem.App.ViewModel.TableView
             RaisePropertyChanged(nameof(CanFinishBookings));
         }
 
+        /// <summary>
+        /// Im SidebarViewModel wird das ProductGroupListViewModel des Parents der übergebenen Warengruppe angezeogt
+        /// </summary>
+        /// <param name="productGroup"></param>
         private void ShowParent(ProductGroup productGroup)
         {
             try
@@ -220,6 +298,9 @@ namespace Buchungssystem.App.ViewModel.TableView
             }
         }
 
+        /// <summary>
+        /// Von jeder angewählten Ware wird eine Buchung erstellt und den Offenen Buchungen hinzugefügt
+        /// </summary>
         private void BookProducts()
         {
             foreach (var productViewModel in SelectedProducts.ProductViewModels)

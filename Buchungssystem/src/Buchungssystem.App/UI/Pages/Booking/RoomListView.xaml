@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:booking="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:roomView="clr-namespace:Buchungssystem.App.ViewModel.RoomView"
@@ -22,7 +23,10 @@
     </UserControl.Resources>
 
     <Grid>
-        <TabControl ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}" SelectedIndex="0">
+        <TabControl
+            IsEnabled="{Binding Path=CanStartStage, Mode=OneWay, Converter={converter:InvertBoolConverter}}"
+            ItemsSource="{Binding Path=RoomViewModels, Mode=OneWay}"
+            SelectedIndex="0">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="roomView:RoomViewModel">
                     <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />

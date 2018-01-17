@@ -27,7 +27,6 @@ namespace Buchungssystem.Repository.Database
         public DbSet<DbBooking> Bookings { get; set; }
         public DbSet<DbProduct> Products { get; set; }
         public DbSet<DbProductGroup> ProductGroups { get; set; }
-
     }
 
     class DbInitializer : DropCreateDatabaseIfModelChanges<BookingsystemEntities>

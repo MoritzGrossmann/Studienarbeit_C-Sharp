@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Buchungssystem.Repository.Model
 {
+    /// <summary>
+    /// Datenbankrepräsentation einer Warengruppe
+    /// </summary>
     public class DbProductGroup
     {
         [Key]

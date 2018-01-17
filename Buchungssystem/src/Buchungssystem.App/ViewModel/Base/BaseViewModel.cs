@@ -6,6 +6,10 @@ using System.Runtime.CompilerServices;
 
 namespace Buchungssystem.App.ViewModel.Base
 {
+    /// <summary>
+    /// Oberklassew fürt alle ViewModels
+    /// Kein eigener Code !
+    /// </summary>
     public abstract class BaseViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         #region Notify Property Changed

@@ -5,10 +5,18 @@ using Buchungssystem.Domain.Model;
 
 namespace Buchungssystem.App.ViewModel
 {
+    /// <summary>
+    /// Repräsentiert eine Warengruppe als ViewModel
+    /// </summary>
     internal class ProductGroupViewModel : BaseViewModel
     {
         #region Constructor
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productGroup">Warengruppe, welche gekapselt werden soll</param>
+        /// <param name="onSelect">Methode, die aufgerufen wird, wenn eine Warengruppe ausgewählt wurde</param>
         public ProductGroupViewModel(ProductGroup productGroup, Action<ProductGroup> onSelect)
         {
             _productGroup = productGroup;
@@ -21,6 +29,9 @@ namespace Buchungssystem.App.ViewModel
 
         private ProductGroup _productGroup;
 
+        /// <summary>
+        /// Warengruppe, welche gekapselt ist
+        /// </summary>
         public ProductGroup ProductGroup
         {
             get => _productGroup;
@@ -31,6 +42,9 @@ namespace Buchungssystem.App.ViewModel
 
         #region Commands
 
+        /// <summary>
+        /// Kommando zum Auswählen einer Warengruppe
+        /// </summary>
         public ICommand SelectCommand { get; }
 
         #endregion

@@ -2,6 +2,9 @@
 
 namespace Buchungssystem.Domain.Model
 {
+    /// <summary>
+    /// Repräsentiert einen Knoten in einer Warengruppen-Waren-Baumstruktur
+    /// </summary>
     public interface IProductNode
     {
         ICollection<IProductNode> ChildNodes();

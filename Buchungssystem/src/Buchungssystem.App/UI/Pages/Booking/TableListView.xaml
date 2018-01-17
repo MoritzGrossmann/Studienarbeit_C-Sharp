@@ -52,7 +52,7 @@
                             <TextBlock
                                 FontSize="{StaticResource FontSizeLarge}"
                                 FontWeight="Bold"
-                                Foreground="{Binding Color}"
+                                Foreground="{Binding Occupied, Mode=OneWay, Converter={converter:OccupiedToBrushConverter}}"
                                 Text="{Binding Table.Name}" />
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock

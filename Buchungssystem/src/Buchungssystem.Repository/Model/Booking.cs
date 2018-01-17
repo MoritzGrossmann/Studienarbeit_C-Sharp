@@ -4,6 +4,9 @@ using Buchungssystem.Domain.Properties;
 
 namespace Buchungssystem.Repository.Model
 {
+    /// <summary>
+    /// Datenbankrepräsentation einer Buchung
+    /// </summary>
     public class DbBooking
     {
         [Key]

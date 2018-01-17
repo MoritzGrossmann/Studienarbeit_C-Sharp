@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Buchungssystem.Repository.Model
 {
+    /// <summary>
+    /// Datenbankrepräsentation eines Raumes
+    /// </summary>
     public class DbRoom
     {
         [Key]
