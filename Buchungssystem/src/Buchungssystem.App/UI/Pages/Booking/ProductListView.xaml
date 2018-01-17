@@ -37,6 +37,12 @@
             Grid.Row="1"
             BorderBrush="Transparent"
             ItemsSource="{Binding Path=ProductViewModels}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate DataType="viewModel:ProductViewModel">
                     <Grid>

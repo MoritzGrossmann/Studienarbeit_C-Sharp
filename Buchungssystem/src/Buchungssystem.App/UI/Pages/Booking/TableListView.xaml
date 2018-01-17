@@ -30,6 +30,7 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
                     <Setter Property="Margin" Value="{StaticResource MarginAllSides4}" />
                     <Setter Property="Background" Value="{StaticResource AccentColorBrush2}" />
                 </Style>
@@ -37,7 +38,7 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="tableView:TableViewModel">
-                    <Grid>
+                    <Grid Background="Transparent">
                         <Grid.InputBindings>
                             <MouseBinding Command="{Binding Path=SelectCommand}" MouseAction="LeftClick" />
                         </Grid.InputBindings>

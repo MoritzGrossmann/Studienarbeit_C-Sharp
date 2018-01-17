@@ -19,6 +19,13 @@
             Grid.Row="0"
             BorderBrush="Transparent"
             ItemsSource="{Binding Path=BookingViewModels, Mode=OneWay}">
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate DataType="tableView:BookingViewModel">
                     <Grid>
