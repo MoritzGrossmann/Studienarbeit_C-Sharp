@@ -59,7 +59,7 @@ namespace Buchungssystem.App.ViewModel.TableView
             Action<ProductGroup> returnToParent)
         {
             Name = productGroup.Name;
-            _productViewModels = new ObservableCollection<ProductViewModel>(products.Select(p => new ProductViewModel(p, onProductSelect)));
+            _productViewModels = new ObservableCollection<ProductViewModel>(products.OrderBy(p => p.Name).Select(p => new ProductViewModel(p, onProductSelect)));
             _returnToParent = returnToParent;
             _parent = productGroup;
             ShowReturnButton = true;

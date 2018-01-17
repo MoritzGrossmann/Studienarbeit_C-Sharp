@@ -86,6 +86,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
                 else
                     // ReSharper disable once PossibleNullReferenceException
                     ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = p;
+                    ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
             });
         }
 

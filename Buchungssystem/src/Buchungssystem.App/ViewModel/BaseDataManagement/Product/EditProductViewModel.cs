@@ -153,9 +153,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             {
                 AddError(nameof(Name), $"Der Name {Name} wurde schon vergeben");
                 RaisePropertyChanged(nameof(HasErrors));
-            }
-            finally
-            {
                 ShowProgressbar = false;
             }
         }

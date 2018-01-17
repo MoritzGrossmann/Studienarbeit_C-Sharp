@@ -43,7 +43,7 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="viewModel:ProductGroupViewModel">
-                        <Grid>
+                        <Grid Background="Transparent">
                             <Grid.InputBindings>
                                 <MouseBinding Command="{Binding Path=SelectCommand, Mode=OneWay}" MouseAction="LeftClick" />
                             </Grid.InputBindings>

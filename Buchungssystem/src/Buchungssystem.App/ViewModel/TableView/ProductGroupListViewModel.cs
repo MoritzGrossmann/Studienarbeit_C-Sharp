@@ -59,7 +59,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         public ProductGroupListViewModel(ProductGroup productGroup, ICollection<ProductGroup> productGroups,
             Action<ProductGroup> onSelect, Action<ProductGroup> returnToParent)
         {
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.Select(p => new ProductGroupViewModel(p, onSelect)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(productGroups.OrderBy(p => p.Name).Select(p => new ProductGroupViewModel(p, onSelect)));
             HasParent = productGroups.Any(p => p.Parent() != null);
             Name = productGroup != null ? productGroup.Name : "Warengruppen";
             _parent = productGroup;

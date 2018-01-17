@@ -239,6 +239,8 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
+                if (context.Tables.Any(t => t.Id == table.Id)) return UpdateTable(table, context);
+
                 var dbTable = FromTable(table);
                 table.Occupied = false;
                 context.Tables.Add(dbTable);
@@ -246,6 +248,16 @@ namespace Buchungssystem.Repository.Database
                 table.Id = dbTable.Id;
                 return table;
             }
+        }
+
+        private Table UpdateTable(Table table, BookingsystemEntities context)
+        {
+            var dbTable = context.Tables.FirstOrDefault(t => t.Id == table.Id);
+            if (dbTable == null) throw new ModelNotExistException($"Der Tisch mit der Id {table.Id} ist nicht vorhanden");
+            dbTable.Name = table.Name;
+            dbTable.Places = table.Places;
+            context.SaveChanges();
+            return FromDbTable(dbTable);
         }
 
         public List<Table> Tables()
