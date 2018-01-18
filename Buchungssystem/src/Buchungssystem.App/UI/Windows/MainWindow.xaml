@@ -7,6 +7,7 @@
     xmlns:booking="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
     xmlns:bookings="clr-namespace:Buchungssystem.App.ViewModel.Bookings"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dailyOverview="clr-namespace:Buchungssystem.App.UI.Pages.DailyOverview"
     xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
@@ -65,7 +66,7 @@
         </DataTemplate>
     </Window.Resources>
 
-    <Grid>
+    <Grid IsEnabled="{Binding Path=Loading, Mode=OneWay, Converter={converter:InvertBoolConverter}}">
         <controls:HamburgerMenu
             DisplayMode="CompactInline"
             IsPaneOpen="{Binding Mode=TwoWay, Path=ShowFlyout}"

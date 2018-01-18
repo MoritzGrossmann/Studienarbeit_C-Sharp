@@ -6,7 +6,6 @@ using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.TableView;
 using Buchungssystem.Domain.Database;
 using Buchungssystem.Domain.Model;
-using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.Bookings
 {

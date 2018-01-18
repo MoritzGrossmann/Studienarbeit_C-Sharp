@@ -4,9 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.DailyOverview"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -24,12 +22,17 @@
             Margin="{StaticResource MarginBottom12}"
             FontSize="{StaticResource FontSizeExtraLarge}"
             Text="Tagesübersicht" />
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBlock
-                Margin="{StaticResource MarginRight4}"
-                FontSize="{StaticResource FontSizeLarge}"
-                Text="Datum" />
-            <DatePicker IsTodayHighlighted="True" Text="{Binding Date, Mode=TwoWay}" />
+        <StackPanel
+            Grid.Row="1"
+            Margin="{StaticResource MarginBottom12}"
+            Orientation="Horizontal">
+            <TextBlock FontSize="{StaticResource FontSizeLarge}" Text="Datum" />
+            <DatePicker
+                Margin="{StaticResource MarginLeft4}"
+                Focusable="False"
+                IsHitTestVisible="False"
+                IsTodayHighlighted="True"
+                Text="{Binding Date, Mode=TwoWay}" />
         </StackPanel>
 
         <ListView
@@ -67,7 +70,7 @@
             <TextBlock
                 Margin="{StaticResource MarginLeft4}"
                 FontSize="{StaticResource FontSizeLarge}"
-                Text="Umsatz:" />
+                Text="Tagesumsatz:" />
             <TextBlock FontSize="{StaticResource FontSizeLarge}" Text="{Binding Mode=OneWay, Path=Price, Converter={converter:PriceToStringConverter}}" />
         </StackPanel>
     </Grid>

@@ -100,9 +100,9 @@
             Grid.Row="3"
             Grid.Column="1"
             Orientation="Horizontal">
-            <controls:MetroProgressBar
+            <ProgressBar
                 Width="200px"
-                Height="20px"
+                Margin="{StaticResource MarginLeft4}"
                 IsIndeterminate="True"
                 Visibility="{Binding ShowProgressbar, Mode=OneWay, Converter={converter:BooleanToVisibilityConverter}}" />
         </StackPanel>

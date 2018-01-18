@@ -28,6 +28,8 @@ namespace Buchungssystem.App.ViewModel
         {
             ShowFlyout = false;
 
+            Loading = true;
+
             CurrentViewModel = new LoadingViewModel();
 
             _bookingSystemDataPersistence = bookingSystemDataPersistence;
@@ -42,7 +44,11 @@ namespace Buchungssystem.App.ViewModel
 
             TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
 
-            awaiter.OnCompleted(() => CurrentViewModel = awaiter.GetResult());
+            awaiter.OnCompleted(() =>
+            {
+                CurrentViewModel = awaiter.GetResult();
+                Loading = false;
+            });
         }
 
         #endregion
@@ -69,6 +75,17 @@ namespace Buchungssystem.App.ViewModel
         {
             get => _currentViewModel;
             set => SetProperty(ref _currentViewModel, value, nameof(CurrentViewModel));
+        }
+
+        private bool _loading;
+
+        /// <summary>
+        /// Zeigt an, ob gerade geladen wird
+        /// </summary>
+        public bool Loading
+        {
+            get => _loading;
+            set => SetProperty(ref _loading, value, nameof(Loading));
         }
 
         #endregion
@@ -107,10 +124,16 @@ namespace Buchungssystem.App.ViewModel
         {
             ShowFlyout = false;
 
+            Loading = true;
+
             CurrentViewModel = new LoadingViewModel();
             TaskAwaiter<BaseDataManagementViewModel> awaiter = GetBaseDataManagementViewModel().GetAwaiter();
 
-            awaiter.OnCompleted(() => CurrentViewModel = awaiter.GetResult());
+            awaiter.OnCompleted(() =>
+            {
+                CurrentViewModel = awaiter.GetResult();
+                Loading = false;
+            });
 
         }
 
@@ -127,10 +150,16 @@ namespace Buchungssystem.App.ViewModel
         {
             ShowFlyout = false;
 
+            Loading = true;
+
             CurrentViewModel = new LoadingViewModel();
             TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
 
-            awaiter.OnCompleted(() => CurrentViewModel = awaiter.GetResult());
+            awaiter.OnCompleted(() =>
+            {
+                CurrentViewModel = awaiter.GetResult();
+                Loading = false;
+            });
         }
 
         /// <summary>
