@@ -102,7 +102,10 @@
             </controls:HamburgerMenu.ItemsSource>
 
             <controls:HamburgerMenu.Content>
-                <Border Padding="{StaticResource MarginAllSides4}">
+                <Border
+                    Padding="{StaticResource MarginAllSides4}"
+                    BorderBrush="{StaticResource LightGrey}"
+                    BorderThickness="1">
                     <ContentControl Content="{Binding CurrentViewModel}" />
                 </Border>
             </controls:HamburgerMenu.Content>

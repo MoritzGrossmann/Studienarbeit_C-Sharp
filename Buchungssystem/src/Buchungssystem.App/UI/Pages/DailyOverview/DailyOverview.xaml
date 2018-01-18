@@ -29,8 +29,6 @@
             <TextBlock FontSize="{StaticResource FontSizeLarge}" Text="Datum" />
             <DatePicker
                 Margin="{StaticResource MarginLeft4}"
-                Focusable="False"
-                IsHitTestVisible="False"
                 IsTodayHighlighted="True"
                 Text="{Binding Date, Mode=TwoWay}" />
         </StackPanel>
@@ -40,8 +38,14 @@
             Margin="{StaticResource MarginBottom12}"
             BorderBrush="Transparent"
             ItemsSource="{Binding BookingViewModels}">
-            <ListView.View>
 
+            <!--<ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </ListView.ItemContainerStyle>-->
+
+            <ListView.View>
                 <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Employee Information">
 
                     <GridViewColumn
