@@ -4,10 +4,25 @@
 
 \subsubsection{Stammdatenverwaltung}
 
-Der Benutzer soll alle seine Ressourcen verwalten können. Hierfür soll es eine Stammdatenverwaltung geben, in der er seine Räume, Tisch, Waren und Warengruppen pflegen kann. Tische sollen Räumen untergeordnet sein, sowie Waren den Warengruppen. Außerdem soll der Benutzer bei den Warengruppen eine Baumstruktur anlegen können. So dass es zum Beispiel die Übergruppen "Getränke" und "Speißen" gibt und die anderen denen jeweils untergeordnet sind. 
+Der Benutzer soll alle seine Ressourcen verwalten können. Hierfür soll es eine Stammdatenverwaltung geben, in der er seine Räume, Tisch, Waren und Warengruppen pflegen kann. Tische sollen Räumen untergeordnet sein, sowie Waren den Warengruppen. Außerdem soll der Benutzer bei den Warengruppen eine Baumstruktur anlegen können. So dass es zum Beispiel die Übergruppen "Getränke" und "Speißen" gibt und die anderen denen jeweils untergeordnet sind. Ein Raum soll aus einem Namen und einer Liste von Tischen bestehen. Ein Tisch soll aus einem Namen und einer Anzahl Sitzplätze bestehen. Dadurch kann später eine Auslastung des Raumes angezeigt werden. Eine Warengruppe soll aus einem Namen und einer Übergruppe bestehen, welche wiederum eine Warengruppe ist. Waren Haben einen Namen, einen Preis und eine Warengruppe deren sie angehören.
 
-Alle Ressourcen können angelegt, geändert und gelöscht werden. 
+Alle Ressourcen können angelegt, geändert und gelöscht werden. Für eine spätere Erweiterbarkeit sollen die Objekte nicht aus der Datenbank gelöscht werden, sondern nur ein Flag gesetzt werden. 
+
+\subsubsection{Buchen}
+
+Der Nutzer soll als Hauptmaske eine Übersicht der definierten Räume und deren Tische erhalten. Er soll sehen, wie viele Plätze und Tische in einem Raum frei sind, um eventuelle Kurzfristige Reservierungsanfragen ohne Probleme beantworten kann. Zu jedem Tisch soll der Gesamtbuchungsbetrag angezeigt werden und wann das letzte mal auf diesen Tisch gebucht wurde. So kann man vermeiden, dass zum Beispiel in einem größeren Restaurant ein Tisch aus versehen vernachlässigt wird. 
+
+
+Durch Anwählen eines Tisches sollen die Details zu diesem gezeigt werden. Man soll jede einzelne Buchung sehen, sowie wann diese gebucht wurde. In dieser Übersicht soll es möglich sein, Waren auf einen Tisch zu buchen. Der Benutzer soll im ganzen einen guten Überblick bekommen. Will ein Tisch getrennt bezahlen, kann der Benutzer einzelne Buchungen auswählen und sieht sofort deren Gesamtpreis. Der/Die Kellner/in muss den Betrag nicht im Kopf zusammen rechnen. Buchungen sollen ausgewählt und als Bezahlt oder Storniert markiert werden. 
+
+\subsubsection{Tagesübersicht erstellen}
+
+Dem Nutzer soll es möglich sein, sich für jeden Tag eine Tagesübersicht ausgeben zu lassen. Hier werden alle Buchungen des Tages aufgelistet. Man sieht wie viele Buchungen es an diesem Tag gab und wie viele Stornierungen. Der Nutzer soll sofort den Tagesumsatz sehen können.
+
+\subsubsection{Webservice (Experimentell)}
+
+Mit dem Programm soll es möglich sein, einen Webservice zu starten. Über diesen können Kellner/innen über ein Client-Gerät, wie zum Beispiel mit einer Android-App, Daten in das System einspeisen. So können Buchungen direkt am Gast mit dem Smartphone getätigt werden. Der Service soll als REST-Service implemetiert werden, da sich Buchungen usw. gut als Ressourcen eignen. Diese Funktion habe ich von Anfang an als Experimentell erachtet und sehe es in dieser Version des Programmes nicht als "MUSS-Feature".
 
 \subsection{Design}
 
-Das Programm soll für eine Mobile Anwendungen, wie z.B. auf einem Tablet-PC, optimiert sein. Hierfür sind vor allem neben großen Schaltflächen auch eine gute Übersicht nötig. Der Nutzer darf in seinem Handeln nicht dadurch beeinträchtigt werden, dass er sich durch zu kleine Schaltfächen vertippt. Es soll ein dem User vertrautes Design verwendet werden, sodass es keine lange Eingewöhnungszeit gibt. 
+Das Programm soll für eine Anwendungen mit Touch-Bildschirm, wie z.B. auf einem Tablet-PC oder einem Terminal, optimiert sein. Hierfür sind vor allem neben großen Schaltflächen auch eine gute Übersicht nötig. Der Nutzer darf in seinem Handeln nicht dadurch beeinträchtigt werden, dass er sich durch zu kleine Schaltflächen vertippt. Es soll ein dem Nutzer vertrautes Design verwendet werden, sodass es keine lange Eingewöhnungszeit gibt. 
