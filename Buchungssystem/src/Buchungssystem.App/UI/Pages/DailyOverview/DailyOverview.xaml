@@ -30,7 +30,7 @@
             <DatePicker
                 Margin="{StaticResource MarginLeft4}"
                 IsTodayHighlighted="True"
-                Text="{Binding Date, Mode=TwoWay}" />
+                Text="{Binding Date, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
         <ListView
@@ -74,7 +74,7 @@
             <TextBlock
                 Margin="{StaticResource MarginLeft4}"
                 FontSize="{StaticResource FontSizeLarge}"
-                Text="Tagesumsatz:" />
+                Text="Tagesumsatz: " />
             <TextBlock FontSize="{StaticResource FontSizeLarge}" Text="{Binding Mode=OneWay, Path=Price, Converter={converter:PriceToStringConverter}}" />
         </StackPanel>
     </Grid>

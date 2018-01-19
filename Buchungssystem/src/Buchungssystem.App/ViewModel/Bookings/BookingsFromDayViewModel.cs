@@ -49,8 +49,18 @@ namespace Buchungssystem.App.ViewModel.Bookings
             get => _date;
             set
             {
-                SetProperty(ref _date, value, nameof(value));
-                BookingViewModels = new ObservableCollection<BookingViewModel>(GetBookings(_date).Select(b => new BookingViewModel(b)));
+                if (value < new DateTime(2000, 1, 1))
+                {
+                    AddError(nameof(Date), "Das Datum muss nach dem 01.01.2000 liegen");
+                }
+                else
+                {
+                    RemoveError(nameof(Date));
+                    SetProperty(ref _date, value, nameof(value));
+                    BookingViewModels = new ObservableCollection<BookingViewModel>(GetBookings(_date).Select(b => new BookingViewModel(b)));
+                    RaisePropertyChanged(nameof(Price));
+                }
+
             } 
         }
 
