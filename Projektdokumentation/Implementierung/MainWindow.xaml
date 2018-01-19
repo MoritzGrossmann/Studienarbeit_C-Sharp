@@ -1,0 +1,24 @@
+﻿<controls:MetroWindow
+    <Window.Resources>
+        <!--Verknüpfung der ViewModel mit dfen Views!-->
+        <DataTemplate DataType="{x:Type roomView:RoomListViewModel}">
+            <booking:RoomListView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type bookings:BookingsFromDayViewModel}">
+            <dailyOverview:DailyOverview />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type baseDataManagement:BaseDataManagementViewModel}">
+            <baseDataManagementView:BaseDataManagementView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type loading:LoadingViewModel}">
+            <pages:LoadingScreen />
+        </DataTemplate>
+
+    <Grid>
+        <!--Anzeige der View, welches mit dem ViewModel, welches das CurrentViewModel darstellt, verknüpft ist!-->
+        <ContentControl Content="{Binding CurrentViewModel}" /> 
+    </Grid>
+</controls:MetroWindow>
