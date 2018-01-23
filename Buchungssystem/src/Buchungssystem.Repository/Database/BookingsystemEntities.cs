@@ -6,6 +6,9 @@ using Buchungssystem.Repository.Model;
 
 namespace Buchungssystem.Repository.Database
 {
+    /// <summary>
+    /// Datenbankkontext
+    /// </summary>
     public class BookingsystemEntities : DbContext
     {
         static BookingsystemEntities() 
@@ -29,6 +32,9 @@ namespace Buchungssystem.Repository.Database
         public DbSet<DbProductGroup> ProductGroups { get; set; }
     }
 
+    /// <summary>
+    /// Klasse zum Seeden der Datenbank
+    /// </summary>
     class DbInitializer : DropCreateDatabaseIfModelChanges<BookingsystemEntities>
     {
         protected override void Seed(BookingsystemEntities context)
