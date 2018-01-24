@@ -53,7 +53,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                var roots =  context.ProductGroups.Where(p => p.ParentId == p.Id).AsEnumerable().Select(FromDbProductGroup).ToList();
+                var roots =  context.ProductGroups.Where(p => p.ParentId == p.Id && p.Deleted == false).AsEnumerable().Select(FromDbProductGroup).ToList();
                 roots.ForEach(p => LoadChilds(p, context));
                 return roots;
             }
@@ -63,7 +63,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                var productGroups = context.ProductGroups.Select(FromDbProductGroup).ToList();
+                var productGroups = context.ProductGroups.Where(p => p.Deleted == false).AsEnumerable().Select(FromDbProductGroup).ToList();
                 productGroups.ForEach(p => LoadChilds(p,context));
                 return productGroups;
             }
@@ -81,7 +81,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.ProductGroups.Where(p => !context.ProductGroups.Any(c => c.ParentId == p.Id)).AsEnumerable().Select(FromDbProductGroup).ToList();
+                return context.ProductGroups.Where(p => !context.ProductGroups.Any(c => c.ParentId == p.Id) && p.Deleted == false).AsEnumerable().Select(FromDbProductGroup).ToList();
             }
         }
 
@@ -272,7 +272,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
-                return context.Tables.Where(t => t.RoomId == room.Id).AsEnumerable().Select(FromDbTable).ToList();
+                return context.Tables.Where(t => t.RoomId == room.Id && t.Deleted == false).AsEnumerable().Select(FromDbTable).ToList();
             }
         }
 

@@ -171,7 +171,7 @@
 
                                         <TextBlock
                                             Grid.Column="0"
-                                            FontSize="14pt"
+                                            FontSize="{StaticResource FontSizeLarge}"
                                             Text="{Binding Path=Table.Name, Mode=OneWay}" />
                                     </Grid>
                                 </Border>
