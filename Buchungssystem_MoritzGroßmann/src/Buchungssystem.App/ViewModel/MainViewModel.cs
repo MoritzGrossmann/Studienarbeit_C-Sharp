@@ -120,26 +120,22 @@ namespace Buchungssystem.App.ViewModel
         /// Setzt ShowFlyout auf False
         /// Setzut das CurrentViewModel auf ein neues BaseDataManagementViewModel
         /// </summary>
-        private void ToBaseData()
+        private async void ToBaseData()
         {
             ShowFlyout = false;
 
             Loading = true;
 
             CurrentViewModel = new LoadingViewModel();
-            TaskAwaiter<BaseDataManagementViewModel> awaiter = GetBaseDataManagementViewModel().GetAwaiter();
 
-            awaiter.OnCompleted(() =>
-            {
-                CurrentViewModel = awaiter.GetResult();
-                Loading = false;
-            });
+            CurrentViewModel = await GetBaseDataManagementViewModel();
 
+            Loading = false;
         }
 
-        private Task<BaseDataManagementViewModel> GetBaseDataManagementViewModel()
+        private async Task<BaseDataManagementViewModel> GetBaseDataManagementViewModel()
         {
-            return Task.Run(() => new BaseDataManagementViewModel(_bookingSystemDataPersistence));
+            return await new Task<BaseDataManagementViewModel>(() => new BaseDataManagementViewModel(_bookingSystemDataPersistence));
         }
 
         /// <summary>

@@ -11,7 +11,7 @@
     d:DesignWidth="300"
     mc:Ignorable="d">
 
-    <Grid MinWidth="300px">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -60,17 +60,12 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
                                 <TextBlock
                                     Grid.Column="0"
                                     FontSize="14pt"
                                     Text="{Binding Path=Product.Name, Mode=OneWay}" />
                                 <TextBlock
                                     Grid.Column="1"
-                                    Margin="10,0,0,0"
                                     HorizontalAlignment="Right"
                                     FontSize="14pt"
                                     Text="{Binding Path=Product.Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}" />
