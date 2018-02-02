@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
@@ -42,7 +43,10 @@ namespace Buchungssystem.App.ViewModel
 
             ToOverviewCommand = new RelayCommand(ToOverview);
 
-            TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
+            TaskAwaiter<RoomListViewModel> awaiter = Task.Run(() =>
+            {
+                return new RoomListViewModel(_bookingSystemDataPersistence.Rooms());
+            }).GetAwaiter();
 
             awaiter.OnCompleted(() =>
             {
@@ -128,14 +132,16 @@ namespace Buchungssystem.App.ViewModel
 
             CurrentViewModel = new LoadingViewModel();
 
-            CurrentViewModel = await GetBaseDataManagementViewModel();
+            var viewModel = await GetBaseDataManagementViewModel();
+
+            CurrentViewModel = viewModel;
 
             Loading = false;
         }
 
         private async Task<BaseDataManagementViewModel> GetBaseDataManagementViewModel()
         {
-            return await new Task<BaseDataManagementViewModel>(() => new BaseDataManagementViewModel(_bookingSystemDataPersistence));
+            return await Task.Run(() => new BaseDataManagementViewModel(_bookingSystemDataPersistence));
         }
 
         /// <summary>
@@ -150,7 +156,9 @@ namespace Buchungssystem.App.ViewModel
 
             CurrentViewModel = new LoadingViewModel();
 
-            CurrentViewModel = await GetBookingViewModel();
+            var viewModel = await GetBookingViewModel();
+
+            CurrentViewModel = viewModel;
 
             Loading = false;
         }
@@ -167,20 +175,22 @@ namespace Buchungssystem.App.ViewModel
 
             CurrentViewModel = new LoadingViewModel();
 
-            CurrentViewModel = await GetBookingsFromDayViewModel();
+            var viewModel = await GetBookingsFromDayViewModel();
+
+            CurrentViewModel = viewModel;
 
             Loading = false;
         }
 
         private async Task<BookingsFromDayViewModel> GetBookingsFromDayViewModel()
         {
-            return await new Task<BookingsFromDayViewModel>(() =>
+            return await Task.Run(() =>
                 new BookingsFromDayViewModel(_bookingSystemDataPersistence));
         }
 
         private async Task<RoomListViewModel> GetBookingViewModel()
         {
-            return await new Task<RoomListViewModel>(() => new RoomListViewModel(_bookingSystemDataPersistence.Rooms()));
+            return await Task.Run(() => new RoomListViewModel(_bookingSystemDataPersistence.Rooms()));
         }
 
         /// <summary>

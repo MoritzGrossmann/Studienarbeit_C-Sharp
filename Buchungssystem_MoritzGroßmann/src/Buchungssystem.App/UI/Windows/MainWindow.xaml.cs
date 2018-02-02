@@ -11,7 +11,7 @@ namespace Buchungssystem.App.UI.Windows
     /// </summary>
     public partial class MainWindow
     {
-        public MainWindow()
+       public MainWindow()
         {
             LanguageProperty.OverrideMetadata(typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
