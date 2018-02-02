@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Buchungssystem.Domain.Model
 {
@@ -29,17 +30,17 @@ namespace Buchungssystem.Domain.Model
         /// Speichert die Waree in der Datenbank
         /// </summary>
         /// <returns>Gespeicherte ware mit Id</returns>
-        public Product Persist()
+        public async Task<Product> Persist()
         {
-            return Persistence.PersistProduct(this);
+            return await Task.Run(() => Persistence.PersistProduct(this));
         }
 
         /// <summary>
         /// Setzt die Ware in der Datenbank auf gelöscht
         /// </summary>
-        public void Delete()
+        public async Task Delete()
         {
-            Persistence.DeleteProduct(this);
+            await Task.Run(() => Persistence.DeleteProduct(this));
         }
 
         /// <summary>

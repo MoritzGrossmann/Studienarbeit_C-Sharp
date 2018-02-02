@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Buchungssystem.Domain.Model
 {
@@ -46,35 +47,39 @@ namespace Buchungssystem.Domain.Model
         /// Speichert die Buchung in der Datenbank
         /// </summary>
         /// <returns></returns>
-        public Booking Persist()
+        public async Task<Booking> Persist()
         {
             Status = BookingStatus.Open;
             Price = Product.Price;
             Created = DateTime.Now;
             Finished = DateTime.Now;
-            return Persistence?.Book(this);
+            return await Task.Run(() => Persistence?.Book(this));
         }
 
         /// <summary>
         /// Setzt den Status der Buchung auf Bezahlt
         /// </summary>
-        public void Pay()
+        public async Task Pay()
         {
-            Finished = DateTime.Now;
-            Persistence?.Pay(this);
-            Status = BookingStatus.Paid;
+            await Task.Run(() =>
+            {
+                Finished = DateTime.Now;
+                Persistence?.Pay(this);
+                Status = BookingStatus.Paid;
+            });
         }
 
         /// <summary>
         /// Setzt den Status der Buchung auf Stoerniert
         /// </summary>
-        public void Cancel()
+        public async Task Cancel()
         {
-            Finished = DateTime.Now;
-            Persistence?.Cancel(this);
-            Status = BookingStatus.Paid;
-
-            new Booking() { Finished = DateTime.Now, Product = Product, Table = Table, Status = BookingStatus.Cancled, Persistence = Persistence}.Persist();
+            await Task.Run(() =>
+            {
+                Finished = DateTime.Now;
+                Persistence?.Cancel(this);
+                Status = BookingStatus.Cancled;
+            });
         }
     }
 }

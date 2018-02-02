@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Buchungssystem.Domain.Model
 {
@@ -41,35 +42,35 @@ namespace Buchungssystem.Domain.Model
         /// Speichert Tisch in Datenbank
         /// </summary>
         /// <returns>Gespeicherter Tisch mit Id</returns>
-        public Table Persist()
+        public async Task<Table> Persist()
         {
-            return Persistence?.PersistTable(this);
+            return await Task.Run(() => Persistence?.PersistTable(this));
         }
 
         /// <summary>
         /// Setzt den Tisch in der Datenbank auf gelöscht
         /// </summary>
-        public void Delete()
+        public async Task Delete()
         {
-            Persistence?.DeleteTable(this);
+            await Task.Run(() => Persistence?.DeleteTable(this));
         }
 
         /// <summary>
         /// Setzt Occypied auf true und speichert dies in der Datenbank
         /// </summary>
-        public void Occupy()
+        public async Task Occupy()
         {
             Occupied = true;
-            Persistence?.Occupy(this);
+            await Task.Run(() => Persistence?.Occupy(this));
         }
 
         /// <summary>
         /// Setzt Occypied auf false und speichert dies in der Datenbank
         /// </summary>
-        public void Clear()
+        public async Task Clear()
         {
             Occupied = false;
-            Persistence?.Clear(this);
+            await Task.Run(() => Persistence?.Clear(this));
         }
     }
 }

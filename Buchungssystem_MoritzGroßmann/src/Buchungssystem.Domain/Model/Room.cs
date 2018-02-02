@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Buchungssystem.Domain.Model
 {
@@ -32,17 +33,17 @@ namespace Buchungssystem.Domain.Model
         /// Speichert den Raum in der Datenbank
         /// </summary>
         /// <returns>Gespeicherter Raum mit Id</returns>
-        public Room Persist()
+        public async Task<Room> Persist()
         {
-            return Persistence?.PersistRoom(this);
+            return await Task.Run(() => Persistence?.PersistRoom(this));
         }
 
         /// <summary>
         /// Setzt den Raum in der Datenbank auf gelöscht
         /// </summary>
-        public void Delete()
+        public async Task Delete()
         {
-            Persistence.DeleteRoom(this);
+            await Task.Run(() => Persistence.DeleteRoom(this));
         }
     }
 }

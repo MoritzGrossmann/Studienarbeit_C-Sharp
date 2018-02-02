@@ -250,7 +250,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// </summary>
         private void PayBookings()
         {
-            SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Pay());
+            SelectedBookings.BookingViewModels.ForEach(async bvm => await bvm.Booking.Pay());
             SelectedBookings.Clear();
             RaisePropertyChanged(nameof(CanFinishBookings));
         }
@@ -260,7 +260,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// </summary>
         private void CancelBookings()
         {
-            SelectedBookings.BookingViewModels.ForEach(bvm => bvm.Booking.Cancel());
+            SelectedBookings.BookingViewModels.ForEach(async bvm => await bvm.Booking.Cancel());
             SelectedBookings.Clear();
             RaisePropertyChanged(nameof(CanFinishBookings));
         }
@@ -301,11 +301,11 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// <summary>
         /// Von jeder angewählten Ware wird eine Buchung erstellt und den Offenen Buchungen hinzugefügt
         /// </summary>
-        private void BookProducts()
+        private async void BookProducts()
         {
             foreach (var productViewModel in SelectedProducts.ProductViewModels)
             {
-                var booking = new Booking()
+                var booking = await new Booking()
                 {
                     Persistence = Table.Persistence,
                     Product = productViewModel.Product,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Buchungssystem.Domain.Model
 {
@@ -27,17 +28,17 @@ namespace Buchungssystem.Domain.Model
         /// Speichert die Warengruppe in der Datenbank
         /// </summary>
         /// <returns>Gespeicherte Warengruppe mit Id</returns>
-        public ProductGroup Persist()
+        public async Task<ProductGroup> Persist()
         {
-            return Persistence.PersistProductGroup(this);
+            return await Task.Run(() => Persistence.PersistProductGroup(this));
         }
 
         /// <summary>
         /// Setzt die Wareengruppe in der Datenbank auf gelöscht
         /// </summary>
-        public void Delete()
+        public async Task Delete()
         {
-            Persistence.DeleteProductGroup(this);
+            await Task.Run(() => Persistence.DeleteProductGroup(this));
         }
 
         /// <summary>
