@@ -67,28 +67,19 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         /// Fügt der Liste ProductViewModels ein neues ProductViewModel hinzu wenn eine neue Ware angelegt wurde oder Updated das PRoductViewModel mit der entsprechenden Ware
         /// </summary>
         /// <param name="product">Gespeicherte Ware</param>
-        private async void Save(Domain.Model.Product product)
+        private void Save(Domain.Model.Product product)
         {
-
-            int oldId = product.Id;
-
-            var p = await product.Persist();
-
-            if (p.Id != oldId)
+            if (ProductViewModels.Any(pvm => pvm.Product.Id == product.Id))
             {
-                ProductViewModels.Add(new ProductViewModel(p, Select));
-                ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
+                // ReSharper disable once PossibleNullReferenceException : NullreferenceException wird mit ProductViewModels.Any() ausgeschlossen
+                ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = product;
             }
             else
-                // ReSharper disable once PossibleNullReferenceException
-                ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = p;
-                ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, p);
-        }
+            {
+                ProductViewModels.Add(new ProductViewModel(product, Select));
+            }
 
-
-        private Task<Domain.Model.Product> SaveTask(Domain.Model.Product product)
-        {
-            return Task.Run(() => product.Persist());
+            ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, product);
         }
 
         /// <summary>

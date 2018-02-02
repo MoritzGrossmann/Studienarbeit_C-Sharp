@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement.Table;
 using Buchungssystem.Domain.Database;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
 {
@@ -103,7 +104,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
                 TableViewModels = new ObservableCollection<TableViewModel>();    
 
             if (TableViewModels.Any())
-                EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, TableViewModels.FirstOrDefault()?.Table);
+                EditTableViewModel = new EditTableViewModel(SaveTable, _room, DeleteTable, TableViewModels.FirstOrDefault()?.Table, BookingSystemPersistence);
         }
 
         #endregion
@@ -127,28 +128,32 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// Speichert den bearbeiteten Raum in der Datenbank
         /// Ruft die im Konstruktor übergebene Methode onSave auf
         /// </summary>
-        private void Save()
+        private async void Save()
         {
             try
             {
-
                 var room = new Domain.Model.Room() {Id = Id, Name = Name, Persistence = BookingSystemPersistence};
 
                 ShowProgressbar = true;
 
-                TaskAwaiter<Domain.Model.Room> awaiter = SaveTask(room).GetAwaiter();
+                var r = await room.Persist();
 
-                awaiter.OnCompleted(() =>
-                {
-                    var r = awaiter.GetResult();
-                    ShowProgressbar = false;
-                    _onSave?.Invoke(r);
-                });
+                ShowProgressbar = false;
+
+                _onSave.Invoke(r);
             }
-            catch (ModelExistException)
+            catch (ModelExistException ex)
             {
-                AddError(nameof(Name), $"Der Name {Name} wurde schon vergeben");
+                AddError(nameof(Name),ex.Message);
                 RaisePropertyChanged(nameof(HasErrors));
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Speichern des Raumes", $"{ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                ShowProgressbar = false;
             }
         }
 
@@ -156,10 +161,21 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// Löscht einen Raum 
         /// Ruft die im Konstruktor übergebene Methode onDelete auf
         /// </summary>
-        private void Delete()
+        private async void Delete()
         {
-            _room?.Delete();
-            _onDelete?.Invoke(_room);
+            try
+            {
+                await _room.Delete();
+                _onDelete?.Invoke(_room);
+            }
+            catch (DeleteNotAllowedException ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Raumes", $"{ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Raumes", $"{ex.Message}\n{ex.StackTrace}");
+            }
         }
     
         /// <summary>
@@ -167,7 +183,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// </summary>
         private void AddTable()
         {
-            EditTableViewModel = new EditTableViewModel(SaveTable);
+            EditTableViewModel = new EditTableViewModel(SaveTable, _room, BookingSystemPersistence);
         }
 
         /// <summary>
@@ -176,7 +192,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// <param name="table">Tisch, welcher ausgwählt wurde</param>
         private void SelectTable(Domain.Model.Table table)
         {
-            EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, table);
+            EditTableViewModel = new EditTableViewModel(SaveTable, _room, DeleteTable, table, BookingSystemPersistence);
         }
 
         /// <summary>
@@ -186,29 +202,13 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// <param name="table">Tisch, der gespeichert werden soll</param>
         private void SaveTable(Domain.Model.Table table)
         {
-            table.Room = _room;
-            table.Persistence = BookingSystemPersistence;
+            var tableViewModel = TableViewModels.FirstOrDefault(t => t.Table.Id == table.Id);
+            if (tableViewModel != null)
+                tableViewModel.Table = table;
+            else
+                TableViewModels.Add(new TableViewModel(table, SelectTable));
 
-            var table1 = table;
-
-            TaskAwaiter<Domain.Model.Table> awaiter = Task.Run(() => table1.Persist()).GetAwaiter();
-
-            awaiter.OnCompleted(() =>
-            {
-                var tab = awaiter.GetResult();
-                    var tableViewModel = TableViewModels.FirstOrDefault(t => t.Table.Id == tab.Id);
-                    if (tableViewModel != null)
-                        tableViewModel.Table = tab;
-                    else
-                        TableViewModels.Add(new TableViewModel(tab, SelectTable));
-
-                    EditTableViewModel = new EditTableViewModel(SaveTable, DeleteTable, tab);
-                });    
-        }
-
-        private Task<Domain.Model.Room> SaveTask(Domain.Model.Room room)
-        {
-            return Task.Run(() => room.Persist());
+            EditTableViewModel = new EditTableViewModel(SaveTable, _room, DeleteTable, table, BookingSystemPersistence); 
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 {
@@ -140,51 +141,56 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         /// Aktion zum Speichern einer Warengruppe
         /// Ruft die im Kontrukor übergebene Methode onSave auf
         /// </summary>
-        private void Save()
+        private async void Save()
         {
             ShowProgressbar = true;
 
-            var productGroup =
-                new Domain.Model.ProductGroup() { Id = Id, Name = Name, Persistence = BookingSystemPersistence };
-            productGroup.SetParent(SelectedProductGroupViewModel.ProductGroup ?? productGroup);
-
-            TaskAwaiter<Domain.Model.ProductGroup> awaiter = SaveTask(productGroup).GetAwaiter();
-
-            awaiter.OnCompleted(() =>
+            try
             {
-                var p = awaiter.GetResult();
+                var productGroup =
+                    new Domain.Model.ProductGroup() {Id = Id, Name = Name, Persistence = BookingSystemPersistence};
+                productGroup.SetParent(SelectedProductGroupViewModel.ProductGroup ?? productGroup);
+
+                var p = await productGroup.Persist();
+
                 if (NoParent)
                 {
                     p.SetParent(p);
-                    TaskAwaiter<Domain.Model.ProductGroup> awaiter2 = SaveTask(p).GetAwaiter();
-                    awaiter2.OnCompleted(() =>
-                    {
-                        ShowProgressbar = false;
-                        _onSave?.Invoke(p);
-                    });
-                }
-                else
-                {
-                    ShowProgressbar = false;
-                    _onSave?.Invoke(p);
-                }
-            });
 
-        }
+                    await p.Persist();
+                }
+                _onSave.Invoke(p);
+            }
+            catch (ModelExistException ex)
+            {
+                AddError(nameof(Name), ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Speichern der Warengruppe", $"{ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                ShowProgressbar = false;
+            }
 
-        private Task<Domain.Model.ProductGroup> SaveTask(Domain.Model.ProductGroup productGroup)
-        {
-            return Task.Run(() => productGroup.Persist());
         }
 
         /// <summary>
         /// Aktion zum Löschen einer Warengruppe
         /// Ruft die im Kontruktor übergebene Methode onDelete auf
         /// </summary>
-        private void Delete()
+        private async void Delete()
         {
-            _productGroup.Delete();
-            _onDelete(_productGroup);
+            try
+            {
+                await _productGroup.Delete();
+                _onDelete(_productGroup);
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen der Warengruppe", $"{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         private readonly Action<Domain.Model.ProductGroup> _onSave;

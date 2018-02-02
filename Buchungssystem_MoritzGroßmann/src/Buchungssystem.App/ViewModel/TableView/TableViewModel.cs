@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
+using MahApps.Metro.Controls.Dialogs;
 using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
@@ -77,10 +78,11 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// <param name="table">Tisch, welcher das TableViewModel repräsentiert</param>
         /// <param name="onSelect">Methode, die ausgeführt wird, wenn der Tisch ausgewählt wurde</param>
         /// <param name="onStatusChanged">Methode, die ausgeführt wird, wenn der status des Tisches geändert wurde</param>
-        public TableViewModel(Table table, Action<Table> onSelect, Action<Table> onStatusChanged)
+        public TableViewModel(Table table, Action<Table> onSelect, Action<Table> onStatusChanged, Action<string, string> onErrorShown)
         {
             _onSelect = onSelect;
             _onStatusChanged = onStatusChanged;
+            _onErrorShown = onErrorShown;
             Table = table;
             Occupied = Table.Occupied;
 
@@ -120,26 +122,36 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// Ändert den Status des Tisches von Frei auf besetzt oder umgekehrt
         /// Ruft die im Konstruktor übergebene Methode onStatusChanged auf
         /// </summary>
-        private void ChangeStatus()
+        private async void ChangeStatus()
         {
-            Occupied = !Occupied;
+            try
+            {
+                Occupied = !Occupied;
 
-            if (Table.Occupied)
-            {
-                Table.Clear();
+                if (Table.Occupied)
+                {
+                    await Table.Clear();
+                }
+                else
+                {
+                    await Table.Occupy();
+                }
+                Occupied = !Occupied;
+                RaisePropertyChanged(nameof(Color));
+                RaisePropertyChanged(nameof(Table.Occupied));
+                _onStatusChanged.Invoke(Table);
             }
-            else
+            catch (Exception ex)
             {
-                Table.Occupy();
+               _onErrorShown.Invoke("Fehler beim Ändern des Status", $"{ex.Message}\n{ex.StackTrace}");
             }
-            RaisePropertyChanged(nameof(Color));
-            RaisePropertyChanged(nameof(Table.Occupied));
-            _onStatusChanged.Invoke(Table);
         }
 
         private readonly Action<Table> _onSelect;
 
         private readonly Action<Table> _onStatusChanged;
+
+        private readonly Action<string, string> _onErrorShown;
 
         #endregion
     }

@@ -8,6 +8,7 @@ using Buchungssystem.App.ViewModel.Bookings;
 using Buchungssystem.App.ViewModel.Loading;
 using Buchungssystem.App.ViewModel.RoomView;
 using Buchungssystem.Domain.Database;
+using MahApps.Metro.Controls.Dialogs;
 
 
 namespace Buchungssystem.App.ViewModel
@@ -126,17 +127,28 @@ namespace Buchungssystem.App.ViewModel
         /// </summary>
         private async void ToBaseData()
         {
-            ShowFlyout = false;
+            try
+            {
 
-            Loading = true;
+                ShowFlyout = false;
 
-            CurrentViewModel = new LoadingViewModel();
+                Loading = true;
 
-            var viewModel = await GetBaseDataManagementViewModel();
+                CurrentViewModel = new LoadingViewModel();
 
-            CurrentViewModel = viewModel;
+                var viewModel = await GetBaseDataManagementViewModel();
 
-            Loading = false;
+                CurrentViewModel = viewModel;
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Laden der daten aus der Datenbank",
+                    $"{ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                Loading = false;
+            }
         }
 
         private async Task<BaseDataManagementViewModel> GetBaseDataManagementViewModel()
@@ -150,17 +162,30 @@ namespace Buchungssystem.App.ViewModel
         /// </summary>
         private async void ToBooking()
         {
-            ShowFlyout = false;
+            try
+            {
 
-            Loading = true;
+                ShowFlyout = false;
 
-            CurrentViewModel = new LoadingViewModel();
+                Loading = true;
 
-            var viewModel = await GetBookingViewModel();
+                CurrentViewModel = new LoadingViewModel();
 
-            CurrentViewModel = viewModel;
+                var viewModel = await GetBookingViewModel();
 
-            Loading = false;
+                CurrentViewModel = viewModel;
+
+                Loading = false;
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Laden der daten aus der Datenbank",
+                    $"{ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                Loading = false;
+            }
         }
 
         /// <summary>
@@ -169,17 +194,30 @@ namespace Buchungssystem.App.ViewModel
         /// </summary>
         private async void ToOverview()
         {
-            ShowFlyout = false;
+            try
+            {
+                ShowFlyout = false;
 
-            Loading = true;
+                Loading = true;
 
-            CurrentViewModel = new LoadingViewModel();
+                CurrentViewModel = new LoadingViewModel();
 
-            var viewModel = await GetBookingsFromDayViewModel();
+                var viewModel = await GetBookingsFromDayViewModel();
 
-            CurrentViewModel = viewModel;
+                CurrentViewModel = viewModel;
 
-            Loading = false;
+                Loading = false;
+
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Laden der Daten aus der Datenbank",
+                    $"{ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
+                Loading = false;
+            }
         }
 
         private async Task<BookingsFromDayViewModel> GetBookingsFromDayViewModel()

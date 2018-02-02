@@ -3,12 +3,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:Buchungssystem.App.UI.Pages.Booking"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tableView="clr-namespace:Buchungssystem.App.ViewModel.TableView"
     d:DesignHeight="300"
     d:DesignWidth="300"
+    dialogs:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -52,10 +54,31 @@
             BorderBrush="LightSlateGray"
             BorderThickness="0,1,0,0">
             <Grid>
+
+                <Grid.Resources>
+                    <Style x:Key="lineStyle" TargetType="Line">
+                        <Setter Property="Stretch" Value="Fill" />
+                        <Setter Property="Grid.ZIndex" Value="100" />
+                        <Setter Property="StrokeDashArray" Value="1,2" />
+                        <Setter Property="Stroke" Value="{StaticResource LightGrey}" />
+                    </Style>
+                    <Style
+                        x:Key="verticalLineStyle"
+                        BasedOn="{StaticResource lineStyle}"
+                        TargetType="Line">
+                        <Setter Property="Y2" Value="1" />
+                        <Setter Property="HorizontalAlignment" Value="Right" />
+                        <Setter Property="Grid.RowSpan" Value="{Binding Path=RowDefinitions.Count, RelativeSource={RelativeSource AncestorType=Grid}}" />
+                    </Style>
+                </Grid.Resources>
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
@@ -64,7 +87,9 @@
                     <ContentControl Content="{Binding Path=SidebarViewModel, Mode=OneWay}" />
                 </Grid>
 
-                <Grid Grid.Column="1">
+                <Line Grid.Column="1" Style="{StaticResource verticalLineStyle}" />
+
+                <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
@@ -85,7 +110,9 @@
                         Style="{StaticResource AccentedSquareButtonStyle}" />
                 </Grid>
 
-                <Grid Grid.Column="2">
+                <Line Grid.Column="3" Style="{StaticResource verticalLineStyle}" />
+
+                <Grid Grid.Column="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -97,7 +124,10 @@
                         Text="Buchungen" />
                     <ContentControl Grid.Row="1" Content="{Binding Path=OpenBookings, Mode=OneWay}" />
                 </Grid>
-                <Grid Grid.Column="3">
+
+                <Line Grid.Column="5" Style="{StaticResource verticalLineStyle}" />
+
+                <Grid Grid.Column="6">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -109,7 +139,7 @@
                         Text="Ausgewählte Buchungen" />
                     <ContentControl Grid.Row="1" Content="{Binding Path=SelectedBookings, Mode=OneWay}" />
                 </Grid>
-                <Grid Grid.Column="4">
+                <Grid Grid.Column="7">
                     <Border Padding="10,0,10,0">
                         <StackPanel VerticalAlignment="Bottom" Orientation="Vertical">
                             <!--  ReSharper disable once Xaml.StaticResourceNotResolved  -->

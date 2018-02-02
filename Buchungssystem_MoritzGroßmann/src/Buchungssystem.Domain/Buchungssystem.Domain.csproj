@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\DeleteNotAllowedException.cs" />
     <Compile Include="Database\IPersistBookingSystemData.cs" />
     <Compile Include="Database\ModelExistException.cs" />
     <Compile Include="Database\ModelNotExistException.cs" />

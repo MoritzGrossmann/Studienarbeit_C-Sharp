@@ -5,6 +5,7 @@ using System.Linq;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.TableView;
 using Buchungssystem.Domain.Model;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Buchungssystem.App.ViewModel.RoomView
 {
@@ -48,7 +49,7 @@ namespace Buchungssystem.App.ViewModel.RoomView
         /// <param name="onTableSelected">Methode, die bei der Auswahl eines Tisches aufgerufen wird</param>
         public TableListViewModel(ICollection<Table> tables, Action<Table> onTableSelected)
         {
-            TableViewModels = new ObservableCollection<TableViewModel>(tables.Select(t => new TableViewModel(t, onTableSelected, TableStatusChanged)));
+            TableViewModels = new ObservableCollection<TableViewModel>(tables.Select(t => new TableViewModel(t, onTableSelected, TableStatusChanged, ShowError)));
         }
 
         #endregion
@@ -63,6 +64,11 @@ namespace Buchungssystem.App.ViewModel.RoomView
         {
             RaisePropertyChanged(nameof(FreeTables));
             RaisePropertyChanged(nameof(FreePlaces));
+        }
+
+        private async void ShowError(string header, string text)
+        {
+            await DialogCoordinator.Instance.ShowMessageAsync(this, header, text);
         }
 
         #endregion

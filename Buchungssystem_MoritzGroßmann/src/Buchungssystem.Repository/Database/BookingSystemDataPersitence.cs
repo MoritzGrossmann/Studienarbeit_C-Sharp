@@ -21,7 +21,7 @@ namespace Buchungssystem.Repository.Database
                 if (productGroup.Id > 0)
                     return UpdateProductGroup(productGroup, context);
 
-                //if (context.ProductGroups.Any(p=> p.Name == productGroup.Name && p.Deleted == false)) throw new ModelExistException();
+                if (context.ProductGroups.Any(p=> p.Name == productGroup.Name && p.Deleted == false)) throw new ModelExistException($"Eine Warengruppe mit dem Name {productGroup.Name} exisitert bereits!");
 
                 var dbProductsGroup = FromProductGroup(productGroup);
                 context.ProductGroups.Add(dbProductsGroup);
@@ -122,7 +122,7 @@ namespace Buchungssystem.Repository.Database
             {
                 if (context.Products.Any(p => p.DbProductId == product.Id)) return UpdateProduct(product, context);
 
-                //if (context.Products.Any(p => p.Name.Equals(product.Name) && p.Deleted == false)) throw new ModelExistException($"Ein Product mit dem Name {product.Name} exisitert bereits!");
+                if (context.Products.Any(p => p.Name.Equals(product.Name) && p.Deleted == false)) throw new ModelExistException($"Ein Product mit dem Name {product.Name} exisitert bereits!");
 
                 var dbProduct = FromProduct(product);
                 context.Products.Add(dbProduct);
@@ -203,7 +203,7 @@ namespace Buchungssystem.Repository.Database
             {
                 if (context.Rooms.Any(r => r.DbRoomId == room.Id)) return UpdateRoom(room, context);
 
-                //if (context.Rooms.Any(r => r.Name.Equals(room.Name) && r.Deleted == false)) throw new ModelExistException($"Ein Raum mit dem Name {room.Name} exisitert bereits!");
+                if (context.Rooms.Any(r => r.Name.Equals(room.Name) && r.Deleted == false)) throw new ModelExistException($"Ein Raum mit dem Name {room.Name} exisitert bereits!");
 
                 var dbRoom = FromRoom(room);
                 context.Rooms.Add(dbRoom);
@@ -226,6 +226,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
+                if (context.Tables.Any(t => t.RoomId == room.Id && context.Bookings.Any(b => b.TableId == t.Id && (BookingStatus)b.Status == Open))) throw new DeleteNotAllowedException($"Löschen nicht möglich: In diesem Raum befinden sich Tische mit offenen Buchungen");
                 context.Rooms.FirstOrDefault(r => r.DbRoomId == room.Id).Deleted = true;
                 context.SaveChanges();
             }
@@ -240,6 +241,8 @@ namespace Buchungssystem.Repository.Database
             using (var context = new BookingsystemEntities())
             {
                 if (context.Tables.Any(t => t.Id == table.Id)) return UpdateTable(table, context);
+
+                if (context.Tables.Any(t => t.Name.Equals(table.Name) && t.RoomId == table.Room.Id && t.Deleted == false)) throw new ModelExistException($"Ein Tisch mit dem Name {table.Name} exisitert bereits in diesem Raum!");
 
                 var dbTable = FromTable(table);
                 table.Occupied = false;
@@ -298,6 +301,7 @@ namespace Buchungssystem.Repository.Database
         {
             using (var context = new BookingsystemEntities())
             {
+                if (context.Bookings.Any(b => b.TableId == table.Id && (BookingStatus)b.Status == Open)) throw new DeleteNotAllowedException($"Löschen nicht möglich: Auf dem Tisch befinden sich noch offene Buchungen");
                 context.Tables.FirstOrDefault(t => t.Id == table.Id).Deleted = true;
                 context.SaveChanges();
             }

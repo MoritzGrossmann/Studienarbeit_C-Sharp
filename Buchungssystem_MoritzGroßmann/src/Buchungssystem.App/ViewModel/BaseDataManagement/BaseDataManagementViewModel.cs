@@ -1,8 +1,11 @@
-﻿using Buchungssystem.App.ViewModel.Base;
+﻿using System;
+using System.Data.SqlServerCe;
+using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.App.ViewModel.BaseDataManagement.Product;
 using Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup;
 using Buchungssystem.App.ViewModel.BaseDataManagement.Room;
 using Buchungssystem.Domain.Database;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement
 {

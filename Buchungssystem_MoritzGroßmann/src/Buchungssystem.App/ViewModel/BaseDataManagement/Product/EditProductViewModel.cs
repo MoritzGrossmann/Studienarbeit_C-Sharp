@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 {
@@ -131,7 +132,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         /// <summary>
         /// Speichert eine Ware und Ruft die im Kontruktor übergebene Funktion onSave auf
         /// </summary>
-        private void Save()
+        private async void Save()
         {
             ShowProgressbar = true;
 
@@ -147,12 +148,21 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
                 product.SetParent(ProductGroupViewModel.ProductGroup);
 
-                _onSave?.Invoke(product);
+                var p = await product.Persist();
+
+                _onSave?.Invoke(p);
             }
-            catch (ModelExistException)
+            catch (ModelExistException ex)
             {
-                AddError(nameof(Name), $"Der Name {Name} wurde schon vergeben");
+                AddError(nameof(Name), ex.Message);
                 RaisePropertyChanged(nameof(HasErrors));
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Speichern der Ware", $"{ex.Message}\n{ex.StackTrace}");
+            }
+            finally
+            {
                 ShowProgressbar = false;
             }
         }
@@ -160,10 +170,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         /// <summary>
         /// Löscht eine Ware und ruft die im Kontruktor übergebene Funktion onDelete auf
         /// </summary>
-        private void Delete()
+        private async void Delete()
         {
-            _product.Delete();
-            _onDelete?.Invoke(_product);
+            try
+            {
+                await _product.Delete();
+                _onDelete?.Invoke(_product);
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen der Ware", $"{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         private readonly Action<Domain.Model.Product> _onSave;

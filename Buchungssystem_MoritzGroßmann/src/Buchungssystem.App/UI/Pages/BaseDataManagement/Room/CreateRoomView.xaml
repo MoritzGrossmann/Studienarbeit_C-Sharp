@@ -5,12 +5,14 @@
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:table="clr-namespace:Buchungssystem.App.ViewModel.BaseDataManagement.Table"
     xmlns:tableView="clr-namespace:Buchungssystem.App.UI.Pages.BaseDataManagement.Table"
     d:DesignHeight="300"
     d:DesignWidth="300"
+    dialogs:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d">
 
     <UserControl.Resources>

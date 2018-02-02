@@ -1,5 +1,7 @@
 ﻿using System;
 using Buchungssystem.App.ViewModel.Base;
+using Buchungssystem.Domain.Database;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 {
@@ -8,20 +10,26 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
     /// </summary>
     internal class EditTableViewModel : EditViewModel
     {
+        private readonly Domain.Model.Room _room;
+
         #region Constructors
 
         /// <summary>
         /// Kontruktor zum Erstellen eines neuen Tisches
         /// </summary>
         /// <param name="onSave">Methode, die beim Speichern des Tisches aufgerufen werden soll</param>
-        public EditTableViewModel(Action<Domain.Model.Table> onSave)
+        /// <param name="bookingSystemDataPersistence">Datenbankkontext</param>
+        public EditTableViewModel(Action<Domain.Model.Table> onSave, Domain.Model.Room room, IPersistBookingSystemData bookingSystemDataPersistence)
         {
+            BookingSystemPersistence = bookingSystemDataPersistence;
+
             HeaderText = "Neuen Tisch anlegen";
             Edit = true;
             Name = String.Empty;
             Places = 1;
 
             _onSave = onSave;
+            _room = room;
 
             SaveCommand = new RelayCommand(Save);
             EditCommand = new RelayCommand(ToggleEdit);
@@ -33,8 +41,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// <param name="onSave">Methode, die beim Speichern des Tisches aufgerufen werden soll</param>
         /// <param name="onDelete">Methode, die beim Löschen des Tisches aufgerufen werden soll</param>
         /// <param name="table">Tisch, welcher bearbeitet werden soll</param>
-        public EditTableViewModel(Action<Domain.Model.Table> onSave, Action<Domain.Model.Table> onDelete, Domain.Model.Table table)
+        /// <param name="bookingSystemDataPersistence">Datenbankkontext</param>
+        public EditTableViewModel(Action<Domain.Model.Table> onSave, Domain.Model.Room room, Action<Domain.Model.Table> onDelete, Domain.Model.Table table, IPersistBookingSystemData bookingSystemDataPersistence)
         {
+            BookingSystemPersistence = bookingSystemDataPersistence;
+
             HeaderText = $"{table.Name} bearbeiten";
             Id = table.Id;
 
@@ -45,6 +56,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
 
             _onSave = onSave;
             _onDelete = onDelete;
+            _room = room;
 
             SaveCommand = new RelayCommand(Save);
             EditCommand = new RelayCommand(ToggleEdit);
@@ -97,21 +109,61 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// <summary>
         /// Erstellt einen Neuen Tisch aus den Eingegebenen Paramtern und übergibt diesen an die im kontrutor übergebene Methode onSave
         /// </summary>
-        private void Save()
+        private async void Save()
         {
             ShowProgressbar = true;
-            var table = new Domain.Model.Table() {Id = Id, Name = Name, Places = Places, Occupied = false};
-            _onSave?.Invoke(table);
+
+            try
+            {
+                var table = new Domain.Model.Table
+                {
+                    Id = Id,
+                    Name = Name,
+                    Places = Places,
+                    Occupied = false,
+                    Room = _room,
+                    Persistence = BookingSystemPersistence
+                };
+
+                var t = await table.Persist();
+
+                _onSave?.Invoke(t);
+            }
+            catch (ModelExistException ex)
+            {
+                AddError(nameof(Name), ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Error", ex.Message);
+            }
+            finally
+            {
+                ShowProgressbar = false;
+            }
         }
 
         /// <summary>
         /// Löscht einen Tisch
         /// Ruft die im Kontruktor übergebene Funktion onDelete auf und übergibt den gelöschten Tisch
         /// </summary>
-        private void Delete()
+        private async void Delete()
         {
-            _table.Delete();
-            _onDelete?.Invoke(_table);
+            try
+            {
+
+                await _table.Delete();
+                _onDelete?.Invoke(_table);
+
+            }
+            catch (DeleteNotAllowedException ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Speichern des Tisches", $"{ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Tisches", $"{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         private readonly Action<Domain.Model.Table> _onDelete;

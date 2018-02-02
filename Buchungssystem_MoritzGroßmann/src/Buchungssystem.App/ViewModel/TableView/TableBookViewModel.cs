@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
+using MahApps.Metro.Controls.Dialogs;
 using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
@@ -248,21 +249,33 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// <summary>
         /// Alle angewählten Buchungen werden als Bezahlt markiert und aus den Angewählten Buchungen gelöscht
         /// </summary>
-        private void PayBookings()
+        private async void PayBookings()
         {
-            SelectedBookings.BookingViewModels.ForEach(async bvm => await bvm.Booking.Pay());
-            SelectedBookings.Clear();
-            RaisePropertyChanged(nameof(CanFinishBookings));
+            try { 
+                SelectedBookings.BookingViewModels.ForEach(async bvm => await bvm.Booking.Pay());
+                SelectedBookings.Clear();
+                RaisePropertyChanged(nameof(CanFinishBookings));
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Bezahlen der Buchungen", $"{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         /// <summary>
         /// Alle angewählten Buchungen werden als Stoerniert markiert und aus den Angewählten Buchungen gelöscht
         /// </summary>
-        private void CancelBookings()
+        private async void CancelBookings()
         {
-            SelectedBookings.BookingViewModels.ForEach(async bvm => await bvm.Booking.Cancel());
-            SelectedBookings.Clear();
-            RaisePropertyChanged(nameof(CanFinishBookings));
+            try { 
+                SelectedBookings.BookingViewModels.ForEach(async bvm => await bvm.Booking.Cancel());
+                SelectedBookings.Clear();
+                RaisePropertyChanged(nameof(CanFinishBookings));
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Stornieren der Buchungen", $"{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         /// <summary>
@@ -303,20 +316,29 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// </summary>
         private async void BookProducts()
         {
-            foreach (var productViewModel in SelectedProducts.ProductViewModels)
+            try
             {
-                var booking = await new Booking()
-                {
-                    Persistence = Table.Persistence,
-                    Product = productViewModel.Product,
-                    Table = Table
-                }.Persist();
-                OpenBookings.Add(new BookingViewModel(booking, SelectBooking));
-                Table.Bookings.Add(booking);
-            }
-            SelectedProducts.ProductViewModels.Clear();
 
-            RaisePropertyChanged(nameof(CanBookProducts));
+                foreach (var productViewModel in SelectedProducts.ProductViewModels)
+                {
+                    var booking = await new Booking()
+                    {
+                        Persistence = Table.Persistence,
+                        Product = productViewModel.Product,
+                        Table = Table
+                    }.Persist();
+                    OpenBookings.Add(new BookingViewModel(booking, SelectBooking));
+                    Table.Bookings.Add(booking);
+                }
+                SelectedProducts.ProductViewModels.Clear();
+
+                RaisePropertyChanged(nameof(CanBookProducts));
+
+            }
+            catch (Exception ex)
+            {
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Buchen der Waren", $"{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         #endregion
