@@ -142,35 +142,45 @@ namespace Buchungssystem.App.ViewModel
         /// Setzt ShowFlyout auf False
         /// Setzt das CurrentViewModel auf ein neues RoomListViewModel
         /// </summary>
-        private void ToBooking()
+        private async void ToBooking()
         {
             ShowFlyout = false;
 
             Loading = true;
 
             CurrentViewModel = new LoadingViewModel();
-            TaskAwaiter<RoomListViewModel> awaiter = GetBookingViewModel().GetAwaiter();
 
-            awaiter.OnCompleted(() =>
-            {
-                CurrentViewModel = awaiter.GetResult();
-                Loading = false;
-            });
+            CurrentViewModel = await GetBookingViewModel();
+
+            Loading = false;
         }
 
         /// <summary>
         /// Setzt ShowFlyout auf False
         /// Setzt das CurrentViewModel auf ein neues BookingsFromDayViewModel
         /// </summary>
-        private void ToOverview()
+        private async void ToOverview()
         {
             ShowFlyout = false;
-            CurrentViewModel = new BookingsFromDayViewModel(_bookingSystemDataPersistence);
+
+            Loading = true;
+
+            CurrentViewModel = new LoadingViewModel();
+
+            CurrentViewModel = await GetBookingsFromDayViewModel();
+
+            Loading = false;
         }
 
-        private Task<RoomListViewModel> GetBookingViewModel()
+        private async Task<BookingsFromDayViewModel> GetBookingsFromDayViewModel()
         {
-            return Task.Run(() => new RoomListViewModel(_bookingSystemDataPersistence.Rooms()));
+            return await new Task<BookingsFromDayViewModel>(() =>
+                new BookingsFromDayViewModel(_bookingSystemDataPersistence));
+        }
+
+        private async Task<RoomListViewModel> GetBookingViewModel()
+        {
+            return await new Task<RoomListViewModel>(() => new RoomListViewModel(_bookingSystemDataPersistence.Rooms()));
         }
 
         /// <summary>
