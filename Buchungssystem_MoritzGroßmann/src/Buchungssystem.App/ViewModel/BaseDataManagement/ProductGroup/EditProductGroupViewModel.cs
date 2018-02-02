@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Database;
 using MahApps.Metro.Controls.Dialogs;

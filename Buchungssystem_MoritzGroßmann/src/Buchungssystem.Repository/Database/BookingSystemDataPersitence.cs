@@ -456,9 +456,16 @@ namespace Buchungssystem.Repository.Database
 
         private Booking FromDbBooking(DbBooking dbBooking)
         {
-            var booking = new Booking() { Id = dbBooking.Id, Status = (BookingStatus)dbBooking.Status, Created = dbBooking.Created ?? DateTime.MinValue, Finished = dbBooking.Finished ?? DateTime.MinValue, Price = dbBooking.Price };
-            booking.Product = Product(dbBooking.ProductId);
-            booking.Persistence = this;
+            var booking = new Booking
+            {
+                Id = dbBooking.Id,
+                Status = (BookingStatus) dbBooking.Status,
+                Created = dbBooking.Created ?? DateTime.MinValue,
+                Finished = dbBooking.Finished ?? DateTime.MinValue,
+                Price = dbBooking.Price,
+                Product = Product(dbBooking.ProductId),
+                Persistence = this
+            };
             return booking;
         }
 

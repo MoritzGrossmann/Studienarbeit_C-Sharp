@@ -82,6 +82,7 @@
         <StackPanel
             Grid.Row="1"
             Height="{StaticResource HeightStandardCircleButton}"
+            Margin="{StaticResource MarginRight4}"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
             <TextBlock FontSize="15pt" Text="Gesamt: " />

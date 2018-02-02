@@ -82,7 +82,8 @@
             IsChecked="{Binding Path=NoParent, Mode=TwoWay}"
             IsEnabled="{Binding Path=Edit, Mode=OneWay}"
             OffLabel="Nein"
-            OnLabel="Ja" />
+            OnLabel="Ja"
+            Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
         <StackPanel
             Grid.Row="5"

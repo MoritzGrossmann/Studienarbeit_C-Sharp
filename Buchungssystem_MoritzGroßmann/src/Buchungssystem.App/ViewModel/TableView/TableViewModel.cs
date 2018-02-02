@@ -4,7 +4,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Buchungssystem.App.ViewModel.Base;
 using Buchungssystem.Domain.Model;
-using MahApps.Metro.Controls.Dialogs;
 using Unity.Interception.Utilities;
 
 namespace Buchungssystem.App.ViewModel.TableView
@@ -78,6 +77,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         /// <param name="table">Tisch, welcher das TableViewModel repräsentiert</param>
         /// <param name="onSelect">Methode, die ausgeführt wird, wenn der Tisch ausgewählt wurde</param>
         /// <param name="onStatusChanged">Methode, die ausgeführt wird, wenn der status des Tisches geändert wurde</param>
+        /// <param name="onErrorShown">Methode, die ausgeführt wird, wenn beim Ändern des Statusses des Tisches ein Fehler auftritt</param>
         public TableViewModel(Table table, Action<Table> onSelect, Action<Table> onStatusChanged, Action<string, string> onErrorShown)
         {
             _onSelect = onSelect;
@@ -126,8 +126,6 @@ namespace Buchungssystem.App.ViewModel.TableView
         {
             try
             {
-                Occupied = !Occupied;
-
                 if (Table.Occupied)
                 {
                     await Table.Clear();

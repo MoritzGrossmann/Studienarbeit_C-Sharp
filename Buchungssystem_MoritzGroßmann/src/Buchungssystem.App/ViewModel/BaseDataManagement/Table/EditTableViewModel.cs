@@ -18,6 +18,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// Kontruktor zum Erstellen eines neuen Tisches
         /// </summary>
         /// <param name="onSave">Methode, die beim Speichern des Tisches aufgerufen werden soll</param>
+        /// <param name="room">Raum, in welchem der Tisch steht</param>
         /// <param name="bookingSystemDataPersistence">Datenbankkontext</param>
         public EditTableViewModel(Action<Domain.Model.Table> onSave, Domain.Model.Room room, IPersistBookingSystemData bookingSystemDataPersistence)
         {
@@ -39,6 +40,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// Kontruktor zum Bearbeiten eines Vorhandenen Tisches
         /// </summary>
         /// <param name="onSave">Methode, die beim Speichern des Tisches aufgerufen werden soll</param>
+        /// <param name="room">Raum, in welchen der Tisch steht</param>
         /// <param name="onDelete">Methode, die beim Löschen des Tisches aufgerufen werden soll</param>
         /// <param name="table">Tisch, welcher bearbeitet werden soll</param>
         /// <param name="bookingSystemDataPersistence">Datenbankkontext</param>

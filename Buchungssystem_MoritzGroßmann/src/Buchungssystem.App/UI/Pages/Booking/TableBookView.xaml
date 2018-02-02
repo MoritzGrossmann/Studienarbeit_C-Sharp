@@ -56,15 +56,15 @@
             <Grid>
 
                 <Grid.Resources>
-                    <Style x:Key="lineStyle" TargetType="Line">
+                    <Style x:Key="LineStyle" TargetType="Line">
                         <Setter Property="Stretch" Value="Fill" />
                         <Setter Property="Grid.ZIndex" Value="100" />
                         <Setter Property="StrokeDashArray" Value="1,2" />
                         <Setter Property="Stroke" Value="{StaticResource LightGrey}" />
                     </Style>
                     <Style
-                        x:Key="verticalLineStyle"
-                        BasedOn="{StaticResource lineStyle}"
+                        x:Key="VerticalLineStyle"
+                        BasedOn="{StaticResource LineStyle}"
                         TargetType="Line">
                         <Setter Property="Y2" Value="1" />
                         <Setter Property="HorizontalAlignment" Value="Right" />
@@ -87,7 +87,7 @@
                     <ContentControl Content="{Binding Path=SidebarViewModel, Mode=OneWay}" />
                 </Grid>
 
-                <Line Grid.Column="1" Style="{StaticResource verticalLineStyle}" />
+                <Line Grid.Column="1" Style="{StaticResource VerticalLineStyle}" />
 
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
@@ -110,7 +110,7 @@
                         Style="{StaticResource AccentedSquareButtonStyle}" />
                 </Grid>
 
-                <Line Grid.Column="3" Style="{StaticResource verticalLineStyle}" />
+                <Line Grid.Column="3" Style="{StaticResource VerticalLineStyle}" />
 
                 <Grid Grid.Column="4">
                     <Grid.RowDefinitions>
@@ -119,13 +119,14 @@
                     </Grid.RowDefinitions>
                     <TextBlock
                         Grid.Row="0"
+                        Margin="{StaticResource MarginLeft4}"
                         FontSize="16pt"
                         FontWeight="Bold"
                         Text="Buchungen" />
                     <ContentControl Grid.Row="1" Content="{Binding Path=OpenBookings, Mode=OneWay}" />
                 </Grid>
 
-                <Line Grid.Column="5" Style="{StaticResource verticalLineStyle}" />
+                <Line Grid.Column="5" Style="{StaticResource VerticalLineStyle}" />
 
                 <Grid Grid.Column="6">
                     <Grid.RowDefinitions>
@@ -134,6 +135,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock
                         Grid.Row="0"
+                        Margin="{StaticResource MarginLeft4}"
                         FontSize="16pt"
                         FontWeight="Bold"
                         Text="Ausgewählte Buchungen" />
