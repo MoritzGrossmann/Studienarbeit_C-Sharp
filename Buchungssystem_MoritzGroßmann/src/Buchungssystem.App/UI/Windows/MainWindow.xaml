@@ -109,6 +109,13 @@
                     <ContentControl Content="{Binding CurrentViewModel}" />
                 </Border>
             </controls:HamburgerMenu.Content>
+
+            <!--  Options  -->
+            <controls:HamburgerMenu.OptionsItemsSource>
+                <controls:HamburgerMenuItemCollection>
+                    <controls:HamburgerMenuGlyphItem Glyph="Window-Maximize" Label="Maximieren" />
+                </controls:HamburgerMenuItemCollection>
+            </controls:HamburgerMenu.OptionsItemsSource>
         </controls:HamburgerMenu>
     </Grid>
 </controls:MetroWindow>

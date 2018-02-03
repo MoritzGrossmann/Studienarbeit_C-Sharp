@@ -43,7 +43,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         {
             _bookingSystemPersistence = bookingSystemPersistence;
 
-            RoomViewModels = new ObservableCollection<RoomViewModel>(_bookingSystemPersistence.Rooms().Select(r => new RoomViewModel(r, SelectRoom)));
+            RoomViewModels = new ObservableCollection<RoomViewModel>(_bookingSystemPersistence.Rooms().OrderBy(r => r.Name).Select(r => new RoomViewModel(r, SelectRoom)));
 
             AddRoomCommand = new RelayCommand(AddRoom);
 
@@ -78,6 +78,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
                 roomViewModel.Room = room;
             else
                 RoomViewModels.Add(new RoomViewModel(room, SelectRoom));
+
+            RoomViewModels = new ObservableCollection<RoomViewModel>(RoomViewModels.OrderBy(rvm => rvm.Room.Name).ToList());
 
             ActualRoomViewModel = new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, room);
         }

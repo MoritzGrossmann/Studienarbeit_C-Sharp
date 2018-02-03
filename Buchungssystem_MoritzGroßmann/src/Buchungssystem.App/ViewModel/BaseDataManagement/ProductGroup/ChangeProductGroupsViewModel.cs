@@ -85,6 +85,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             else
                 ProductGroupViewModels.Add(new ProductGroupViewModel(productGroup, Select));
 
+            ProductGroupViewModels =
+                new ObservableCollection<ProductGroupViewModel>(ProductGroupViewModels.OrderBy(pvm => pvm.ProductGroup.Name).ToList());
+
             ActualProductGroupViewModel = new EditProductGroupViewModel(Save, Delete, _bookingSystemPersistence, productGroup);
         }
 

@@ -137,7 +137,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
             }
             catch (Exception ex)
             {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Error", ex.Message);
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Speichern des Tisches", ex.Message);
             }
             finally
             {
@@ -160,7 +160,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
             }
             catch (DeleteNotAllowedException ex)
             {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Speichern des Tisches", $"{ex.Message}");
+                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Tisches", $"{ex.Message}");
             }
             catch (Exception ex)
             {

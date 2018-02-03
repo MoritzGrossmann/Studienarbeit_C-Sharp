@@ -15,10 +15,12 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
 
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
 
+        private ObservableCollection<ProductViewModel> _productViewModels;
+
         /// <summary>
         /// Repräsentiert alle existenten Waren
         /// </summary>
-        public ObservableCollection<ProductViewModel> ProductViewModels { get; set; }
+        public ObservableCollection<ProductViewModel> ProductViewModels { get => _productViewModels; set => SetProperty(ref _productViewModels, value, nameof(ProductViewModels)); }
 
         private BaseViewModel _actualProductViewModel;
 
@@ -76,6 +78,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             {
                 ProductViewModels.Add(new ProductViewModel(product, Select));
             }
+
+            ProductViewModels =
+                new ObservableCollection<ProductViewModel>(ProductViewModels.OrderBy(pvm => pvm.Product.Name).ToList());
+
+
 
             ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, product);
         }

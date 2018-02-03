@@ -19,5 +19,16 @@ namespace Buchungssystem.App.UI.Windows
             InitializeComponent();
             DataContext = new MainViewModel(new BookingSystemDataPersitence());
         }
+
+        public void ToggleFullscreen()
+        {
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
+            Left = 0;
+            Top = 0;
+            Width = SystemParameters.VirtualScreenWidth;
+            Height = SystemParameters.VirtualScreenHeight;
+            Topmost = true;
+        }
     }
 }

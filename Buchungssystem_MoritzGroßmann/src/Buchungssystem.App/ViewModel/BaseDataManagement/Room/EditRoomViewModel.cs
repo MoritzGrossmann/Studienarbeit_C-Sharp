@@ -97,7 +97,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             AddTableCommand = new RelayCommand(AddTable);
 
             if (room.Tables != null)
-                TableViewModels = new ObservableCollection<TableViewModel>(room.Tables.AsEnumerable().Select(t => new TableViewModel(t, SelectTable)));
+                TableViewModels = new ObservableCollection<TableViewModel>(room.Tables.OrderBy(t => t.Name).AsEnumerable().Select(t => new TableViewModel(t, SelectTable)));
             else
                 TableViewModels = new ObservableCollection<TableViewModel>();    
 
@@ -205,6 +205,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
                 tableViewModel.Table = table;
             else
                 TableViewModels.Add(new TableViewModel(table, SelectTable));
+
+            TableViewModels = new ObservableCollection<TableViewModel>(TableViewModels.OrderBy(tvm => tvm.Table.Name).ToList());
 
             EditTableViewModel = new EditTableViewModel(SaveTable, _room, DeleteTable, table, BookingSystemPersistence); 
         }

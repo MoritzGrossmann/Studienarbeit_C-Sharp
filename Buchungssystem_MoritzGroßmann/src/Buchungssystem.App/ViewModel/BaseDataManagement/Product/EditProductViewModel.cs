@@ -81,7 +81,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         {
             HeaderText = "Neue Ware Anelegen";
             Edit = true;
-            Name = "";
+            Name = String.Empty;
             Price = 0;
             BookingSystemPersistence = bookingSystemPersistence;
             ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(BookingSystemPersistence.LeafProductGroups().Select(p => new ProductGroupViewModel(p, null)));
