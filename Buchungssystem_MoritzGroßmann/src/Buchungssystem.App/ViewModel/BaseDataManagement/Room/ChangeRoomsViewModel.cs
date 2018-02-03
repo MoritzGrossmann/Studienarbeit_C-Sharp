@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
@@ -13,12 +15,16 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
     {
         #region Properties
 
+        private ICollection<Domain.Model.Room> _rooms;
+
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
+
+        private ObservableCollection<RoomViewModel> _roomViewModels;
 
         /// <summary>
         /// Liste aller Existierenden Räume
         /// </summary>
-        public ObservableCollection<RoomViewModel> RoomViewModels { get; set; }
+        public ObservableCollection<RoomViewModel> RoomViewModels { get => _roomViewModels; set => SetProperty(ref _roomViewModels, value, nameof(RoomViewModels)); }
 
         private BaseViewModel _actualRoomViewModel;
 
@@ -29,6 +35,33 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         {
             get => _actualRoomViewModel;
             set => SetProperty(ref _actualRoomViewModel, value, nameof(ActualRoomViewModel));
+        }
+
+        private string _query;
+
+        /// <summary>
+        /// Repräsentiert den String in der Warensuche
+        /// </summary>
+        public string Query
+        {
+            get => _query;
+            set
+            {
+                if (value.Trim().Equals(String.Empty))
+                {
+                    RoomViewModels =
+                        new ObservableCollection<RoomViewModel>(
+                            _rooms.Select(r => new RoomViewModel(r, Select)));
+                }
+                else
+                {
+                    RoomViewModels =
+                        new ObservableCollection<RoomViewModel>(
+                            _rooms.Where(r => r.Name.ToLower().Contains(value.ToLower())).Select(r => new RoomViewModel(r, Select)));
+                }
+                SetProperty(ref _query, value, nameof(Query));
+
+            }
         }
 
         #endregion
@@ -42,8 +75,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         public ChangeRoomsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
+            _rooms = bookingSystemPersistence.Rooms().OrderBy(r => r.Name).ToList();
 
-            RoomViewModels = new ObservableCollection<RoomViewModel>(_bookingSystemPersistence.Rooms().OrderBy(r => r.Name).Select(r => new RoomViewModel(r, SelectRoom)));
+            RoomViewModels = new ObservableCollection<RoomViewModel>(_rooms.Select(r => new RoomViewModel(r, Select)));
 
             AddRoomCommand = new RelayCommand(AddRoom);
 
@@ -60,7 +94,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// Setzt das ActualRoomViewModel auf ein neues EditRoomViewModel mit dem ausgewählten Raum
         /// </summary>
         /// <param name="room">Raum, welcher ausgewählt wurde</param>
-        private void SelectRoom(Domain.Model.Room room)
+        private void Select(Domain.Model.Room room)
         {
             ActualRoomViewModel = new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, room);
         }
@@ -72,14 +106,18 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// <param name="room">Raum, welcher gespeichert wurde</param>
         private void Save(Domain.Model.Room room)
         {
-            var roomViewModel = RoomViewModels.FirstOrDefault(r => r.Room.Id == room.Id);
+            if (_rooms.Any(r => r.Id == room.Id))
+            {
+                _rooms.Remove(_rooms.FirstOrDefault(r => r.Id == room.Id));
+            }
 
-            if (roomViewModel != null)
-                roomViewModel.Room = room;
-            else
-                RoomViewModels.Add(new RoomViewModel(room, SelectRoom));
+            _rooms.Add(room);
+            _rooms = _rooms.OrderBy(r => r.Name).ToList();
 
-            RoomViewModels = new ObservableCollection<RoomViewModel>(RoomViewModels.OrderBy(rvm => rvm.Room.Name).ToList());
+            RoomViewModels = new ObservableCollection<RoomViewModel>(
+                Query.Trim().Equals(String.Empty)
+                    ? _rooms.Select(r => new RoomViewModel(r, Select))
+                    : _rooms.Where(r => r.Name.ToLower().Contains(Query.ToLower())).Select(r => new RoomViewModel(r, Select)));
 
             ActualRoomViewModel = new EditRoomViewModel(Save, Delete, _bookingSystemPersistence, room);
         }

@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
@@ -13,6 +15,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
     {
         private IPersistBookingSystemData _bookingSystemPersistence;
 
+        private ICollection<Domain.Model.ProductGroup> _productGroups;
+
         #region Constructor
 
         /// <summary>
@@ -22,8 +26,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         public ChangeProductGroupsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
+            _productGroups = bookingSystemPersistence.ProductGroups().OrderBy(p => p.Name).ToList();
 
-            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_bookingSystemPersistence.ProductGroups().OrderBy(p => p.Name).Select(p => new ProductGroupViewModel(p, Select)));
+            ProductGroupViewModels = new ObservableCollection<ProductGroupViewModel>(_productGroups.Select(p => new ProductGroupViewModel(p, Select)));
 
             ActualProductGroupViewModel = ProductGroupViewModels.Any()
                 // ReSharper disable once PossibleNullReferenceException : KAnn nicht null sein, da ausgeführt wird wenn ProductGroupViewModels.Any()
@@ -31,6 +36,33 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
                 : new EditProductGroupViewModel(Save, _bookingSystemPersistence);
 
             AddCommand = new RelayCommand(AddProductGroup);
+        }
+
+        private string _query = String.Empty;
+
+        /// <summary>
+        /// Repräsentiert den String in der Warensuche
+        /// </summary>
+        public string Query
+        {
+            get => _query;
+            set
+            {
+                if (value.Trim().Equals(String.Empty))
+                {
+                    ProductGroupViewModels =
+                        new ObservableCollection<ProductGroupViewModel>(
+                            _productGroups.Select(p => new ProductGroupViewModel(p, Select)));
+                }
+                else
+                {
+                    ProductGroupViewModels =
+                        new ObservableCollection<ProductGroupViewModel>(
+                            _productGroups.Where(p => p.Name.ToLower().Contains(value.ToLower())).Select(p => new ProductGroupViewModel(p, Select)));
+                }
+                SetProperty(ref _query, value, nameof(Query));
+
+            }
         }
 
         #endregion
@@ -78,15 +110,19 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         /// <param name="productGroup"></param>
         private void Save(Domain.Model.ProductGroup productGroup)
         {
-            var productGroupViewModel = ProductGroupViewModels.FirstOrDefault(p => p.ProductGroup.Id == productGroup.Id);
+            if (_productGroups.Any(p => p.Id == productGroup.Id))
+            {
+                _productGroups.Remove(_productGroups.FirstOrDefault(p => p.Id == productGroup.Id));
+            }
 
-            if (productGroupViewModel != null)
-                productGroupViewModel.ProductGroup = productGroup;
-            else
-                ProductGroupViewModels.Add(new ProductGroupViewModel(productGroup, Select));
+            _productGroups.Add(productGroup);
+            _productGroups = _productGroups.OrderBy(p => p.Name).ToList();
 
             ProductGroupViewModels =
-                new ObservableCollection<ProductGroupViewModel>(ProductGroupViewModels.OrderBy(pvm => pvm.ProductGroup.Name).ToList());
+                new ObservableCollection<ProductGroupViewModel>(
+                    Query.Trim().Equals(String.Empty)
+                        ? _productGroups.Select(p => new ProductGroupViewModel(p, Select))
+                        : _productGroups.Where(p => p.Name.ToLower().Contains(Query.ToLower())).Select(p => new ProductGroupViewModel(p, Select)));
 
             ActualProductGroupViewModel = new EditProductGroupViewModel(Save, Delete, _bookingSystemPersistence, productGroup);
         }
@@ -101,8 +137,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
             var productGroupViewModel = ProductGroupViewModels.FirstOrDefault(p => p.ProductGroup.Id == productGroup.Id);
             ProductGroupViewModels.Remove(productGroupViewModel);
 
+            _productGroups.Remove(_productGroups.FirstOrDefault(p => p.Id == productGroup.Id));
+
             // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit RoomViewModels.Any() ausgeschlossen
-            ActualProductGroupViewModel = ProductGroupViewModels.Any() ? new EditProductGroupViewModel(Save, Delete, _bookingSystemPersistence, ProductGroupViewModels.FirstOrDefault().ProductGroup) : new EditProductGroupViewModel(Save, _bookingSystemPersistence);
+            ActualProductGroupViewModel = _productGroups.Any() ? new EditProductGroupViewModel(Save, Delete, _bookingSystemPersistence, _productGroups.FirstOrDefault()) : new EditProductGroupViewModel(Save, _bookingSystemPersistence);
         }
 
         /// <summary>

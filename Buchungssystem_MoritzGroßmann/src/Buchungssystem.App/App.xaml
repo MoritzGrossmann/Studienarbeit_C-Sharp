@@ -34,8 +34,8 @@
                     <Brush x:Key="Grey">LightSlateGray</Brush>
                     <Brush x:Key="LightGrey">LightGray</Brush>
 
-                    <system:Double x:Key="HeightStandardCircleButton">40</system:Double>
-                    <system:Double x:Key="WidthStandardCircleButton">40</system:Double>
+                    <system:Double x:Key="HeightStandardCircleButton">50</system:Double>
+                    <system:Double x:Key="WidthStandardCircleButton">50</system:Double>
 
                     <DataTemplate x:Key="IconButton" DataType="{x:Type Button}">
                         <Grid Height="48px">

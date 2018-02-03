@@ -137,12 +137,20 @@
                         IsEnabled="{Binding Path=Id, Mode=OneWay, Converter={converter:IntToBoolConverter}}"
                         Style="{DynamicResource MetroCircleButtonStyle}"
                         ToolTip="Tisch Hinzufügen" />
+                    <TextBox
+                        Width="200px"
+                        Margin="{StaticResource MarginLeft4}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        controls:TextBoxHelper.ClearTextButton="True"
+                        controls:TextBoxHelper.Watermark="Suchen"
+                        FontSize="18pt"
+                        Text="{Binding Path=Query, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <ListView
                     Grid.Row="2"
                     Grid.Column="0"
                     MinWidth="200px"
-                    Margin="0,0,10px,0"
                     ItemsSource="{Binding Path=TableViewModels}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -181,12 +189,14 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <ContentControl
+                <Grid
                     Grid.Row="1"
                     Grid.RowSpan="2"
-                    Grid.Column="1"
-                    BorderThickness="1px"
-                    Content="{Binding Path=EditTableViewModel, Mode=OneWay}" />
+                    Grid.Column="1">
+                    <Border BorderThickness="20,0,0,0">
+                        <ContentControl Content="{Binding Path=EditTableViewModel, Mode=OneWay}" />
+                    </Border>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

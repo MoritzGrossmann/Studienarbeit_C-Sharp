@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -18,6 +19,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// Repräsentiert die Id des bearbeitenten Raumes
         /// </summary>
         public int Id { get; }
+
+        private ICollection<Domain.Model.Table> _tables;
 
         private readonly Domain.Model.Room _room;
 
@@ -45,6 +48,33 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             set => SetProperty(ref _editTableViewModel, value, nameof(EditTableViewModel));
         }
 
+        private string _query = String.Empty;
+
+        /// <summary>
+        /// Repräsentiert den String in der Warensuche
+        /// </summary>
+        public string Query
+        {
+            get => _query;
+            set
+            {
+                if (value.Trim().Equals(String.Empty))
+                {
+                    TableViewModels =
+                        new ObservableCollection<TableViewModel>(
+                            _tables.Select(p => new TableViewModel(p, SelectTable)));
+                }
+                else
+                {
+                    TableViewModels =
+                        new ObservableCollection<TableViewModel>(
+                            _tables.Where(t => t.Name.ToLower().Contains(value.ToLower())).Select(t => new TableViewModel(t, SelectTable)));
+                }
+                SetProperty(ref _query, value, nameof(Query));
+
+            }
+        }
+
         #endregion
 
         #region Contructor
@@ -66,6 +96,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             EditCommand = new RelayCommand(ToggleEdit);
             DeleteCommand = new RelayCommand(Delete);
             AddTableCommand = new RelayCommand(AddTable);
+
+            _tables = new List<Domain.Model.Table>();
 
             TableViewModels = new ObservableCollection<TableViewModel>();
             EditTableViewModel = null;
@@ -96,13 +128,11 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             DeleteCommand = new RelayCommand(Delete);
             AddTableCommand = new RelayCommand(AddTable);
 
-            if (room.Tables != null)
-                TableViewModels = new ObservableCollection<TableViewModel>(room.Tables.OrderBy(t => t.Name).AsEnumerable().Select(t => new TableViewModel(t, SelectTable)));
-            else
-                TableViewModels = new ObservableCollection<TableViewModel>();    
+            _tables = room.Tables?.OrderBy(t => t.Name).ToList() ?? new List<Domain.Model.Table>();
 
-            if (TableViewModels.Any())
-                EditTableViewModel = new EditTableViewModel(SaveTable, _room, DeleteTable, TableViewModels.FirstOrDefault()?.Table, BookingSystemPersistence);
+            TableViewModels = new ObservableCollection<TableViewModel>(_tables.Select(t => new TableViewModel(t, SelectTable)));
+
+            EditTableViewModel = _tables.Any() ? new EditTableViewModel(SaveTable, _room, DeleteTable, _tables.FirstOrDefault(), BookingSystemPersistence) : new EditTableViewModel(SaveTable, _room, BookingSystemPersistence);
         }
 
         #endregion
@@ -200,13 +230,17 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// <param name="table">Tisch, der gespeichert werden soll</param>
         private void SaveTable(Domain.Model.Table table)
         {
-            var tableViewModel = TableViewModels.FirstOrDefault(t => t.Table.Id == table.Id);
-            if (tableViewModel != null)
-                tableViewModel.Table = table;
-            else
-                TableViewModels.Add(new TableViewModel(table, SelectTable));
+            if (_tables.Any(t => t.Id == table.Id))
+            {
+                _tables.Remove(_tables.FirstOrDefault(t => t.Id == table.Id));
+            }
 
-            TableViewModels = new ObservableCollection<TableViewModel>(TableViewModels.OrderBy(tvm => tvm.Table.Name).ToList());
+            _tables.Add(table);
+            _tables = _tables.OrderBy(t => t.Name).ToList();
+
+            TableViewModels = new ObservableCollection<TableViewModel>(Query.Trim().Equals(String.Empty)
+                ? _tables.Select(t => new TableViewModel(t, SelectTable))
+                : _tables.Where(t => t.Name.ToLower().Contains(Query.ToLower())).Select(t => new TableViewModel(t, SelectTable)));
 
             EditTableViewModel = new EditTableViewModel(SaveTable, _room, DeleteTable, table, BookingSystemPersistence); 
         }
@@ -221,6 +255,13 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             var tableViewModel = TableViewModels.FirstOrDefault(t => t.Table.Id == table.Id);
             if (tableViewModel != null)
                 TableViewModels.Remove(tableViewModel);
+
+            _tables.Remove(_tables.FirstOrDefault(t => t.Id == table.Id));
+
+            EditTableViewModel = _tables.Any()
+                ? new EditTableViewModel(SaveTable, _room, DeleteTable, _tables.FirstOrDefault(),
+                    BookingSystemPersistence)
+                : new EditTableViewModel(SaveTable, _room, BookingSystemPersistence);
         }
 
         private readonly Action<Domain.Model.Room> _onSave;

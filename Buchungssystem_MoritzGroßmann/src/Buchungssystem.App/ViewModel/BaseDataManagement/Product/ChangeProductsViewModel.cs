@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Buchungssystem.App.ViewModel.Base;
@@ -14,6 +16,8 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         #region Properties
 
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
+
+        private ICollection<Domain.Model.Product> _products;
 
         private ObservableCollection<ProductViewModel> _productViewModels;
 
@@ -33,6 +37,33 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             set => SetProperty(ref _actualProductViewModel, value, nameof(ActualProductViewModel));
         }
 
+        private string _query = String.Empty;
+
+        /// <summary>
+        /// Repräsentiert den String in der Warensuche
+        /// </summary>
+        public string Query
+        {
+            get => _query;
+            set
+            {
+               if (value.Trim().Equals(String.Empty))
+                {
+                    ProductViewModels =
+                        new ObservableCollection<ProductViewModel>(
+                            _products.Select(p => new ProductViewModel(p, Select)));
+                }
+                else
+                {
+                    ProductViewModels =
+                        new ObservableCollection<ProductViewModel>(
+                            _products.Where(p => p.Name.ToLower().Contains(value.ToLower())).Select(p => new ProductViewModel(p, Select)));
+                }
+                SetProperty(ref _query, value, nameof(Query));
+
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -42,7 +73,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         public ChangeProductsViewModel(IPersistBookingSystemData bookingSystemPersistence)
         {
             _bookingSystemPersistence = bookingSystemPersistence;
-            ProductViewModels = new ObservableCollection<ProductViewModel>(_bookingSystemPersistence.Products().OrderBy(p => p.Name).Select(p => new ProductViewModel(p, Select)));
+            _products = _bookingSystemPersistence.Products().OrderBy(p => p.Name).ToList();
+
+            ProductViewModels = new ObservableCollection<ProductViewModel>(_products.Select(p => new ProductViewModel(p, Select)));
             AddCommand = new RelayCommand(Add);
 
             // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit ProductViewModels.Any() ausgeschlossen
@@ -69,20 +102,19 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         /// <param name="product">Gespeicherte Ware</param>
         private void Save(Domain.Model.Product product)
         {
-            if (ProductViewModels.Any(pvm => pvm.Product.Id == product.Id))
+
+            if (_products.Any(p => p.Id == product.Id))
             {
-                // ReSharper disable once PossibleNullReferenceException : NullreferenceException wird mit ProductViewModels.Any() ausgeschlossen
-                ProductViewModels.FirstOrDefault(pvm => pvm.Product.Id == product.Id).Product = product;
-            }
-            else
-            {
-                ProductViewModels.Add(new ProductViewModel(product, Select));
+                _products.Remove(_products.FirstOrDefault(p => p.Id == product.Id));
             }
 
-            ProductViewModels =
-                new ObservableCollection<ProductViewModel>(ProductViewModels.OrderBy(pvm => pvm.Product.Name).ToList());
+            _products.Add(product);
+            _products = _products.OrderBy(p => p.Name).ToList();
 
-
+            ProductViewModels = new ObservableCollection<ProductViewModel>(
+                Query.Trim().Equals(String.Empty) 
+                ? _products.Select(p => new ProductViewModel(p, Select)) 
+                : _products.Where(p => p.Name.ToLower().Contains(Query.ToLower())).Select(p => new ProductViewModel(p, Select)));
 
             ActualProductViewModel = new EditProductViewModel(Save, Delete, _bookingSystemPersistence, product);
         }
@@ -97,8 +129,10 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
             var productViewModel = ProductViewModels.FirstOrDefault(p => p.Product.Id == product.Id);
             ProductViewModels.Remove(productViewModel);
 
+            _products.Remove(_products.FirstOrDefault(p => p.Id == product.Id));
+
             // ReSharper disable once PossibleNullReferenceException : NullReferenceException wird mit ProductViewModels.Any() ausgeschlossen
-            ActualProductViewModel = ProductViewModels.Any() ? new EditProductViewModel(Save, Delete, _bookingSystemPersistence, ProductViewModels.FirstOrDefault().Product) : new EditProductViewModel(Save, _bookingSystemPersistence);
+            ActualProductViewModel = _products.Any() ? new EditProductViewModel(Save, Delete, _bookingSystemPersistence, _products.FirstOrDefault()) : new EditProductViewModel(Save, _bookingSystemPersistence);
 
         }
 
