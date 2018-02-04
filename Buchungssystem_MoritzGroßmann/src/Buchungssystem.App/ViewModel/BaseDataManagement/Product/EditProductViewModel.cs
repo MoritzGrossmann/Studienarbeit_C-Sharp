@@ -172,14 +172,20 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
         /// </summary>
         private async void Delete()
         {
-            try
+            var result = await DialogCoordinator.Instance.ShowMessageAsync(this, "Achtung",
+                $"Wollen sie die Ware \"{_product.Name}\" wirklich löschen?", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
             {
-                await _product.Delete();
-                _onDelete?.Invoke(_product);
-            }
-            catch (Exception ex)
-            {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen der Ware", $"{ex.Message}\n{ex.StackTrace}");
+                try
+                {
+                    await _product.Delete();
+                    _onDelete?.Invoke(_product);
+                }
+                catch (Exception ex)
+                {
+                    await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen der Ware", $"{ex.Message}\n{ex.StackTrace}");
+                }
             }
         }
 

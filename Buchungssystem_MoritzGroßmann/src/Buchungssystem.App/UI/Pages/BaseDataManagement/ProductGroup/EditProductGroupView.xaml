@@ -41,11 +41,12 @@
             FontSize="18pt"
             Text="Name" />
         <TextBlock
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.Column="0"
             VerticalAlignment="Center"
             FontSize="18pt"
-            Text="Übergruppe" />
+            Text="Übergruppe"
+            Visibility="{Binding Path=NoParent, Mode=OneWay, Converter={converter:InvertedBooleanToVisibilityConverter}}" />
 
         <TextBox
             Grid.Row="1"
@@ -58,9 +59,10 @@
             IsEnabled="{Binding Path=Edit, Mode=OneWay}"
             Text="{Binding Path=Name, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.Column="1"
-            HorizontalAlignment="Left">
+            HorizontalAlignment="Left"
+            Visibility="{Binding Path=NoParent, Mode=OneWay, Converter={converter:InvertedBooleanToVisibilityConverter}}">
             <controls:SplitButton
                 Width="120"
                 MinWidth="200px"
@@ -76,7 +78,7 @@
         </StackPanel>
 
         <controls:ToggleSwitch
-            Grid.Row="4"
+            Grid.Row="3"
             Grid.Column="1"
             Header="Keine Übergruppe"
             IsChecked="{Binding Path=NoParent, Mode=TwoWay}"

@@ -151,20 +151,25 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Table
         /// </summary>
         private async void Delete()
         {
-            try
-            {
+            var result = await DialogCoordinator.Instance.ShowMessageAsync(this, "Achtung",
+                $"Wollen sie den Tisch \"{_table.Name}\" wirklich löschen?", MessageDialogStyle.AffirmativeAndNegative);
 
-                await _table.Delete();
-                _onDelete?.Invoke(_table);
+            if (result == MessageDialogResult.Affirmative)
+            {
+                try
+                {
+                    await _table.Delete();
+                    _onDelete?.Invoke(_table);
 
-            }
-            catch (DeleteNotAllowedException ex)
-            {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Tisches", $"{ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Tisches", $"{ex.Message}\n{ex.StackTrace}");
+                }
+                catch (DeleteNotAllowedException ex)
+                {
+                    await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Tisches", $"{ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Tisches", $"{ex.Message}\n{ex.StackTrace}");
+                }
             }
         }
 

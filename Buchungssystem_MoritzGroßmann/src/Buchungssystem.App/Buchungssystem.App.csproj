@@ -111,6 +111,7 @@
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\IntToBoolConverter.cs" />
     <Compile Include="Converter\InvertBoolConverter.cs" />
+    <Compile Include="Converter\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\OccupiedToBrushConverter.cs" />
     <Compile Include="Converter\PriceToStringConverter.cs" />
     <Compile Include="Converter\StatusToStringConverter.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="UI\Pages\LoadingScreen.xaml.cs">
       <DependentUpon>LoadingScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util\GridViewSort.cs" />
     <Compile Include="ViewModel\BaseDataManagement\EditViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\ProductGroup\ChangeProductGroupsViewModel.cs" />
     <Compile Include="ViewModel\BaseDataManagement\ProductGroup\EditProductGroupViewModel.cs" />

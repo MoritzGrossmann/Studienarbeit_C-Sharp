@@ -37,7 +37,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
             set => SetProperty(ref _actualRoomViewModel, value, nameof(ActualRoomViewModel));
         }
 
-        private string _query;
+        private string _query = String.Empty;
 
         /// <summary>
         /// Repräsentiert den String in der Warensuche

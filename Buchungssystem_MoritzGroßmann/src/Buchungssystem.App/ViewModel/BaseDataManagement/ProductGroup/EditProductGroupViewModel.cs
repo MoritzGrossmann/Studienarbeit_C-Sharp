@@ -115,20 +115,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         public bool NoParent
         {
             get => _noParent;
-            set
-            {
-                SetProperty(ref _noParent, value, nameof(NoParent));
-                RaisePropertyChanged(nameof(EnableParentContext));
-            }
-        }
-
-        /// <summary>
-        /// Zeigt an, ob die Elterngruppe-Auswahl aktiv ist
-        /// Ist Aktiv, wenn die Ansicht die Bearbeitungsansicht ist und NoParent false ist
-        /// </summary>
-        public bool EnableParentContext
-        {
-            get => Edit && !NoParent;
+            set => SetProperty(ref _noParent, value, nameof(NoParent));
         }
 
         #endregion
@@ -180,14 +167,20 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
         /// </summary>
         private async void Delete()
         {
-            try
+            var result = await DialogCoordinator.Instance.ShowMessageAsync(this, "Achtung",
+                $"Wollen sie die Warengruppe \"{_productGroup.Name}\" wirklich löschen?", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
             {
-                await _productGroup.Delete();
-                _onDelete(_productGroup);
-            }
-            catch (Exception ex)
-            {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen der Warengruppe", $"{ex.Message}\n{ex.StackTrace}");
+                try
+                {
+                    await _productGroup.Delete();
+                    _onDelete(_productGroup);
+                }
+                catch (Exception ex)
+                {
+                    await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen der Warengruppe", $"{ex.Message}\n{ex.StackTrace}");
+                }
             }
         }
 

@@ -5,6 +5,7 @@
     xmlns:converter="clr-namespace:Buchungssystem.App.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:util="clr-namespace:Buchungssystem.App.Util"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -36,35 +37,33 @@
         <ListView
             Grid.Row="2"
             Margin="{StaticResource MarginBottom12}"
+            util:GridViewSort.AutoSort="True"
             BorderBrush="Transparent"
             ItemsSource="{Binding BookingViewModels}">
-
-            <!--<ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                </Style>
-            </ListView.ItemContainerStyle>-->
-
             <ListView.View>
                 <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Employee Information">
 
                     <GridViewColumn
                         Width="100"
+                        util:GridViewSort.PropertyName="Booking.Created"
                         DisplayMemberBinding="{Binding Path=Booking.Created}"
                         Header="Uhrzeit" />
 
                     <GridViewColumn
                         Width="100"
+                        util:GridViewSort.PropertyName="Booking.Product.Name"
                         DisplayMemberBinding="{Binding Path=Booking.Product.Name}"
                         Header="Ware" />
 
                     <GridViewColumn
                         Width="100"
+                        util:GridViewSort.PropertyName="Booking.Price"
                         DisplayMemberBinding="{Binding Path=Booking.Price, Mode=OneWay, Converter={converter:PriceToStringConverter}}"
                         Header="Betrag" />
 
                     <GridViewColumn
                         Width="100"
+                        util:GridViewSort.PropertyName="Booking.Status"
                         DisplayMemberBinding="{Binding Path=Booking.Status, Mode=OneWay, Converter={converter:StatusToStringConverter}}"
                         Header="Status" />
                 </GridView>

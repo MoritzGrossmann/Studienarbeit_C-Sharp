@@ -191,19 +191,27 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// </summary>
         private async void Delete()
         {
-            try
+            var result = await DialogCoordinator.Instance.ShowMessageAsync(this, "Achtung",
+                $"Wollen sie den Raum \"{_room.Name}\" wirklich löschen?", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
             {
-                await _room.Delete();
-                _onDelete?.Invoke(_room);
+                try
+                {
+                    await _room.Delete();
+                    _onDelete?.Invoke(_room);
+                }
+                catch (DeleteNotAllowedException ex)
+                {
+                    await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Raumes", $"{ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Raumes", $"{ex.Message}\n{ex.StackTrace}");
+                }
             }
-            catch (DeleteNotAllowedException ex)
-            {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Raumes", $"{ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                await DialogCoordinator.Instance.ShowMessageAsync(this, "Fehler beim Löschen des Raumes", $"{ex.Message}\n{ex.StackTrace}");
-            }
+
+
         }
     
         /// <summary>
