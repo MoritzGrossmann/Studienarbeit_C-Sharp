@@ -13,10 +13,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
     /// </summary>
     internal class ChangeProductGroupsViewModel : BaseViewModel
     {
-        private IPersistBookingSystemData _bookingSystemPersistence;
-
-        private ICollection<Domain.Model.ProductGroup> _productGroups;
-
         #region Constructor
 
         /// <summary>
@@ -37,6 +33,43 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
 
             AddCommand = new RelayCommand(AddProductGroup);
         }
+
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Datenbakkontext
+        /// </summary>
+        private readonly IPersistBookingSystemData _bookingSystemPersistence;
+
+        /// <summary>
+        /// Liste aller existierenden Warengruppen
+        /// </summary>
+        private ICollection<Domain.Model.ProductGroup> _productGroups;
+
+        private ObservableCollection<ProductGroupViewModel> _productGroupViewModels;
+
+        /// <summary>
+        /// Repräsentiert alle angezeigten Waren
+        /// </summary>
+        public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels {
+            get => _productGroupViewModels;
+            set => SetProperty(ref _productGroupViewModels, value, nameof(ProductGroupViewModels));
+        }
+
+        private EditViewModel _actualProductGroupViewModel;
+
+        /// <summary>
+        /// Repräsentiert die aktuell bearbeitete Warengruppe
+        /// </summary>
+        public EditViewModel ActualProductGroupViewModel
+        {
+            get => _actualProductGroupViewModel;
+            set => SetProperty(ref _actualProductGroupViewModel, value, nameof(ActualProductGroupViewModel));
+        }
+
 
         private string _query = String.Empty;
 
@@ -63,31 +96,6 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.ProductGroup
                 SetProperty(ref _query, value, nameof(Query));
 
             }
-        }
-
-        #endregion
-
-        #region Properties
-
-        private ObservableCollection<ProductGroupViewModel> _productGroupViewModels;
-
-        /// <summary>
-        /// List von aller existenten Warengruppen 
-        /// </summary>
-        public ObservableCollection<ProductGroupViewModel> ProductGroupViewModels {
-            get => _productGroupViewModels;
-            set => SetProperty(ref _productGroupViewModels, value, nameof(ProductGroupViewModels));
-        }
-
-        private EditViewModel _actualProductGroupViewModel;
-
-        /// <summary>
-        /// Repräsentiert die aktuell bearbeitete Warengruppe
-        /// </summary>
-        public EditViewModel ActualProductGroupViewModel
-        {
-            get => _actualProductGroupViewModel;
-            set => SetProperty(ref _actualProductGroupViewModel, value, nameof(ActualProductGroupViewModel));
         }
 
         #endregion

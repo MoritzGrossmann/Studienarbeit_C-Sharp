@@ -124,7 +124,7 @@ namespace Buchungssystem.App.ViewModel.TableView
         #region Constructors
 
         /// <summary>
-        /// 
+        /// Standardkontruktor
         /// </summary>
         /// <param name="table">Tisch, auf den Waren gebucht werden sollen</param>
         /// <param name="productGroups">alle Wurzel-Warengruppen</param>

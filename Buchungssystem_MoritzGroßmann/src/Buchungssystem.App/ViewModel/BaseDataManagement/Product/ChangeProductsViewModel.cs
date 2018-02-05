@@ -15,16 +15,26 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Product
     {
         #region Properties
 
+        /// <summary>
+        /// Datenbankkontext
+        /// </summary>
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
 
+        /// <summary>
+        /// Liste aller existierenden Waren
+        /// </summary>
         private ICollection<Domain.Model.Product> _products;
 
         private ObservableCollection<ProductViewModel> _productViewModels;
 
         /// <summary>
-        /// Repräsentiert alle existenten Waren
+        /// Repräsentiert alle angezeigten Waren
         /// </summary>
-        public ObservableCollection<ProductViewModel> ProductViewModels { get => _productViewModels; set => SetProperty(ref _productViewModels, value, nameof(ProductViewModels)); }
+        public ObservableCollection<ProductViewModel> ProductViewModels
+        {
+            get => _productViewModels;
+            set => SetProperty(ref _productViewModels, value, nameof(ProductViewModels));
+        }
 
         private BaseViewModel _actualProductViewModel;
 

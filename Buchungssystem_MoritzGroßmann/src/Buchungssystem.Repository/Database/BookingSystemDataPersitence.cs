@@ -69,7 +69,7 @@ namespace Buchungssystem.Repository.Database
             }
         }
 
-        private DbProductGroup parentProductGroup(DbProductGroup productGroup)
+        private DbProductGroup ParentProductGroup(DbProductGroup productGroup)
         {
             using (var context = new BookingsystemEntities())
             {
@@ -367,11 +367,22 @@ namespace Buchungssystem.Repository.Database
 
         #region Room
 
+        /// <summary>
+        /// Konvertiert Room in DbRoom
+        /// </summary>
+        /// <param name="room">Room, welcher konvertiert werden soll</param>
+        /// <returns></returns>
         private DbRoom FromRoom(Room room)
         {
             return new DbRoom() { DbRoomId = room.Id, Name = room.Name };
         }
 
+        /// <summary>
+        /// Konvertiert DbRoom in Room
+        /// Lädt alle Tische des Raumes, sowie die Buchungen auf den Tischen nach
+        /// </summary>
+        /// <param name="dbRoom"></param>
+        /// <returns></returns>
         private Room FromDbRoom(DbRoom dbRoom)
         {
             var room = new Room() { Id = dbRoom.DbRoomId, Name = dbRoom.Name };
@@ -385,12 +396,23 @@ namespace Buchungssystem.Repository.Database
 
         #region Product
 
+        /// <summary>
+        /// Konvertiert Product in DbProduct
+        /// </summary>
+        /// <param name="product">Product, welche konvertiert werden soll</param>
+        /// <returns></returns>
         private DbProduct FromProduct(Product product)
         {
             var productGroup = (ProductGroup)product.Parent();
             return new DbProduct() { DbProductGroupId = productGroup.Id, Deleted = false, Name = product.Name, Price = product.Price };
         }
 
+        /// <summary>
+        /// Konvertiert DbProduct in Product
+        /// Lädt den Parent der Ware nach
+        /// </summary>
+        /// <param name="dbProduct"></param>
+        /// <returns></returns>
         private Product FromDbProduct(DbProduct dbProduct)
         {
             var product = new Product() { Id = dbProduct.DbProductId, Name = dbProduct.Name, Price = dbProduct.Price };
@@ -403,16 +425,25 @@ namespace Buchungssystem.Repository.Database
 
         #region ProductGroup
 
+        /// <summary>
+        /// Konvertiert ProductGroup in DbProductGroup
+        /// </summary>
+        /// <param name="productGroup">ProductGroup, welche konvertiert werden soll</param>
+        /// <returns></returns>
         private DbProductGroup FromProductGroup(ProductGroup productGroup)
         {
             var parent = (ProductGroup) productGroup.Parent();
             return new DbProductGroup() { Name = productGroup.Name, Id = productGroup.Id, ParentId = parent.Id};
         }
 
+        /// <summary>
+        /// Konvertiert DbProductGroup in ProductGroup
+        /// Lädt deren Parent nach
+        /// </summary>
+        /// <param name="dbProductGroup">DbProductGroup, welche konvertiert werden soll</param>
+        /// <returns></returns>
         private ProductGroup FromDbProductGroup(DbProductGroup dbProductGroup)
         {
-
-
             var productsGroup = new ProductGroup
             {
                 Id = dbProductGroup.Id,
@@ -422,7 +453,7 @@ namespace Buchungssystem.Repository.Database
 
             productsGroup.SetParent(dbProductGroup.Id == dbProductGroup.ParentId
                 ? productsGroup
-                : FromDbProductGroup(parentProductGroup(dbProductGroup)));
+                : FromDbProductGroup(ParentProductGroup(dbProductGroup)));
 
             return productsGroup;
         }
@@ -431,11 +462,22 @@ namespace Buchungssystem.Repository.Database
 
         #region Table
 
+        /// <summary>
+        /// Konvertiert Table in DbTable
+        /// </summary>
+        /// <param name="table">Tisch, welcher konvertiert werden soll</param>
+        /// <returns></returns>
         private DbTable FromTable(Table table)
         {
             return new DbTable() { Name = table.Name, Occupied = table.Occupied, RoomId = table.Room.Id, Id = table.Id, Places = table.Places};
         }
 
+        /// <summary>
+        /// Konvertiert DbTable in Table
+        /// Lädt alle Buchungen von diesem Tisch nach
+        /// </summary>
+        /// <param name="dbTable">DbTable, welcher konvertiert werden soll</param>
+        /// <returns></returns>
         private Table FromDbTable(DbTable dbTable)
         {
             var table = new Table() { Name = dbTable.Name, Occupied = dbTable.Occupied, Id = dbTable.Id, Places = dbTable.Places };
@@ -449,11 +491,23 @@ namespace Buchungssystem.Repository.Database
 
         #region Booking
 
+        /// <summary>
+        /// Konvertiert Booking in DbBooking
+        /// </summary>
+        /// <param name="booking">Buchung, welche Konvertiert werden soll</param>
+        /// <returns></returns>
         private DbBooking FromBooking(Booking booking)
         {
             return new DbBooking() { Id = booking.Id, TableId = booking.Table.Id, ProductId = booking.Product.Id, Status = (int)booking.Status, Created = booking.Created, Finished = booking.Finished, Price = booking.Price };
         }
 
+        /// <summary>
+        /// Kpnvertiert DbBooking in Booking
+        /// Wenn Created nicht exisitert, dann ist Created DateTime.MinValue
+        /// Wenn Finished nicht exisitert, dann istr Finished DateTime.MinValue
+        /// </summary>
+        /// <param name="dbBooking">DbBooking, welches konvertiert werden soll</param>
+        /// <returns></returns>
         private Booking FromDbBooking(DbBooking dbBooking)
         {
             var booking = new Booking

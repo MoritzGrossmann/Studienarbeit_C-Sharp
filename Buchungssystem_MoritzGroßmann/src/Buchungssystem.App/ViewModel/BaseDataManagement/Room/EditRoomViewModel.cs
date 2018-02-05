@@ -20,6 +20,9 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         /// </summary>
         public int Id { get; }
 
+        /// <summary>
+        /// Liste aller existierenden Tischein diesem Raum
+        /// </summary>
         private ICollection<Domain.Model.Table> _tables;
 
         private readonly Domain.Model.Room _room;
@@ -29,7 +32,7 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
         private ObservableCollection<TableViewModel> _tableViewModels;
 
         /// <summary>
-        /// Repräsentiert die Tische in einem Raum
+        /// Repräsentiert die angezeigten Tische in diesem Raum
         /// </summary>
         public ObservableCollection<TableViewModel> TableViewModels
         {

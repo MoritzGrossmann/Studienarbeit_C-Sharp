@@ -63,7 +63,7 @@ namespace Buchungssystem.App.ViewModel
         private bool _showFlyout;
 
         /// <summary>
-        /// Zeit an, ob das Flyout angezeigt wird
+        /// Zeit an, ob das Hamburger-Menu ausgeklappt ist
         /// </summary>
         public bool ShowFlyout
         {
@@ -123,7 +123,7 @@ namespace Buchungssystem.App.ViewModel
 
         /// <summary>
         /// Setzt ShowFlyout auf False
-        /// Setzut das CurrentViewModel auf ein neues BaseDataManagementViewModel
+        /// Setzt das CurrentViewModel auf ein neues BaseDataManagementViewModel
         /// </summary>
         private async void ToBaseData()
         {
@@ -151,10 +151,6 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
-        private async Task<BaseDataManagementViewModel> GetBaseDataManagementViewModel()
-        {
-            return await Task.Run(() => new BaseDataManagementViewModel(_bookingSystemDataPersistence));
-        }
 
         /// <summary>
         /// Setzt ShowFlyout auf False
@@ -220,15 +216,32 @@ namespace Buchungssystem.App.ViewModel
             }
         }
 
+        /// <summary>
+        /// Erstellt asynchron neues BookingsFromDayViewModel
+        /// </summary>
+        /// <returns></returns>
         private async Task<BookingsFromDayViewModel> GetBookingsFromDayViewModel()
         {
             return await Task.Run(() =>
                 new BookingsFromDayViewModel(_bookingSystemDataPersistence));
         }
 
+        /// <summary>
+        /// Erstellt asynchron neues RoomListViewModel
+        /// </summary>
+        /// <returns></returns>
         private async Task<RoomListViewModel> GetBookingViewModel()
         {
             return await Task.Run(() => new RoomListViewModel(_bookingSystemDataPersistence.Rooms()));
+        }
+
+        /// <summary>
+        /// Erstellt asynchron neues BaseDataManagementViewModel
+        /// </summary>
+        /// <returns></returns>
+        private async Task<BaseDataManagementViewModel> GetBaseDataManagementViewModel()
+        {
+            return await Task.Run(() => new BaseDataManagementViewModel(_bookingSystemDataPersistence));
         }
 
         /// <summary>

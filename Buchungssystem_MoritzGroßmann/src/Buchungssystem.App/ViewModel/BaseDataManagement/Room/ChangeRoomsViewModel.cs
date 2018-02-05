@@ -15,16 +15,26 @@ namespace Buchungssystem.App.ViewModel.BaseDataManagement.Room
     {
         #region Properties
 
+        /// <summary>
+        /// Liste aller Existierenden Räume
+        /// </summary>
         private ICollection<Domain.Model.Room> _rooms;
 
+        /// <summary>
+        /// Daternbankkontext
+        /// </summary>
         private readonly IPersistBookingSystemData _bookingSystemPersistence;
 
         private ObservableCollection<RoomViewModel> _roomViewModels;
 
         /// <summary>
-        /// Liste aller Existierenden Räume
+        /// Repräsentiert alle Angezeigten Räume
         /// </summary>
-        public ObservableCollection<RoomViewModel> RoomViewModels { get => _roomViewModels; set => SetProperty(ref _roomViewModels, value, nameof(RoomViewModels)); }
+        public ObservableCollection<RoomViewModel> RoomViewModels
+        {
+            get => _roomViewModels;
+            set => SetProperty(ref _roomViewModels, value, nameof(RoomViewModels));
+        }
 
         private BaseViewModel _actualRoomViewModel;
 
